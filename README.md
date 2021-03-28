@@ -7,6 +7,6 @@ Amelia Regina Sutikna (Function 1 - 10)
 
 Fidella Widjojo (Function 16 - 25)
 
-Hubertus Adhy Pratama Setiawan (Create table, 26 - 30)
+Hubertus Adhy Pratama Setiawan (Create tables, Function 26 - 30)
 
-Jusuf Nathanael (Create table, Function 11 - 15)
+Jusuf Nathanael (Create tables, Function 11 - 15)
