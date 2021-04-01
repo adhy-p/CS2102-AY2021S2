@@ -49,9 +49,11 @@ CREATE TABLE Buys (
 CREATE TABLE Courses (
     course_id integer,
     title varchar(50) NOT NULL,
+    name varchar(50) NOT NULL UNIQUE,
     duration integer NOT NULL /* in hours */
         CHECK (duration >= 0),
     description text,
+    FOREIGN KEY (name) REFERENCES Course_Areas ON DELETE CASCADE,
     PRIMARY KEY (course_id)
 );
 
@@ -67,8 +69,10 @@ CREATE TABLE Offerings ( /* weak entity set, courses is the identifying relation
     fees integer
         CHECK (fees >= 0),
     course_id integer,
+    eid integer NOT NULL UNIQUE,
     FOREIGN KEY (course_id) REFERENCES Courses
         on delete cascade,
+    FOREIGN KEY (eid) REFERENCES Administrators ON DELETE CASCADE,
     CHECK (start_date <= end_date),
     PRIMARY KEY (course_id, launch_date)
 );
@@ -80,8 +84,13 @@ CREATE TABLE Sessions ( /* weak entity set, offerings is the identifying relatio
     end_time timestamp,
     course_id integer,
     launch_date date,
+    rid integer NOT NULL,
+    eid integer NOT NULL,
     FOREIGN KEY (course_id, launch_date) REFERENCES Offerings
         on delete cascade,
+    FOREIGN KEY (rid) REFERENCES Rooms ON DELETE CASCADE,
+    FOREIGN KEY (eid) REFERENCES Instructors ON DELETE CASCADE,
+    UNIQUE (rid, eid),
     PRIMARY KEY (sid, course_id, launch_date)
 );
 
@@ -124,4 +133,80 @@ CREATE TABLE Cancels (
     PRIMARY KEY (cancel_date, cust_id, sid, course_id, launch_date)
 );
     
+
+CREATE TABLE Rooms (
+    rid integer,
+    location varchar(50),
+    seating_capacity integer,
+    PRIMARY KEY (rid)
+);
+
+CREATE TABLE Employees (
+    eid integer,
+    name varchar(50) NOT NULL,
+    address varchar(100),
+    email varchar(50),
+    phone integer,
+    depart_date date,
+    join_date date NOT NULL,
+    PRIMARY KEY (eid)
+);
+
+CREATE TABLE Part_Time_Employees (
+    eid integer,
+    hourly_rate integer,
+    PRIMARY KEY (eid) REFERENCES Employees ON DELETE CASCADE
+);
+
+CREATE TABLE Full_Time_Employees (
+    eid integer,
+    monthly_salary integer,
+    PRIMARY KEY (eid) REFERENCES Employees ON DELETE CASCADE
+);
+
+CREATE TABLE Administrators (
+    eid integer,
+    PRIMARY KEY (eid) REFERENCES Full_Time_Employees ON DELETE CASCADE
+);
+
+CREATE TABLE Managers (
+    eid integer,
+    PRIMARY KEY (eid) REFERENCES Full_Time_Employees ON DELETE CASCADE
+);
+
+CREATE TABLE Instructors (
+    eid integer,
+    PRIMARY KEY (eid) REFERENCES Employees ON DELETE CASCADE
+);
+
+CREATE TABLE Full_Time_Instructors (
+    eid integer,
+    monthly_salary integer,
+    PRIMARY KEY (eid) REFERENCES Instructors ON DELETE CASCADE
+);
+
+CREATE TABLE Part_Time_Instructors (
+    eid integer,
+    hourly_rate integer,
+    PRIMARY KEY (eid) REFERENCES Instructors ON DELETE CASCADE
+);
+
+CREATE TABLE Pay_Slips (
+    payment_date integer,
+    amount integer NOT NULL CHECK (amount >= 0),
+    num_work_hours integer NOT NULL CHECK (num_work_hours >= 0),
+    num_work_days integer NOT NULL CHECK (num_work_days >= 0),
+    eid integer,
+    PRIMARY KEY (payment_date, eid),
+    FOREIGN KEY (eid) REFERENCES Employees ON DELETE CASCADE,
+);
+
+CREATE TABLE Course_Areas ( /* combined with specializes and manages */
+    name varchar(50),
+    manager_id integer NOT NULL UNIQUE,
+    instructor_id integer NOT NULL,
+    PRIMARY KEY (name),
+    FOREIGN KEY (manager_id) REFERENCES Managers ON DELETE CASCADE,
+    FOREIGN KEY (instructor_id) REFERENCES Instructors ON DELETE CASCADE
+);
 
