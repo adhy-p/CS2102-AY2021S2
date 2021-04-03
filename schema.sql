@@ -201,12 +201,18 @@ CREATE TABLE Pay_Slips (
     FOREIGN KEY (eid) REFERENCES Employees ON DELETE CASCADE,
 );
 
-CREATE TABLE Course_Areas ( /* combined with specializes and manages */
+CREATE TABLE Course_Areas ( /* combined with manages */
     name varchar(50),
-    manager_id integer NOT NULL UNIQUE,
-    instructor_id integer NOT NULL,
+    eid integer NOT NULL UNIQUE,
     PRIMARY KEY (name),
-    FOREIGN KEY (manager_id) REFERENCES Managers ON DELETE CASCADE,
-    FOREIGN KEY (instructor_id) REFERENCES Instructors ON DELETE CASCADE
+    FOREIGN KEY (eid) REFERENCES Managers ON DELETE CASCADE
+);
+
+CREATE TABLE Specializes (
+    eid integer NOT NULL,
+    name varchar(50),
+    FOREIGN KEY (eid) REFERENCES Instructors ON DELETE CASCADE,
+    FOREIGN KEY (name) REFERENCES Course_Areas ON DELETE CASCADE,
+    PRIMARY KEY (eid, name)
 );
 
