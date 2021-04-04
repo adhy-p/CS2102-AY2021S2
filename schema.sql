@@ -17,7 +17,7 @@ CREATE TABLE Credit_cards ( /* owns + credit_cards */
     expiry_date date NOT NULL,
     from_date date NOT NULL,
     cust_id integer NOT NULL, 
-    FOREIGN KEY (cust_id) REFERENCES Customers,
+    FOREIGN KEY (cust_id) REFERENCES Customers NOT NULL,
     CHECK (from_date <= expiry_date),
     PRIMARY KEY (card_number) /* each credit card must have a distinct owner */
 );
@@ -31,6 +31,7 @@ CREATE TABLE Course_packages (
         CHECK (num_free_registration >= 0),
     price integer NOT NULL
         CHECK (price >= 0),
+    CHECK (sale_start_date <= sale_end_date),
     PRIMARY KEY (package_id)
 );
 
@@ -48,7 +49,7 @@ CREATE TABLE Buys (
 
 CREATE TABLE Courses (
     course_id integer,
-    title varchar(50) NOT NULL,
+    title varchar(50) UNIQUE NOT NULL,
     name varchar(50) NOT NULL UNIQUE,
     duration integer NOT NULL /* in hours */
         CHECK (duration >= 0),
@@ -61,33 +62,35 @@ CREATE TABLE Offerings ( /* weak entity set, courses is the identifying relation
     launch_date date,
     start_date date,
     end_date date,
-    registration_deadline date,
+    registration_deadline date, /* must be at least 10 days before its start date */
     target_number_registrations integer
         CHECK (target_number_registrations >= 0),
-    seating_capacity integer
+    seating_capacity integer /* sum of the seating capacities of its sessions */
         CHECK (seating_capacity >= 0),
     fees integer
         CHECK (fees >= 0),
     course_id integer,
-    eid integer NOT NULL UNIQUE,
+    eid integer UNIQUE NOT NULL,
     FOREIGN KEY (course_id) REFERENCES Courses
-        on delete cascade,
-    FOREIGN KEY (eid) REFERENCES Administrators ON DELETE CASCADE,
+        ON DELETE CASCADE,
+    FOREIGN KEY (eid) REFERENCES Administrators 
+        ON DELETE CASCADE,
     CHECK (start_date <= end_date),
     PRIMARY KEY (course_id, launch_date)
 );
 
 CREATE TABLE Sessions ( /* weak entity set, offerings is the identifying relationship */
+    /* No two sessions for the same course offering can be conducted on the same day and at the same time. */
     sid integer,
-    session_date date,
-    start_time timestamp,
+    session_date date, /* Monday to Friday */
+    start_time timestamp, /* earliest: 9am, must end by 6pm, no sessions between 12-2pm */
     end_time timestamp,
     course_id integer,
     launch_date date,
     rid integer NOT NULL,
     eid integer NOT NULL,
     FOREIGN KEY (course_id, launch_date) REFERENCES Offerings
-        on delete cascade,
+        ON DELETE CASCADE,
     FOREIGN KEY (rid) REFERENCES Rooms ON DELETE CASCADE,
     FOREIGN KEY (eid) REFERENCES Instructors ON DELETE CASCADE,
     UNIQUE (rid, eid),
@@ -147,7 +150,7 @@ CREATE TABLE Employees (
     address varchar(100),
     email varchar(50),
     phone integer,
-    depart_date date,
+    depart_date date, /* NULL if the employee is still employed */
     join_date date NOT NULL,
     PRIMARY KEY (eid)
 );
@@ -174,7 +177,7 @@ CREATE TABLE Managers (
     PRIMARY KEY (eid) REFERENCES Full_Time_Employees ON DELETE CASCADE
 );
 
-CREATE TABLE Instructors (
+CREATE TABLE Instructors ( /* there must be at least one hour of break between two course sessions */
     eid integer,
     PRIMARY KEY (eid) REFERENCES Employees ON DELETE CASCADE
 );
@@ -185,7 +188,7 @@ CREATE TABLE Full_Time_Instructors (
     PRIMARY KEY (eid) REFERENCES Instructors ON DELETE CASCADE
 );
 
-CREATE TABLE Part_Time_Instructors (
+CREATE TABLE Part_Time_Instructors ( /* must not teach more than 30 hours for each month */
     eid integer,
     hourly_rate integer,
     PRIMARY KEY (eid) REFERENCES Instructors ON DELETE CASCADE
@@ -195,7 +198,7 @@ CREATE TABLE Pay_Slips (
     payment_date integer,
     amount integer NOT NULL CHECK (amount >= 0),
     num_work_hours integer NOT NULL CHECK (num_work_hours >= 0),
-    num_work_days integer NOT NULL CHECK (num_work_days >= 0),
+    num_work_days integer NOT NULL CHECK (num_work_days >= 0), /* last_work_day - first_work_day + 1 */
     eid integer,
     PRIMARY KEY (payment_date, eid),
     FOREIGN KEY (eid) REFERENCES Employees ON DELETE CASCADE,
