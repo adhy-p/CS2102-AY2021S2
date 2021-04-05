@@ -1,7 +1,7 @@
 DROP DATABASE IF EXISTS IT_course_trainer;
 CREATE DATABASE IT_course_trainer;
 
--- DROP TABLE IF EXISTS table_name;
+DROP TABLE IF EXISTS Customers;
 CREATE TABLE Customers (
     cust_id integer,
     name varchar(50) NOT NULL,
@@ -11,7 +11,8 @@ CREATE TABLE Customers (
     PRIMARY KEY (cust_id)
 );
 
-CREATE TABLE Credit_cards ( /* owns + credit_cards */
+DROP TABLE IF EXISTS Credit_Cards;
+CREATE TABLE Credit_Cards ( /* owns + credit_cards */
     card_number varchar(16), 
     cvv integer NOT NULL,
     expiry_date date NOT NULL,
@@ -22,20 +23,21 @@ CREATE TABLE Credit_cards ( /* owns + credit_cards */
     PRIMARY KEY (card_number) /* each credit card must have a distinct owner */
 );
 
-CREATE TABLE Course_packages (
+DROP TABLE IF EXISTS Course_Packages;
+CREATE TABLE Course_Packages (
     package_id integer, 
     sale_start_date date NOT NULL,
     sale_end_date date NOT NULL,
     name varchar(50) NOT NULL,
     num_free_registration integer
         CHECK (num_free_registration >= 0),
-    price integer NOT NULL
+    price double(6,2) NOT NULL
         CHECK (price >= 0),
     CHECK (sale_start_date <= sale_end_date),
     PRIMARY KEY (package_id)
 );
 
-
+DROP TABLE IF EXISTS Buys;
 CREATE TABLE Buys (
     purchase_date date NOT NULL,
     package_id integer NOT NULL,
@@ -47,6 +49,7 @@ CREATE TABLE Buys (
     PRIMARY KEY (purchase_date, card_number, package_id)
 );
 
+DROP TABLE IF EXISTS Courses;
 CREATE TABLE Courses (
     course_id integer,
     title varchar(50) UNIQUE NOT NULL,
@@ -58,6 +61,7 @@ CREATE TABLE Courses (
     PRIMARY KEY (course_id)
 );
 
+DROP TABLE IF EXISTS Offerings;
 CREATE TABLE Offerings ( /* weak entity set, courses is the identifying relationship */
     launch_date date,
     start_date date,
@@ -79,6 +83,7 @@ CREATE TABLE Offerings ( /* weak entity set, courses is the identifying relation
     PRIMARY KEY (course_id, launch_date)
 );
 
+DROP TABLE IF EXISTS Sessions;
 CREATE TABLE Sessions ( /* weak entity set, offerings is the identifying relationship */
     /* No two sessions for the same course offering can be conducted on the same day and at the same time. */
     sid integer,
@@ -97,6 +102,7 @@ CREATE TABLE Sessions ( /* weak entity set, offerings is the identifying relatio
     PRIMARY KEY (sid, course_id, launch_date)
 );
 
+DROP TABLE IF EXISTS Redeems;
 CREATE TABLE Redeems ( 
     redeem_date date,
     package_id integer NOT NULL,
@@ -110,6 +116,7 @@ CREATE TABLE Redeems (
     PRIMARY KEY (redeem_date, purchase_date, card_number, package_id, sid, course_id, launch_date)
 );
 
+DROP TABLE IF EXISTS Registers;
 CREATE TABLE Registers ( 
     registration_date date,
     card_number varchar(16),
@@ -121,6 +128,7 @@ CREATE TABLE Registers (
     PRIMARY KEY (registration_date, card_number, sid, course_id, launch_date)
 );
 
+DROP TABLE IF EXISTS Cancels;
 CREATE TABLE Cancels ( 
     cancel_date date,
     refund_amt integer
@@ -136,7 +144,7 @@ CREATE TABLE Cancels (
     PRIMARY KEY (cancel_date, cust_id, sid, course_id, launch_date)
 );
     
-
+DROP TABLE IF EXISTS Rooms;
 CREATE TABLE Rooms (
     rid integer,
     location varchar(50),
@@ -144,6 +152,7 @@ CREATE TABLE Rooms (
     PRIMARY KEY (rid)
 );
 
+DROP TABLE IF EXISTS Employees;
 CREATE TABLE Employees (
     eid integer,
     name varchar(50) NOT NULL,
@@ -155,45 +164,53 @@ CREATE TABLE Employees (
     PRIMARY KEY (eid)
 );
 
+DROP TABLE IF EXISTS Part_Time_Employees;
 CREATE TABLE Part_Time_Employees (
     eid integer,
     hourly_rate integer,
     PRIMARY KEY (eid) REFERENCES Employees ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS Full_Time_Employees;
 CREATE TABLE Full_Time_Employees (
     eid integer,
     monthly_salary integer,
     PRIMARY KEY (eid) REFERENCES Employees ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS Administrators;
 CREATE TABLE Administrators (
     eid integer,
     PRIMARY KEY (eid) REFERENCES Full_Time_Employees ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS Managers;
 CREATE TABLE Managers (
     eid integer,
     PRIMARY KEY (eid) REFERENCES Full_Time_Employees ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS Instructors;
 CREATE TABLE Instructors ( /* there must be at least one hour of break between two course sessions */
     eid integer,
     PRIMARY KEY (eid) REFERENCES Employees ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS Full_Time_Instructors;
 CREATE TABLE Full_Time_Instructors (
     eid integer,
     monthly_salary integer,
     PRIMARY KEY (eid) REFERENCES Instructors ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS Part_Time_Instructors;
 CREATE TABLE Part_Time_Instructors ( /* must not teach more than 30 hours for each month */
     eid integer,
     hourly_rate integer,
     PRIMARY KEY (eid) REFERENCES Instructors ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS Pay_Slips;
 CREATE TABLE Pay_Slips (
     payment_date integer,
     amount integer NOT NULL CHECK (amount >= 0),
@@ -204,6 +221,7 @@ CREATE TABLE Pay_Slips (
     FOREIGN KEY (eid) REFERENCES Employees ON DELETE CASCADE,
 );
 
+DROP TABLE IF EXISTS Course_Areas;
 CREATE TABLE Course_Areas ( /* combined with manages */
     name varchar(50),
     eid integer NOT NULL UNIQUE,
@@ -211,6 +229,7 @@ CREATE TABLE Course_Areas ( /* combined with manages */
     FOREIGN KEY (eid) REFERENCES Managers ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS Specializes;
 CREATE TABLE Specializes (
     eid integer NOT NULL,
     name varchar(50),
@@ -218,4 +237,3 @@ CREATE TABLE Specializes (
     FOREIGN KEY (name) REFERENCES Course_Areas ON DELETE CASCADE,
     PRIMARY KEY (eid, name)
 );
-
