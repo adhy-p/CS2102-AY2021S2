@@ -70,15 +70,15 @@ CREATE TABLE Instructors ( /* there must be at least one hour of break between t
 DROP TABLE IF EXISTS Full_Time_Instructors;
 CREATE TABLE Full_Time_Instructors (
     eid integer,
-    monthly_salary integer,
-    PRIMARY KEY (eid) REFERENCES Instructors ON DELETE CASCADE
+    PRIMARY KEY (eid) REFERENCES Instructors
+        REFERENCES Full_Time_Employees ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Part_Time_Instructors;
 CREATE TABLE Part_Time_Instructors ( /* must not teach more than 30 hours for each month */
     eid integer,
-    hourly_rate integer,
-    PRIMARY KEY (eid) REFERENCES Instructors ON DELETE CASCADE
+    PRIMARY KEY (eid) REFERENCES Instructors
+        REFERENCES Part_Time_Employees ON DELETE CASCADE
 );
     
 DROP TABLE IF EXISTS Rooms;
@@ -145,7 +145,7 @@ CREATE TABLE Offerings ( /* weak entity set, courses is the identifying relation
         CHECK (target_number_registrations >= 0),
     seating_capacity integer /* sum of the seating capacities of its sessions */
         CHECK (seating_capacity >= 0),
-    fees integer
+    fees double(6,2)
         CHECK (fees >= 0),
     course_id integer,
     eid integer UNIQUE NOT NULL,
