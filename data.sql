@@ -448,5 +448,113 @@ insert into Sessions (sid, session_date, start_time, end_time, course_id, launch
 /* Redeems */
 /* Registers */
 /* Cancels */
-/* Pay_Slips */
+
+/**
+* Pay_Slips, temporary values.
+* amount = num_work_hours * hourly_rate
+* OR
+* amount = monthly salary * num_work_days / num_of_days_in_that_month
+* num_work_hours for part time, num_work_days for full time
+*/
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (27, 0, null, 16, 1);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (25, 0, null, 15, 2);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (27, 0, null, 11, 3);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (21, 0, null, 10, 4);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (28, 0, null, 13, 5);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (23, 0, null, 16, 6);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (27, 0, null, 17, 7);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (29, 0, null, 11, 8);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (27, 0, null, 16, 9);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (23, 0, null, 14, 10);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (28, 0, null, 14, 11);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (21, 0, null, 15, 12);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (25, 0, null, 15, 13);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (27, 0, null, 12, 14);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (23, 0, null, 10, 15);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (24, 0, null, 17, 16);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (26, 0, null, 18, 17);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (26, 0, null, 10, 18);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (20, 0, null, 18, 19);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (20, 0, null, 18, 20);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (27, 0, null, 10, 21);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (21, 0, null, 15, 22);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (21, 0, null, 11, 23);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (25, 0, null, 17, 24);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (27, 0, null, 10, 25);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (27, 0, null, 16, 26);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (25, 0, null, 16, 27);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (29, 0, null, 18, 28);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (20, 0, null, 16, 29);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (23, 0, null, 17, 30);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (27, 0, null, 11, 31);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (26, 0, null, 18, 32);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (26, 0, null, 17, 33);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (29, 0, null, 17, 34);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (30, 0, null, 10, 35);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (30, 0, null, 15, 36);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (24, 0, null, 12, 37);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (29, 0, null, 18, 38);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (23, 0, null, 14, 39);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (30, 0, null, 17, 40);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (28, 0, 155, null, 41);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (23, 0, 130, null, 42);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (26, 0, 167, null, 43);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (22, 0, 239, null, 44);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (25, 0, 182, null, 45);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (21, 0, 202, null, 46);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (23, 0, 276, null, 47);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (26, 0, 239, null, 48);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (29, 0, 153, null, 49);
+insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values (23, 0, 165, null, 50);
+
 /* Specializes */
+insert into Specializes (eid, name) values (21, 'Database system');
+insert into Specializes (eid, name) values (22, 'Database system');
+insert into Specializes (eid, name) values (23, 'Database system');
+insert into Specializes (eid, name) values (24, 'Database system');
+insert into Specializes (eid, name) values (25, 'Database system');
+insert into Specializes (eid, name) values (26, 'Database system');
+insert into Specializes (eid, name) values (27, 'Database system');
+insert into Specializes (eid, name) values (28, 'Computational Biology');
+insert into Specializes (eid, name) values (29, 'Computational Biology');
+insert into Specializes (eid, name) values (30, 'Quantum Computing');
+insert into Specializes (eid, name) values (31, 'Quantum Computing');
+insert into Specializes (eid, name) values (32, 'Quantum Computing');
+insert into Specializes (eid, name) values (33, 'Quantum Computing');
+insert into Specializes (eid, name) values (34, 'IoT');
+insert into Specializes (eid, name) values (35, 'IoT');
+insert into Specializes (eid, name) values (36, 'IoT');
+insert into Specializes (eid, name) values (37, 'IoT');
+insert into Specializes (eid, name) values (38, 'Processors and Compilers');
+insert into Specializes (eid, name) values (39, 'Processors and Compilers');
+insert into Specializes (eid, name) values (40, 'Processors and Compilers');
+insert into Specializes (eid, name) values (21, 'Artificial Intelligence');
+insert into Specializes (eid, name) values (22, 'Artificial Intelligence');
+insert into Specializes (eid, name) values (23, 'Artificial Intelligence');
+insert into Specializes (eid, name) values (24, 'Artificial Intelligence');
+insert into Specializes (eid, name) values (25, 'Artificial Intelligence');
+insert into Specializes (eid, name) values (26, 'Artificial Intelligence');
+insert into Specializes (eid, name) values (27, 'Programming Languages');
+insert into Specializes (eid, name) values (28, 'Programming Languages');
+insert into Specializes (eid, name) values (29, 'Programming Languages');
+insert into Specializes (eid, name) values (30, 'Programming Languages');
+insert into Specializes (eid, name) values (31, 'Programming Languages');
+insert into Specializes (eid, name) values (32, 'Programming Languages');
+insert into Specializes (eid, name) values (33, 'Programming Languages');
+insert into Specializes (eid, name) values (34, 'Computer Security');
+insert into Specializes (eid, name) values (35, 'Computer Security');
+insert into Specializes (eid, name) values (36, 'Computer Security');
+insert into Specializes (eid, name) values (37, 'Computer Security');
+insert into Specializes (eid, name) values (38, 'Computer Security');
+insert into Specializes (eid, name) values (39, 'Computer Security');
+insert into Specializes (eid, name) values (40, 'Computer Networks');
+insert into Specializes (eid, name) values (41, 'Computer Networks');
+insert into Specializes (eid, name) values (42, 'Computer Networks');
+insert into Specializes (eid, name) values (43, 'Computer Networks');
+insert into Specializes (eid, name) values (44, 'Parallel Computing');
+insert into Specializes (eid, name) values (45, 'Parallel Computing');
+insert into Specializes (eid, name) values (46, 'Parallel Computing');
+insert into Specializes (eid, name) values (47, 'Parallel Computing');
+insert into Specializes (eid, name) values (48, 'Parallel Computing');
+insert into Specializes (eid, name) values (49, 'Parallel Computing');
+insert into Specializes (eid, name) values (50, 'Parallel Computing');
