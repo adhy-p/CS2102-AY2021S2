@@ -18,7 +18,7 @@ CREATE TABLE Credit_Cards ( /* owns + credit_cards */
     expiry_date date NOT NULL,
     from_date date NOT NULL,
     cust_id integer NOT NULL, 
-    FOREIGN KEY (cust_id) REFERENCES Customers NOT NULL,
+    FOREIGN KEY (cust_id) REFERENCES Customers,
     CHECK (from_date <= expiry_date),
     PRIMARY KEY (card_number) /* each credit card must have a distinct owner */
 );
@@ -138,7 +138,7 @@ DROP TABLE IF EXISTS Courses;
 CREATE TABLE Courses (
     course_id integer,
     title varchar(50) UNIQUE NOT NULL,
-    name varchar(50) NOT NULL UNIQUE,
+    name varchar(50) NOT NULL,
     duration integer NOT NULL /* in hours */
         CHECK (duration >= 0),
     description text,
@@ -159,7 +159,7 @@ CREATE TABLE Offerings ( /* weak entity set, courses is the identifying relation
     fees double precision
         CHECK (fees >= 0),
     course_id integer,
-    eid integer UNIQUE NOT NULL,
+    eid integer NOT NULL,
     FOREIGN KEY (course_id) REFERENCES Courses
         ON DELETE CASCADE,
     FOREIGN KEY (eid) REFERENCES Administrators 
@@ -233,8 +233,8 @@ DROP TABLE IF EXISTS Pay_Slips;
 CREATE TABLE Pay_Slips (
     payment_date integer,
     amount integer NOT NULL CHECK (amount >= 0),
-    num_work_hours integer NOT NULL CHECK (num_work_hours >= 0),
-    num_work_days integer NOT NULL CHECK (num_work_days >= 0), /* last_work_day - first_work_day + 1 */
+    num_work_hours integer CHECK (num_work_hours >= 0),
+    num_work_days integer CHECK (num_work_days >= 0), /* last_work_day - first_work_day + 1 */
     eid integer,
     PRIMARY KEY (payment_date, eid),
     FOREIGN KEY (eid) REFERENCES Employees ON DELETE CASCADE
