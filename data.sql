@@ -1,0 +1,87 @@
+/* Customers */
+insert into Customers (cust_id, name, email, address, phone) values (1, 'Aggy', 'adoughill0@stumbleupon.com', '323 Hintze Junction', 98765432);
+insert into Customers (cust_id, name, email, address, phone) values (2, 'Frederico', 'fmounce1@posterous.com', '4178 Declaration Hill', 98765433);
+insert into Customers (cust_id, name, email, address, phone) values (3, 'Carmen', 'cstarkie2@last.fm', '0309 Erie Park', 98765434);
+insert into Customers (cust_id, name, email, address, phone) values (4, 'Daryl', 'dcrolly3@amazonaws.com', '0206 Kinsman Hill', 98765435);
+insert into Customers (cust_id, name, email, address, phone) values (5, 'Ara', 'apavel4@canalblog.com', '40203 Sachs Court', 99998880);
+insert into Customers (cust_id, name, email, address, phone) values (6, 'Kermit', 'kilyenko5@blogtalkradio.com', '79594 Lunder Center', 99998881);
+insert into Customers (cust_id, name, email, address, phone) values (7, 'Dayna', 'dclayden6@wikispaces.com', '37 Lighthouse Bay Plaza', 99998882);
+insert into Customers (cust_id, name, email, address, phone) values (8, 'Nevin', 'ndenge7@creativecommons.org', '07 Forster Crossing', 99998883);
+insert into Customers (cust_id, name, email, address, phone) values (9, 'Myrtle', 'mnorthill8@ca.gov', '58381 Mayfield Drive', 99998884);
+insert into Customers (cust_id, name, email, address, phone) values (10, 'Baudoin', 'bbeves9@latimes.com', '87279 Luster Crossing', 98765436);
+insert into Customers (cust_id, name, email, address, phone) values (11, 'Collette', 'cmaclaughlina@a8.net', '4 Sheridan Point', 98765437);
+insert into Customers (cust_id, name, email, address, phone) values (12, 'Hort', 'hlamblinb@statcounter.com', '17521 Dawn Alley', 99998885);
+insert into Customers (cust_id, name, email, address, phone) values (13, 'Julie', 'jnoorec@surveymonkey.com', '21 Crowley Street', 98765438);
+insert into Customers (cust_id, name, email, address, phone) values (14, 'Debby', 'dzorrod@ucoz.com', '8 Loftsgordon Terrace', 99998887);
+insert into Customers (cust_id, name, email, address, phone) values (15, 'Elroy', 'emcknielye@uiuc.edu', '77021 Ruskin Alley', 99998888);
+insert into Customers (cust_id, name, email, address, phone) values (16, 'Gray', 'garnaldof@amazon.de', '4 Anhalt Terrace', 99998889);
+insert into Customers (cust_id, name, email, address, phone) values (17, 'Sandor', 'sdorlingg@issuu.com', '55339 7th Alley', 98765439);
+insert into Customers (cust_id, name, email, address, phone) values (18, 'Dionis', 'dfeltenh@reference.com', '2 Kipling Way', 99998800);
+insert into Customers (cust_id, name, email, address, phone) values (19, 'Odessa', 'ofilyushkini@instagram.com', '7 Katie Point', 99998801);
+insert into Customers (cust_id, name, email, address, phone) values (20, 'Annie', 'aneamesj@usda.gov', '684 Garrison Way', 98765430);
+
+/* Credit_Cards */
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048371508404496', 519, '2025-02-20 03:33:28', '2020-05-04 03:30:52', 1);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108759034811803', 582, '2024-03-24 16:21:36', '2021-01-02 03:31:05', 2);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048370038418307', 302, '2024-06-01 05:32:01', '2020-08-15 09:27:28', 3);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048379765618542', 149, '2024-05-03 23:54:41', '2020-11-06 02:44:49', 4);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108758777432884', 918, '2023-09-12 05:01:02', '2020-11-14 13:17:28', 5);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048372282236518', 574, '2025-03-18 07:07:57', '2021-01-04 12:43:31', 6);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108750325244838', 336, '2024-02-26 22:26:51', '2020-08-07 14:40:39', 7);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108754093451666', 729, '2023-12-09 20:21:17', '2021-01-09 15:40:30', 8);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048373029850934', 218, '2024-10-22 11:38:33', '2021-03-30 23:30:30', 9);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048371304277260', 965, '2024-12-27 08:22:20', '2020-08-10 07:25:09', 10);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048372439765229', 202, '2024-02-13 20:28:58', '2020-05-09 08:27:15', 11);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108758087287846', 688, '2024-08-30 23:20:57', '2021-02-26 07:15:14', 12);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108750084460245', 694, '2023-05-07 05:52:43', '2020-09-25 20:51:32', 13);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108754639694514', 949, '2023-09-09 07:14:14', '2020-08-05 19:57:00', 14);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108753204167823', 519, '2024-02-08 15:14:20', '2020-05-30 00:53:44', 15);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108750041666249', 191, '2024-07-22 21:05:18', '2020-06-25 08:34:55', 16);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048375592569536', 557, '2024-10-23 20:00:04', '2020-09-23 03:17:59', 17);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108750217678796', 252, '2025-02-26 22:20:50', '2020-11-14 01:52:02', 18);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108754183577883', 744, '2024-05-13 18:06:05', '2020-05-05 22:54:26', 19);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108757605291116', 746, '2024-12-02 21:52:00', '2020-12-24 23:49:30', 20);
+
+/* Course_Packages */
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (1, '2021-03-08 14:53:48', '2021-04-24 06:14:35', 'Introduction to Humanitarian', 48, 907.86);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (2, '2021-03-06 01:48:29', '2021-07-15 01:59:57', 'Introduction to nMarket', 15, 451.54);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (3, '2021-03-12 14:02:59', '2022-03-18 10:39:53', 'Introduction to Zooarchaeology', 58, 624.19);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (4, '2021-03-24 20:52:27', '2021-11-04 17:08:42', 'Introduction to HSQE', 22, 861.92);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (5, '2021-03-09 09:27:03', '2022-01-10 13:33:53', 'Introduction to Snoring', 32, 606.94);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (6, '2021-04-05 03:04:00', '2021-09-13 12:56:31', 'Introduction to Distributed Database', 6, 482.03);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (7, '2021-03-20 06:36:48', '2022-01-20 00:34:33', 'Introduction to MMORPG', 69, 929.7);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (8, '2021-04-02 18:53:54', '2021-09-13 07:01:47', 'Introduction to CATIA', 48, 426.35);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (9, '2021-03-20 13:57:38', '2021-09-22 11:44:04', 'Introduction to TCF', 62, 242.66);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (10, '2021-03-09 15:32:41', '2021-08-09 18:06:51', 'Introduction to Lymphedema', 82, 691.13);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (11, '2021-04-04 12:51:11', '2021-09-28 16:13:34', 'Introduction to Two-way Radio', 53, 42.17);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (12, '2021-04-01 11:21:48', '2021-11-07 07:50:06', 'Introduction to YSlow', 54, 751.0);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (13, '2021-03-27 03:50:39', '2021-10-02 02:56:12', 'Introduction to CQE', 31, 937.71);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (14, '2021-03-19 13:07:20', '2021-10-19 21:47:00', 'Introduction to DxDesigner', 43, 594.56);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (15, '2021-03-19 06:28:17', '2022-04-02 11:11:44', 'Introduction to Foreign Policy', 80, 359.16);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (16, '2021-03-27 21:10:19', '2021-04-22 13:48:02', 'Introduction to Object Oriented Design', 58, 155.3);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (17, '2021-04-03 02:37:25', '2022-03-20 06:02:13', 'Introduction to Jetty', 15, 958.67);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (18, '2021-03-20 21:42:25', '2021-12-13 02:47:31', 'Introduction to CQB', 16, 49.5);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (19, '2021-03-27 19:08:21', '2021-11-01 02:18:16', 'Introduction to Motion Graphics', 49, 647.05);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (20, '2021-04-05 17:39:36', '2021-09-17 04:47:58', 'Introduction to PFMEA', 24, 920.03);
+
+/* Buys */
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-03-01 02:17:26', 11,'5048371508404496', 4);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-04-05 12:17:28', 13,'5108759034811803', 5);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2022-02-20 20:34:16', 6, '5048370038418307', 5);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-05-19 23:27:31', 12,'5048379765618542', 8);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2022-03-02 20:20:12', 12,'5108758777432884', 9);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-06-01 21:42:25', 19,'5048372282236518', 1);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-06-16 00:30:12', 7, '5108750325244838', 10);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-11-19 10:07:55', 6, '5108754093451666', 7);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2022-04-02 23:43:14', 17,'5048373029850934', 3);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-04-25 14:17:01', 10,'5048371304277260', 9);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-12-07 06:59:22', 13,'5048372439765229', 8);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-08-04 00:38:08', 17,'5108758087287846', 9);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-03-18 20:06:53', 10,'5108750084460245', 9);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2022-02-05 03:08:38', 19,'5108754639694514', 8);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-06-13 08:54:16', 4, '5108753204167823', 8);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-05-14 17:23:14', 7, '5108750041666249', 1);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-11-07 10:13:33', 15,'5048375592569536', 5);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2022-02-08 18:35:41', 14,'5108750217678796', 10);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-12-21 16:48:02', 15,'5108754183577883', 10);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-10-02 06:53:23', 7, '5108757605291116', 8);
