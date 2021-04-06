@@ -23,6 +23,72 @@ CREATE TABLE Credit_Cards ( /* owns + credit_cards */
     PRIMARY KEY (card_number) /* each credit card must have a distinct owner */
 );
 
+DROP TABLE IF EXISTS Employees;
+CREATE TABLE Employees (
+    eid integer,
+    name varchar(50) NOT NULL,
+    address varchar(100),
+    email varchar(50),
+    phone integer,
+    depart_date date, /* NULL if the employee is still employed */
+    join_date date NOT NULL,
+    PRIMARY KEY (eid)
+);
+
+DROP TABLE IF EXISTS Part_Time_Employees;
+CREATE TABLE Part_Time_Employees (
+    eid integer,
+    hourly_rate integer,
+    PRIMARY KEY (eid) REFERENCES Employees ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS Full_Time_Employees;
+CREATE TABLE Full_Time_Employees (
+    eid integer,
+    monthly_salary integer,
+    PRIMARY KEY (eid) REFERENCES Employees ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS Administrators;
+CREATE TABLE Administrators (
+    eid integer,
+    PRIMARY KEY (eid) REFERENCES Full_Time_Employees ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS Managers;
+CREATE TABLE Managers (
+    eid integer,
+    PRIMARY KEY (eid) REFERENCES Full_Time_Employees ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS Instructors;
+CREATE TABLE Instructors ( /* there must be at least one hour of break between two course sessions */
+    eid integer,
+    PRIMARY KEY (eid) REFERENCES Employees ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS Full_Time_Instructors;
+CREATE TABLE Full_Time_Instructors (
+    eid integer,
+    monthly_salary integer,
+    PRIMARY KEY (eid) REFERENCES Instructors ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS Part_Time_Instructors;
+CREATE TABLE Part_Time_Instructors ( /* must not teach more than 30 hours for each month */
+    eid integer,
+    hourly_rate integer,
+    PRIMARY KEY (eid) REFERENCES Instructors ON DELETE CASCADE
+);
+    
+DROP TABLE IF EXISTS Rooms;
+CREATE TABLE Rooms (
+    rid integer,
+    location varchar(50),
+    seating_capacity integer,
+    PRIMARY KEY (rid)
+);
+
 DROP TABLE IF EXISTS Course_Packages;
 CREATE TABLE Course_Packages (
     package_id integer, 
@@ -47,6 +113,14 @@ CREATE TABLE Buys (
     FOREIGN KEY (card_number) REFERENCES Credit_cards,
     FOREIGN KEY (package_id) REFERENCES Course_packages,
     PRIMARY KEY (purchase_date, card_number, package_id)
+);
+
+DROP TABLE IF EXISTS Course_Areas;
+CREATE TABLE Course_Areas ( /* combined with manages */
+    name varchar(50),
+    eid integer NOT NULL UNIQUE,
+    PRIMARY KEY (name),
+    FOREIGN KEY (eid) REFERENCES Managers ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Courses;
@@ -143,72 +217,6 @@ CREATE TABLE Cancels (
     FOREIGN KEY (sid, course_id, launch_date) REFERENCES Sessions,
     PRIMARY KEY (cancel_date, cust_id, sid, course_id, launch_date)
 );
-    
-DROP TABLE IF EXISTS Rooms;
-CREATE TABLE Rooms (
-    rid integer,
-    location varchar(50),
-    seating_capacity integer,
-    PRIMARY KEY (rid)
-);
-
-DROP TABLE IF EXISTS Employees;
-CREATE TABLE Employees (
-    eid integer,
-    name varchar(50) NOT NULL,
-    address varchar(100),
-    email varchar(50),
-    phone integer,
-    depart_date date, /* NULL if the employee is still employed */
-    join_date date NOT NULL,
-    PRIMARY KEY (eid)
-);
-
-DROP TABLE IF EXISTS Part_Time_Employees;
-CREATE TABLE Part_Time_Employees (
-    eid integer,
-    hourly_rate integer,
-    PRIMARY KEY (eid) REFERENCES Employees ON DELETE CASCADE
-);
-
-DROP TABLE IF EXISTS Full_Time_Employees;
-CREATE TABLE Full_Time_Employees (
-    eid integer,
-    monthly_salary integer,
-    PRIMARY KEY (eid) REFERENCES Employees ON DELETE CASCADE
-);
-
-DROP TABLE IF EXISTS Administrators;
-CREATE TABLE Administrators (
-    eid integer,
-    PRIMARY KEY (eid) REFERENCES Full_Time_Employees ON DELETE CASCADE
-);
-
-DROP TABLE IF EXISTS Managers;
-CREATE TABLE Managers (
-    eid integer,
-    PRIMARY KEY (eid) REFERENCES Full_Time_Employees ON DELETE CASCADE
-);
-
-DROP TABLE IF EXISTS Instructors;
-CREATE TABLE Instructors ( /* there must be at least one hour of break between two course sessions */
-    eid integer,
-    PRIMARY KEY (eid) REFERENCES Employees ON DELETE CASCADE
-);
-
-DROP TABLE IF EXISTS Full_Time_Instructors;
-CREATE TABLE Full_Time_Instructors (
-    eid integer,
-    monthly_salary integer,
-    PRIMARY KEY (eid) REFERENCES Instructors ON DELETE CASCADE
-);
-
-DROP TABLE IF EXISTS Part_Time_Instructors;
-CREATE TABLE Part_Time_Instructors ( /* must not teach more than 30 hours for each month */
-    eid integer,
-    hourly_rate integer,
-    PRIMARY KEY (eid) REFERENCES Instructors ON DELETE CASCADE
-);
 
 DROP TABLE IF EXISTS Pay_Slips;
 CREATE TABLE Pay_Slips (
@@ -219,14 +227,6 @@ CREATE TABLE Pay_Slips (
     eid integer,
     PRIMARY KEY (payment_date, eid),
     FOREIGN KEY (eid) REFERENCES Employees ON DELETE CASCADE,
-);
-
-DROP TABLE IF EXISTS Course_Areas;
-CREATE TABLE Course_Areas ( /* combined with manages */
-    name varchar(50),
-    eid integer NOT NULL UNIQUE,
-    PRIMARY KEY (name),
-    FOREIGN KEY (eid) REFERENCES Managers ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS Specializes;
