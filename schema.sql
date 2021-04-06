@@ -18,7 +18,7 @@ CREATE TABLE Credit_Cards ( /* owns + credit_cards */
     expiry_date date NOT NULL,
     from_date date NOT NULL,
     cust_id integer NOT NULL, 
-    FOREIGN KEY (cust_id) REFERENCES Customers,
+    FOREIGN KEY (cust_id) REFERENCES Customers NOT NULL,
     CHECK (from_date <= expiry_date),
     PRIMARY KEY (card_number) /* each credit card must have a distinct owner */
 );

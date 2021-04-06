@@ -21,15 +21,15 @@ insert into Customers (cust_id, name, email, address, phone) values (19, 'Odessa
 insert into Customers (cust_id, name, email, address, phone) values (20, 'Annie', 'aneamesj@usda.gov', '684 Garrison Way', 98765430);
 
 /* Credit_Cards */ -- maybe need to trim the time (date, not datetime)
-insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048371508404496', 519, '2025-02-20 03:33:28', '2020-05-04 03:30:52', 1);
-insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108759034811803', 582, '2024-03-24 16:21:36', '2021-01-02 03:31:05', 2);
-insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048370038418307', 302, '2024-06-01 05:32:01', '2020-08-15 09:27:28', 3);
-insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048379765618542', 149, '2024-05-03 23:54:41', '2020-11-06 02:44:49', 4);
-insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108758777432884', 918, '2023-09-12 05:01:02', '2020-11-14 13:17:28', 5);
-insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048372282236518', 574, '2025-03-18 07:07:57', '2021-01-04 12:43:31', 6);
-insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108750325244838', 336, '2024-02-26 22:26:51', '2020-08-07 14:40:39', 7);
-insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108754093451666', 729, '2023-12-09 20:21:17', '2021-01-09 15:40:30', 8);
-insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048373029850934', 218, '2024-10-22 11:38:33', '2021-03-30 23:30:30', 9);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048371508404496', 519, '2025-02-20 03:33:28', '2020-05-04 03:30:52',  1);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108759034811803', 582, '2024-03-24 16:21:36', '2021-01-02 03:31:05',  2);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048370038418307', 302, '2024-06-01 05:32:01', '2020-08-15 09:27:28',  3);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048379765618542', 149, '2024-05-03 23:54:41', '2020-11-06 02:44:49',  4);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108758777432884', 918, '2023-09-12 05:01:02', '2020-11-14 13:17:28',  5);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048372282236518', 574, '2025-03-18 07:07:57', '2021-01-04 12:43:31',  6);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108750325244838', 336, '2024-02-26 22:26:51', '2020-08-07 14:40:39',  7);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108754093451666', 729, '2023-12-09 20:21:17', '2021-01-09 15:40:30',  8);
+insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048373029850934', 218, '2024-10-22 11:38:33', '2021-03-30 23:30:30',  9);
 insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048371304277260', 965, '2024-12-27 08:22:20', '2020-08-10 07:25:09', 10);
 insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048372439765229', 202, '2024-02-13 20:28:58', '2020-05-09 08:27:15', 11);
 insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108758087287846', 688, '2024-08-30 23:20:57', '2021-02-26 07:15:14', 12);
@@ -95,15 +95,15 @@ insert into Employees (eid, name, address, email, phone, depart_date, join_date)
 insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (50, 'Alene Ruffles', '39 Knutson Junction', 'aruffles1d@altervista.org', 98471613, null, '2020-10-11 08:59:05');
 
 /* Full_Time_Employees, eid: 1-40 */
-insert into Full_Time_Employees (eid, monthly_salary) values (1, 4796);
-insert into Full_Time_Employees (eid, monthly_salary) values (2, 4814);
-insert into Full_Time_Employees (eid, monthly_salary) values (3, 4362);
-insert into Full_Time_Employees (eid, monthly_salary) values (4, 4654);
-insert into Full_Time_Employees (eid, monthly_salary) values (5, 3737);
-insert into Full_Time_Employees (eid, monthly_salary) values (6, 4943);
-insert into Full_Time_Employees (eid, monthly_salary) values (7, 4867);
-insert into Full_Time_Employees (eid, monthly_salary) values (8, 3518);
-insert into Full_Time_Employees (eid, monthly_salary) values (9, 4320);
+insert into Full_Time_Employees (eid, monthly_salary) values ( 1, 4796);
+insert into Full_Time_Employees (eid, monthly_salary) values ( 2, 4814);
+insert into Full_Time_Employees (eid, monthly_salary) values ( 3, 4362);
+insert into Full_Time_Employees (eid, monthly_salary) values ( 4, 4654);
+insert into Full_Time_Employees (eid, monthly_salary) values ( 5, 3737);
+insert into Full_Time_Employees (eid, monthly_salary) values ( 6, 4943);
+insert into Full_Time_Employees (eid, monthly_salary) values ( 7, 4867);
+insert into Full_Time_Employees (eid, monthly_salary) values ( 8, 3518);
+insert into Full_Time_Employees (eid, monthly_salary) values ( 9, 4320);
 insert into Full_Time_Employees (eid, monthly_salary) values (10, 3860);
 insert into Full_Time_Employees (eid, monthly_salary) values (11, 4053);
 insert into Full_Time_Employees (eid, monthly_salary) values (12, 4339);
@@ -261,15 +261,15 @@ insert into Rooms (rid, location, seating_capacity) values (19, '196 Artisan Ter
 insert into Rooms (rid, location, seating_capacity) values (20, '267 Canary Alley', 73);
 
 /* Course_Packages */ -- maybe need to trim the time (date, not datetime)
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (1, '2021-03-08 14:53:48', '2021-04-24 06:14:35', 'Introduction to Humanitarian', 48, 907.86);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (2, '2021-03-06 01:48:29', '2021-07-15 01:59:57', 'Introduction to nMarket', 15, 451.54);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (3, '2021-03-12 14:02:59', '2022-03-18 10:39:53', 'Introduction to Zooarchaeology', 58, 624.19);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (4, '2021-03-24 20:52:27', '2021-11-04 17:08:42', 'Introduction to HSQE', 22, 861.92);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (5, '2021-03-09 09:27:03', '2022-01-10 13:33:53', 'Introduction to Snoring', 32, 606.94);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (6, '2021-04-05 03:04:00', '2021-09-13 12:56:31', 'Introduction to Distributed Database', 6, 482.03);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (7, '2021-03-20 06:36:48', '2022-01-20 00:34:33', 'Introduction to MMORPG', 69, 929.7);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (8, '2021-04-02 18:53:54', '2021-09-13 07:01:47', 'Introduction to CATIA', 48, 426.35);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (9, '2021-03-20 13:57:38', '2021-09-22 11:44:04', 'Introduction to TCF', 62, 242.66);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 1, '2021-03-08 14:53:48', '2021-04-24 06:14:35', 'Introduction to Humanitarian', 48, 907.86);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 2, '2021-03-06 01:48:29', '2021-07-15 01:59:57', 'Introduction to nMarket', 15, 451.54);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 3, '2021-03-12 14:02:59', '2022-03-18 10:39:53', 'Introduction to Zooarchaeology', 58, 624.19);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 4, '2021-03-24 20:52:27', '2021-11-04 17:08:42', 'Introduction to HSQE', 22, 861.92);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 5, '2021-03-09 09:27:03', '2022-01-10 13:33:53', 'Introduction to Snoring', 32, 606.94);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 6, '2021-04-05 03:04:00', '2021-09-13 12:56:31', 'Introduction to Distributed Database', 6, 482.03);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 7, '2021-03-20 06:36:48', '2022-01-20 00:34:33', 'Introduction to MMORPG', 69, 929.7);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 8, '2021-04-02 18:53:54', '2021-09-13 07:01:47', 'Introduction to CATIA', 48, 426.35);
+insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 9, '2021-03-20 13:57:38', '2021-09-22 11:44:04', 'Introduction to TCF', 62, 242.66);
 insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (10, '2021-03-09 15:32:41', '2021-08-09 18:06:51', 'Introduction to Lymphedema', 82, 691.13);
 insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (11, '2021-04-04 12:51:11', '2021-09-28 16:13:34', 'Introduction to Two-way Radio', 53, 42.17);
 insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (12, '2021-04-01 11:21:48', '2021-11-07 07:50:06', 'Introduction to YSlow', 54, 751.0);
@@ -434,20 +434,63 @@ insert into Offerings (launch_date, start_date, end_date, registration_deadline,
  * start date and end date determined by the dates of its earliest and latest sessions
  * currently <course_id, launch_date> are taken from the last 10 entries of offerings
  */
-insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 09:00:00', '2021-04-05 12:00:00', 11, '2021-03-07 01:50:35', 8 , 39);
+insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 09:00:00', '2021-04-05 12:00:00', 11, '2021-03-07 01:50:35',  8, 39);
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (2, '2021-04-06', '2021-04-06 09:00:00', '2021-04-06 12:00:00', 29, '2021-03-01 03:30:59', 12, 49);
-insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (3, '2021-04-07', '2021-04-07 09:00:00', '2021-04-07 12:00:00', 42, '2021-03-03 07:37:07', 8 , 42);
-insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (4, '2021-04-08', '2021-04-08 09:00:00', '2021-04-08 12:00:00',  4, '2021-03-03 05:25:58', 3 , 32);
+insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (3, '2021-04-07', '2021-04-07 09:00:00', '2021-04-07 12:00:00', 42, '2021-03-03 07:37:07',  8, 42);
+insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (4, '2021-04-08', '2021-04-08 09:00:00', '2021-04-08 12:00:00',  4, '2021-03-03 05:25:58',  3, 32);
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (5, '2021-04-09', '2021-04-09 09:00:00', '2021-04-09 12:00:00',  1, '2021-03-04 00:50:19', 18, 44);
-insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 09:00:00', '2021-04-05 12:00:00', 18, '2021-03-04 12:22:47', 4 , 40);
-insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (2, '2021-04-06', '2021-04-06 09:00:00', '2021-04-06 12:00:00',  2, '2021-03-03 16:07:15', 9 , 43);
-insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (3, '2021-04-07', '2021-04-07 09:00:00', '2021-04-07 12:00:00', 43, '2021-03-05 21:49:26', 4 , 50);
-insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (4, '2021-04-08', '2021-04-08 09:00:00', '2021-04-08 12:00:00', 28, '2021-03-02 22:28:41', 7 , 44);
+insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 09:00:00', '2021-04-05 12:00:00', 18, '2021-03-04 12:22:47',  4, 40);
+insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (2, '2021-04-06', '2021-04-06 09:00:00', '2021-04-06 12:00:00',  2, '2021-03-03 16:07:15',  9, 43);
+insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (3, '2021-04-07', '2021-04-07 09:00:00', '2021-04-07 12:00:00', 43, '2021-03-05 21:49:26',  4, 50);
+insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (4, '2021-04-08', '2021-04-08 09:00:00', '2021-04-08 12:00:00', 28, '2021-03-02 22:28:41',  7, 44);
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (5, '2021-04-09', '2021-04-09 09:00:00', '2021-04-09 12:00:00', 38, '2021-03-04 02:04:52', 11, 48);
 
-/* Redeems */
-/* Registers */
-/* Cancels */
+/**
+* Redeems 
+* currently redeem_date is exactly the same with session_date
+*/
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-04-05', 11,'5048371508404496','2021-03-01 02:17:26',1, 11, '2021-03-07 01:50:35');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-04-06', 13,'5108759034811803','2021-04-05 12:17:28',2, 29, '2021-03-01 03:30:59');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-04-07', 6, '5048370038418307','2022-02-20 20:34:16',3, 42, '2021-03-03 07:37:07');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-06-08', 12,'5108759034811803','2021-05-19 23:27:31',4,  4, '2021-03-03 05:25:58');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-04-09', 12,'5108758777432884','2022-03-02 20:20:12',5,  1, '2021-03-04 00:50:19');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-07-05', 19,'5048372282236518','2021-06-01 21:42:25',1, 18, '2021-03-04 12:22:47');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-07-06', 7, '5048371304277260','2021-06-16 00:30:12',2,  2, '2021-03-03 16:07:15');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-12-07', 6, '5108754093451666','2021-11-19 10:07:55',3, 43, '2021-03-05 21:49:26');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2022-04-08', 17,'5048373029850934','2022-04-02 23:43:14',4, 28, '2021-03-02 22:28:41');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-05-09', 10,'5048371304277260','2021-04-25 14:17:01',5, 38, '2021-03-04 02:04:52');
+
+/**
+* Registers 
+* currently registration_date = registration_deadline - 1 day
+*/
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-01-20 06:55:41','5048371508404496',1, 11, '2021-03-07 01:50:35');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-02-16 06:49:07','5108759034811803',2, 29, '2021-03-01 03:30:59');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2022-02-08 07:10:44','5048370038418307',3, 42, '2021-03-03 07:37:07');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-06-16 18:40:30','5108759034811803',4,  4, '2021-03-03 05:25:58');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-02-20 15:21:15','5108758777432884',5,  1, '2021-03-04 00:50:19');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-09-27 17:24:37','5048372282236518',1, 18, '2021-03-04 12:22:47');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-06-01 00:28:34','5048371304277260',2,  2, '2021-03-03 16:07:15');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-24 13:40:05','5108754093451666',3, 43, '2021-03-05 21:49:26');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-10-16 16:27:38','5048373029850934',4, 28, '2021-03-02 22:28:41');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-01-05 10:14:10','5048371304277260',5, 38, '2021-03-04 02:04:52');
+
+/**
+* Cancels 
+* refund amt: 90% if the cancellation 
+* currently the cancel date is exactly the same with registration_date from registers table
+* <sic, course_id, launch_date> is exactly the same with Registers, Redeems, and Sessions
+*/
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-01-20 06:55:41', 0, 1, 16, 1, 11, '2021-03-07 01:50:35');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-02-16 06:49:07', 0, 9, 11, 2, 29, '2021-03-01 03:30:59');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2022-02-08 07:10:44', 0, 2, 17, 3, 42, '2021-03-03 07:37:07');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-06-16 18:40:30', 0, 4,  4, 4,  4, '2021-03-03 05:25:58');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-02-20 15:21:15', 0, 1,  7, 5,  1, '2021-03-04 00:50:19');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-09-27 17:24:37', 0, 8,  4, 1, 18, '2021-03-04 12:22:47');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-06-01 00:28:34', 0, 2, 18, 2,  2, '2021-03-03 16:07:15');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-03-24 13:40:05', 0, 3, 12, 3, 43, '2021-03-05 21:49:26');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-10-16 16:27:38', 0, 8,  5, 4, 28, '2021-03-02 22:28:41');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-01-05 10:14:10', 0, 8,  1, 5, 38, '2021-03-04 02:04:52');
 
 /**
 * Pay_Slips, temporary values.
