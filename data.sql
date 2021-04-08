@@ -20,7 +20,7 @@ insert into Customers (cust_id, name, email, address, phone) values (18, 'Dionis
 insert into Customers (cust_id, name, email, address, phone) values (19, 'Odessa', 'ofilyushkini@instagram.com', '7 Katie Point', 99998801);
 insert into Customers (cust_id, name, email, address, phone) values (20, 'Annie', 'aneamesj@usda.gov', '684 Garrison Way', 98765430);
 
-/* Credit_Cards */ -- maybe need to trim the time (date, not datetime)
+/* Credit_Cards */ 
 insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048371508404496', 519, '2025-02-20 03:33:28', '2020-05-04 03:30:52',  1);
 insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108759034811803', 582, '2024-03-24 16:21:36', '2021-01-02 03:31:05',  2);
 insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5048370038418307', 302, '2024-06-01 05:32:01', '2020-08-15 09:27:28',  3);
@@ -42,7 +42,8 @@ insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) val
 insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108754183577883', 744, '2024-05-13 18:06:05', '2020-05-05 22:54:26', 19);
 insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) values ('5108757605291116', 746, '2024-12-02 21:52:00', '2020-12-24 23:49:30', 20);
 
-/* Employees */ -- maybe need to trim the time (date, not datetime)
+
+/* Employees */ 
 insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (1, 'Perren Gamble', '1983 Brentwood Place', 'pgamble0@a8.net', 98267108, null, '2021-02-05 09:28:20');
 insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (2, 'Esther Rogister', '77365 East Park', 'erogister1@example.com', 98413421, null, '2021-03-15 13:53:42');
 insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (3, 'Scot Moniker', '9 Claremont Circle', 'smoniker2@altervista.org', 98484577, null, '2021-01-16 14:25:21');
@@ -260,7 +261,7 @@ insert into Rooms (rid, location, seating_capacity) values (18, '12 Sunnyside Cr
 insert into Rooms (rid, location, seating_capacity) values (19, '196 Artisan Terrace', 119);
 insert into Rooms (rid, location, seating_capacity) values (20, '267 Canary Alley', 73);
 
-/* Course_Packages */ -- maybe need to trim the time (date, not datetime)
+/* Course_Packages */ 
 insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 1, '2021-03-08 14:53:48', '2021-04-24 06:14:35', 'Introduction to Humanitarian', 48, 907.86);
 insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 2, '2021-03-06 01:48:29', '2021-07-15 01:59:57', 'Introduction to nMarket', 15, 451.54);
 insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 3, '2021-03-12 14:02:59', '2022-03-18 10:39:53', 'Introduction to Zooarchaeology', 58, 624.19);
@@ -282,7 +283,7 @@ insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, n
 insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (19, '2021-03-27 19:08:21', '2021-11-01 02:18:16', 'Introduction to Motion Graphics', 49, 647.05);
 insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (20, '2021-04-05 17:39:36', '2021-09-17 04:47:58', 'Introduction to PFMEA', 24, 920.03);
 
-/* Buys */ -- maybe need to trim the time (date, not datetime)
+/* Buys */ 
 insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-03-01 02:17:26', 11,'5048371508404496', 4);
 insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-04-05 12:17:28', 13,'5108759034811803', 5);
 insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2022-02-20 20:34:16', 6, '5048370038418307', 5);
