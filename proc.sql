@@ -99,7 +99,7 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE PROCEDURE add_session(session_date_in date, session_start_time_in timestamp, course_id_in integer, launch_date_in date, sid_in integer, eid_in integer, rid_in integer)
 AS $$
 BEGIN
-    INSERT INTO Sessions(sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (sid_in, session_date_in, start_time_in,  start_time_in + interval '1h', course_id_in, launch_date_in,  rid_in, eid_in);
+    INSERT INTO Sessions(sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (sid_in, session_date_in, start_time_in,  start_time_in + (SELECT duration FROM Courses WHERE course_id = course_id_in), course_id_in, launch_date_in,  rid_in, eid_in);
 END;
 $$ LANGUAGE plpgsql;
 
@@ -129,8 +129,8 @@ BEGIN
                 amount := num_work_days::double precision * monthly_salary::double precision / 31.0;
             ELSE 
                 status := 'Part-time';
-                num_work_hours := (SELECT COUNT(*) 
-                    FROM Sessions S WHERE S.eid = r.eid 
+                num_work_hours := (SELECT SUM(duration)
+                    FROM (Sessions NATURAL JOIN Courses)S WHERE S.eid = r.eid 
                     AND date_part('month', session_date) = date_part('month', NOW())
                     AND date_part('year', session_date) = date_part('year', NOW()));
                 hourly_rate := (SELECT E.hourly_rate FROM Part_Time_Employees E WHERE E.eid = r.eid);

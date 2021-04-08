@@ -397,8 +397,11 @@ CREATE OR REPLACE FUNCTION update_instructor() RETURNS TRIGGER AS $$
 BEGIN
     IF NOW() <= OLD.session_date
     AND (SELECT name FROM Specializes WHERE eid = NEW.eid) = (SELECT name FROM Courses WHERE course_id = NEW.course_id)
-    AND NOT EXISTS(SELECT 1 FROM Sessions WHERE eid = NEW.eid AND ABS(EXTRACT(EPOCH from NEW.start_time - start_time) / 3600) <= 1)
-    AND (EXISTS(SELECT 1 FROM Full_Time_Instructors WHERE eid = NEW.eid) OR (SELECT COUNT(*) FROM Sessions WHERE eid = NEW.eid) < 30)
+    AND NOT EXISTS(SELECT 1 FROM Sessions WHERE eid = NEW.eid AND 
+    ((EXTRACT(EPOCH from NEW.start_time - end_time) / 3600) < 1 OR (EXTRACT(EPOCH from  start_time - NEW.end_time) / 3600) < 1))
+    AND (EXISTS(SELECT 1 FROM Full_Time_Instructors WHERE eid = NEW.eid) 
+        OR (SELECT SUM(duration) FROM Sessions NATURAL JOIN Courses WHERE eid = NEW.eid) 
+        + (SELECT duration FROM Courses WHERE course_id = NEW.course_id) <= 30)
     THEN
         RETURN NEW;
     END IF;
@@ -452,8 +455,11 @@ BEGIN
     AND NOT EXISTS(SELECT 1 FROM Sessions WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date 
         AND NEW.session_date = session_date AND NEW.start_time = start_time)
     AND (SELECT name FROM Specializes WHERE eid = NEW.eid) = (SELECT name FROM Courses WHERE course_id = NEW.course_id)
-    AND NOT EXISTS(SELECT 1 FROM Sessions WHERE eid = NEW.eid AND ABS(EXTRACT(EPOCH from NEW.start_time - start_time) / 3600) <= 1)
-    AND (EXISTS(SELECT 1 FROM Full_Time_Instructors WHERE eid = NEW.eid) OR (SELECT COUNT(*) FROM Sessions WHERE eid = NEW.eid) < 30)
+    AND NOT EXISTS(SELECT 1 FROM Sessions WHERE eid = NEW.eid AND 
+    ((EXTRACT(EPOCH from NEW.start_time - end_time) / 3600) < 1 OR (EXTRACT(EPOCH from  start_time - NEW.end_time) / 3600) < 1))
+    AND (EXISTS(SELECT 1 FROM Full_Time_Instructors WHERE eid = NEW.eid) 
+        OR (SELECT SUM(duration) FROM Sessions NATURAL JOIN Courses WHERE eid = NEW.eid) 
+        + (SELECT duration FROM Courses WHERE course_id = NEW.course_id) <= 30)
     AND NEW.sid = (SELECT MAX(sid) FROM Sessions WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date) + 1
     THEN
         RETURN NEW;
@@ -485,8 +491,8 @@ BEGIN
 
     IF EXISTS(SELECT 1 FROM Part_Time_Employees WHERE eid = NEW.eid)
     AND NEW.num_work_days = NULL
-    AND NEW.num_work_hours = (SELECT COUNT(*) 
-                    FROM Sessions S WHERE S.eid = NEW.eid 
+    AND NEW.num_work_hours = (SELECT SUM(duration)
+                    FROM (Sessions NATURAL JOIN Courses)S WHERE S.eid = r.eid 
                     AND date_part('month', session_date) = date_part('month', NOW())
                     AND date_part('year', session_date) = date_part('year', NOW()))
     AND ABS(NEW.amount - NEW.num_work_hours * (SELECT hourly_rate FROM Part_Time_Employees WHERE eid = NEW.eid)) < 0.001
