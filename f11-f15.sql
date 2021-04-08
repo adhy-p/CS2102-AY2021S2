@@ -26,8 +26,8 @@ DROP PROCEDURE IF EXISTS buy_course_package;
 CREATE OR REPLACE PROCEDURE buy_course_package(IN customer_id INTEGER,
 IN course_package_id INTEGER) AS $$
     BEGIN
-    IF EXISTS (
-        (SELECT * FROM Customers WHERE cust_id = customer_id) AND
+    IF (
+        EXISTS(SELECT * FROM Customers WHERE cust_id = customer_id) AND
         EXISTS(SELECT * FROM Course_Packages WHERE package_id = course_package_id) AND
         EXISTS(SELECT * FROM Credit_Cards WHERE cust_id = customer_id)
     ) THEN
