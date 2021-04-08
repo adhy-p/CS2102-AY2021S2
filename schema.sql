@@ -231,8 +231,8 @@ CREATE TABLE Cancels (
 
 DROP TABLE IF EXISTS Pay_Slips;
 CREATE TABLE Pay_Slips (
-    payment_date integer,
-    amount integer NOT NULL CHECK (amount >= 0),
+    payment_date date,
+    amount double precision NOT NULL CHECK (amount >= 0),
     num_work_hours integer CHECK (num_work_hours >= 0),
     num_work_days integer CHECK (num_work_days >= 0), /* last_work_day - first_work_day + 1 */
     eid integer,
@@ -256,8 +256,10 @@ BEGIN
     WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) >
     (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
     + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
     AND NOT EXISTS(SELECT 1 FROM Redeems WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
     AND NOT EXISTS(SELECT 1 FROM Registers WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
+    AND EXTRACT(EPOCH from (NEW.launch_date - NEW.redeem_date) / 86400) <= 10
      THEN
         RETURN NEW;
     END IF;
@@ -276,8 +278,10 @@ BEGIN
     WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) >
     (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
     + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
     AND NOT EXISTS(SELECT 1 FROM Redeems WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
     AND NOT EXISTS(SELECT 1 FROM Registers WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
+    AND EXTRACT(EPOCH from (NEW.launch_date - NEW.registration_date) / 86400) <= 10
      THEN
         RETURN NEW;
     END IF;
@@ -296,6 +300,7 @@ BEGIN
     WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) >
     (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
     + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
      THEN
         RETURN NEW;
     END IF;
@@ -314,6 +319,7 @@ BEGIN
     WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) >
     (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
     + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
      THEN
         RETURN NEW;
     END IF;
@@ -347,27 +353,27 @@ FOR EACH ROW EXECUTE FUNCTION cant_update_registers();
 
 CREATE OR REPLACE FUNCTION can_cancels() RETURNS TRIGGER AS $$
 BEGIN
-    IF NEW.cancel_date <= DATEADD(day, -7, GETDATE()) THEN
-        IF EXISTS(SELECT 1 FROM Redeems NATURAL JOIN Credit_Cards 
-        WHERE NEW.cust_id = cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) THEN
-            UPDATE Course_Packages
-            SET num_free_registration = num_free_registration + 1
-            FROM Course_Packages NATURAL JOIN Redeems NATURAL JOIN Credit_Cards 
-            WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date;
+    IF EXISTS(SELECT 1 FROM Redeems NATURAL JOIN Credit_Cards 
+    WHERE NEW.cust_id = cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date)
+    AND EXTRACT(EPOCH from (SELECT redeem_date FROM Redeems NATURAL JOIN Credit_Cards 
+    WHERE NEW.cust_id = cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date
+    - NEW.cancel_date) / 86400) <= 7 THEN
+        UPDATE Course_Packages
+        SET num_free_registration = num_free_registration + 1
+        FROM Course_Packages NATURAL JOIN Redeems NATURAL JOIN Credit_Cards 
+        WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date;
         new.package_credit = 1;
         new.refund_amt = 0;
-        DELETE FROM Redeems USING Credit_Cards C
-        WHERE card_number = C.card_number AND NEW.cust_id = C.cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date;
         RETURN NEW;
-        END IF;
-        IF EXISTS(SELECT 1 FROM Registers NATURAL JOIN Credit_Cards 
-        WHERE NEW.cust_id = cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) THEN
+    END IF;
+    IF EXISTS(SELECT 1 FROM Registers NATURAL JOIN Credit_Cards 
+    WHERE NEW.cust_id = cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date)
+    AND EXTRACT(EPOCH from (SELECT registration_date FROM Registers NATURAL JOIN Credit_Cards 
+    WHERE NEW.cust_id = cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date
+    - NEW.cancel_date) / 86400) <= 7 THEN
         new.package_credit = 0;
         new.refund_amt = 0.9 * (SELECT fees FROM Offerings WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date);
-        DELETE FROM Registers USING Credit_Cards C
-        WHERE card_number = C.card_number AND NEW.cust_id = C.cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date;
         RETURN NEW;
-        END IF;
     END IF;
     RETURN NULL;
 END;
@@ -389,9 +395,9 @@ FOR EACH ROW EXECUTE FUNCTION cant_update_delete_cancels();
 
 CREATE OR REPLACE FUNCTION update_instructor() RETURNS TRIGGER AS $$
 BEGIN
-    IF GETDATE() <= OLD.session_date
+    IF NOW() <= OLD.session_date
     AND (SELECT name FROM Specializes WHERE eid = NEW.eid) = (SELECT name FROM Courses WHERE course_id = NEW.course_id)
-    AND NOT EXISTS(SELECT 1 FROM Sessions WHERE eid = NEW.eid AND DATEDIFF(hour, NEW.start_time, start_time) <= 1)
+    AND NOT EXISTS(SELECT 1 FROM Sessions WHERE eid = NEW.eid AND ABS(EXTRACT(EPOCH from NEW.start_time - start_time) / 3600) <= 1)
     AND (EXISTS(SELECT 1 FROM Full_Time_Instructors WHERE eid = NEW.eid) OR (SELECT COUNT(*) FROM Sessions WHERE eid = NEW.eid) < 30)
     THEN
         RETURN NEW;
@@ -406,11 +412,11 @@ FOR EACH ROW EXECUTE FUNCTION update_instructor();
 
 CREATE OR REPLACE FUNCTION update_room() RETURNS TRIGGER AS $$
 BEGIN
-    IF GETDATE() <= OLD.session_date
-    AND (SELECT name FROM Specializes WHERE eid = NEW.eid) = (SELECT name FROM Courses WHERE course_id = NEW.course_id)
+    IF NOW() <= OLD.session_date
     AND (SELECT seating_capacity FROM  Rooms WHERE NEW.rid = rid) >=
     (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
     + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
     THEN
         RETURN NEW;
     END IF;
@@ -421,4 +427,88 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER update_room
 BEFORE UPDATE OF rid ON Sessions
 FOR EACH ROW EXECUTE FUNCTION update_room();
+
+CREATE OR REPLACE FUNCTION delete_session() RETURNS TRIGGER AS $$
+BEGIN
+    IF NOW() <= OLD.session_date
+    AND 0 =
+    (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
+    THEN
+        RETURN NEW;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_session
+BEFORE DELETE ON Sessions
+FOR EACH ROW EXECUTE FUNCTION delete_session();
+
+CREATE OR REPLACE FUNCTION insert_session() RETURNS TRIGGER AS $$
+BEGIN
+    IF NOW() <= NEW.session_date
+    AND NOT EXISTS(SELECT 1 FROM Sessions WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date 
+        AND NEW.session_date = session_date AND NEW.start_time = start_time)
+    AND (SELECT name FROM Specializes WHERE eid = NEW.eid) = (SELECT name FROM Courses WHERE course_id = NEW.course_id)
+    AND NOT EXISTS(SELECT 1 FROM Sessions WHERE eid = NEW.eid AND ABS(EXTRACT(EPOCH from NEW.start_time - start_time) / 3600) <= 1)
+    AND (EXISTS(SELECT 1 FROM Full_Time_Instructors WHERE eid = NEW.eid) OR (SELECT COUNT(*) FROM Sessions WHERE eid = NEW.eid) < 30)
+    AND NEW.sid = (SELECT MAX(sid) FROM Sessions WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date) + 1
+    THEN
+        RETURN NEW;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER insert_session
+BEFORE INSERT ON Sessions
+FOR EACH ROW EXECUTE FUNCTION insert_session();
+
+CREATE OR REPLACE FUNCTION insert_payslip() RETURNS TRIGGER AS $$
+DECLARE
+end_of_month DATE;
+start_of_month DATE;
+BEGIN
+    end_of_month := (SELECT (date_trunc('month', NOW()) + interval '1 month' - interval '1 day'))::date;
+    start_of_month := (SELECT (date_trunc('month', NOW())));
+    IF EXISTS(SELECT 1 FROM Full_Time_Employees WHERE eid = NEW.eid)
+    AND NEW.num_work_hours = NULL
+    AND NEW.num_work_days = ( 
+        LEAST((SELECT depart_date FROM Employees WHERE eid = NEW.eid), end_of_month) -
+        GREATEST((SELECT join_date FROM Employees WHERE eid = NEW.eid), start_of_month) + 1)
+    AND ABS(NEW.amount - NEW.num_work_days::double precision *  (SELECT monthly_salary FROM Full_Time_Employees WHERE eid = NEW.eid)::double precision / 31.0) < 0.001
+    THEN
+        RETURN NEW;
+    END IF;
+
+    IF EXISTS(SELECT 1 FROM Part_Time_Employees WHERE eid = NEW.eid)
+    AND NEW.num_work_days = NULL
+    AND NEW.num_work_hours = (SELECT COUNT(*) 
+                    FROM Sessions S WHERE S.eid = NEW.eid 
+                    AND date_part('month', session_date) = date_part('month', NOW())
+                    AND date_part('year', session_date) = date_part('year', NOW()))
+    AND ABS(NEW.amount - NEW.num_work_hours * (SELECT hourly_rate FROM Part_Time_Employees WHERE eid = NEW.eid)) < 0.001
+    THEN
+        RETURN NEW;
+    END IF;
+
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER insert_payslip
+BEFORE INSERT ON Pay_Slips
+FOR EACH ROW EXECUTE FUNCTION insert_payslip();
+
+CREATE OR REPLACE FUNCTION cant_update_delete_payslip() RETURNS TRIGGER AS $$
+BEGIN
+    RAISE EXCEPTION 'Can not update or delete payslip.';
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER cant_update_delete_payslip
+BEFORE UPDATE OR DELETE ON Pay_Slips
+FOR EACH ROW EXECUTE FUNCTION cant_update_delete_payslip();
 
