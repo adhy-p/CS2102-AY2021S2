@@ -173,3 +173,69 @@ RETURNS TABLE(
         END LOOP;
     END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION view_manager_report()
+RETURNS TABLE(
+    name varchar(50),
+    num_course_area integer,
+    num_offerings_managed integer,
+    net_registration_fees double precision,
+    highest_paying_course varchar(50)
+    ) AS $$
+    BEGIN
+        RETURN QUERY
+        WITH eid_name_count as (
+            select m.eid, e.name, count(distinct c.eid) as num_course_area 
+            from (managers m natural join employees e) left outer join course_areas c on c.eid = m.eid 
+            group by m.eid, e.name order by m.eid
+        ),
+        eid_course_id_count as (
+            select ca.eid, cc.course_id, count(ca.eid)
+            from (course_areas ca natural join courses cc) join offerings o on cc.course_id = o.course_id
+            -- where date_trunc('year', o.end_date) = date_trunc('year', CURRENT_DATE) 
+            group by ca.eid, cc.course_id
+        ),
+        eid_sum_offerings as (
+            select eid, coalesce(sum(count), 0) as sum
+            from eid_course_id_count
+            group by eid
+        ),
+        course_id_regis_fees as (
+            select r.course_id, coalesce(sum(o.fees), 0) as sum_regis_fees 
+            from registers r natural join offerings o 
+            -- where date_trunc('year', o.end_date) = date_trunc('year', CURRENT_DATE) 
+            group by r.course_id
+        ),
+        course_id_redeem_fees as (
+            select r.course_id, sum(c.price / c.num_free_registration) as sum_redeem_fees 
+            from course_packages c natural join redeems r
+            group by course_id
+        ),
+        course_id_net_fees as (
+            select res.course_id, coalesce(sum_regis_fees, 0) + coalesce(sum_redeem_fees, 0) as sum_fees
+            from (course_id_regis_fees cirf natural full outer join course_id_redeem_fees) as res
+        ),
+        auxilliary as (
+            select enc.eid, max(sum_fees)
+            from ((eid_name_count enc left outer join eid_course_id_count ecic on enc.eid = ecic.eid) 
+            left outer join course_id_net_fees cinf on ecic.course_id = cinf.course_id) 
+            group by enc.eid
+            order by enc.eid
+        ),
+        final_without_title as (
+            select distinct enc.eid, enc.name, enc.num_course_area, coalesce(eso.sum, 0) as sum, cinf.course_id, cinf.sum_fees as sum_fees
+            from (((eid_name_count enc left outer join eid_course_id_count ecic on enc.eid = ecic.eid) 
+            left outer join auxilliary aux on enc.eid = aux.eid) 
+            left outer JOIN course_id_net_fees cinf on cinf.course_id = ecic.course_id)
+            left outer join eid_sum_offerings eso on eso.eid = enc.eid
+            where cinf.sum_fees = aux.max or (cinf.sum_fees is null and aux.max is null)
+            order by enc.eid
+        )
+        select f.name, cast(f.num_course_area as integer), cast(f.sum as integer), f.sum_fees, c.title
+        from final_without_title f
+        left outer join courses c on f.course_id = c.course_id
+        order by f.name;
+
+    END;
+$$ LANGUAGE plpgsql;
+

@@ -129,7 +129,7 @@ CREATE TABLE Buys (
 DROP TABLE IF EXISTS Course_Areas;
 CREATE TABLE Course_Areas ( /* combined with manages */
     name varchar(50),
-    eid integer NOT NULL UNIQUE,
+    eid integer NOT NULL,
     PRIMARY KEY (name),
     FOREIGN KEY (eid) REFERENCES Managers ON DELETE CASCADE
 );
