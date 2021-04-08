@@ -248,3 +248,157 @@ CREATE TABLE Specializes (
     FOREIGN KEY (name) REFERENCES Course_Areas ON DELETE CASCADE,
     PRIMARY KEY (eid, name)
 );
+
+CREATE OR REPLACE FUNCTION can_redeems() RETURNS TRIGGER AS $$
+BEGIN
+    IF (SELECT seating_capacity 
+    FROM Sessions NATURAL JOIN Rooms 
+    WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) >
+    (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    AND NOT EXISTS(SELECT 1 FROM Redeems WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
+    AND NOT EXISTS(SELECT 1 FROM Registers WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
+     THEN
+        RETURN NEW;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER can_redeems
+BEFORE INSERT ON Redeems
+FOR EACH ROW EXECUTE FUNCTION can_redeems();
+
+CREATE OR REPLACE FUNCTION can_registers() RETURNS TRIGGER AS $$
+BEGIN
+    IF (SELECT seating_capacity 
+    FROM Sessions NATURAL JOIN Rooms 
+    WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) >
+    (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    AND NOT EXISTS(SELECT 1 FROM Redeems WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
+    AND NOT EXISTS(SELECT 1 FROM Registers WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
+     THEN
+        RETURN NEW;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER can_registers
+BEFORE INSERT ON Registers
+FOR EACH ROW EXECUTE FUNCTION can_registers();
+
+CREATE OR REPLACE FUNCTION update_redeems() RETURNS TRIGGER AS $$
+BEGIN
+    IF (SELECT seating_capacity 
+    FROM Sessions NATURAL JOIN Rooms 
+    WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) >
+    (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+     THEN
+        RETURN NEW;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_redeems
+BEFORE UPDATE OF sid ON Redeems
+FOR EACH ROW EXECUTE FUNCTION update_redeems();
+
+CREATE OR REPLACE FUNCTION update_registers() RETURNS TRIGGER AS $$
+BEGIN
+    IF (SELECT seating_capacity 
+    FROM Sessions NATURAL JOIN Rooms 
+    WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) >
+    (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+     THEN
+        RETURN NEW;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_registers
+BEFORE UPDATE OF sid ON Registers
+FOR EACH ROW EXECUTE FUNCTION update_registers();
+
+CREATE OR REPLACE FUNCTION cant_update_redeems() RETURNS TRIGGER AS $$
+BEGIN
+    RAISE EXCEPTION 'Can not change course offering.';
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER cant_update_redeems
+BEFORE UPDATE OF course_id, launch_date ON Redeems
+FOR EACH ROW EXECUTE FUNCTION cant_update_redeems();
+
+CREATE OR REPLACE FUNCTION cant_update_registers() RETURNS TRIGGER AS $$
+BEGIN
+    RAISE EXCEPTION 'Can not change course offering.';
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER cant_update_registers
+BEFORE UPDATE OF course_id, launch_date ON Registers
+FOR EACH ROW EXECUTE FUNCTION cant_update_registers();
+
+CREATE OR REPLACE FUNCTION can_cancels() RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.cancel_date <= DATEADD(day, -7, GETDATE()) THEN
+        IF EXISTS(SELECT 1 FROM Redeems NATURAL JOIN Credit_Cards 
+        WHERE NEW.cust_id = cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) THEN
+            UPDATE Course_Packages
+            SET num_free_registration = num_free_registration + 1
+            FROM Course_Packages NATURAL JOIN Redeems NATURAL JOIN Credit_Cards 
+            WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date;
+        new.package_credit = 1;
+        new.refund_amt = 0;
+        DELETE FROM Redeems USING Credit_Cards C
+        WHERE card_number = C.card_number AND NEW.cust_id = C.cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date;
+        RETURN NEW;
+        END IF;
+        IF EXISTS(SELECT 1 FROM Registers NATURAL JOIN Credit_Cards 
+        WHERE NEW.cust_id = cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) THEN
+        new.package_credit = 0;
+        new.refund_amt = 0.9 * (SELECT fees FROM Offerings WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date);
+        DELETE FROM Registers USING Credit_Cards C
+        WHERE card_number = C.card_number AND NEW.cust_id = C.cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date;
+        RETURN NEW;
+        END IF;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER can_cancels
+BEFORE INSERT ON Cancels
+FOR EACH ROW EXECUTE FUNCTION can_cancels();
+
+CREATE OR REPLACE FUNCTION cant_update_delete_cancels() RETURNS TRIGGER AS $$
+BEGIN
+    RAISE EXCEPTION 'Can not update or delete cancels.';
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER cant_update_delete_cancels
+BEFORE UPDATE OR DELETE ON Cancels
+FOR EACH ROW EXECUTE FUNCTION cant_update_delete_cancels();
+
+CREATE OR REPLACE FUNCTION update_instructor() RETURNS TRIGGER AS $$
+BEGIN
+    IF (SELECT name FROM Specializes WHERE eid = NEW.eid) = (SELECT name FROM Courses WHERE course_id = NEW.course_id)
+    AND NOT EXISTS(SELECT 1 FROM Sessions WHERE eid = NEW.eid AND DATEDIFF(hour, NEW.start_time, start_time) <= 1)
+    AND (EXISTS(SELECT 1 FROM Full_Time_Instructors WHERE eid = NEW.eid) OR (SELECT COUNT(*) FROM Sessions WHERE eid = NEW.eid) < 30)
+    THEN
+        RETURN NEW;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_instructor
+BEFORE UPDATE OF eid ON Sessions
+FOR EACH ROW EXECUTE FUNCTION update_instructor();
