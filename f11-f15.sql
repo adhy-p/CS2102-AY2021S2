@@ -25,7 +25,7 @@ $$ LANGUAGE sql;
 DROP PROCEDURE IF EXISTS buy_course_package;
 CREATE OR REPLACE PROCEDURE buy_course_package(IN customer_id INTEGER,
 IN course_package_id INTEGER) AS $$
-    BEGIN
+BEGIN
     IF (
         EXISTS(SELECT * FROM Customers WHERE cust_id = customer_id) AND
         EXISTS(SELECT * FROM Course_Packages WHERE package_id = course_package_id) AND
@@ -36,8 +36,8 @@ IN course_package_id INTEGER) AS $$
             (SELECT card_number FROM Credit_Cards WHERE cust_id = customer_id),
             (SELECT num_free_registration FROM Course_Packages WHERE package_id = course_package_id)
         );
-        END IF;
-    END;
+    END IF;
+END;
 $$ LANGUAGE plpgsql;
 
 
@@ -76,6 +76,7 @@ RETURNS TABLE (
     ON A.launch_date = R.launch_date and A.course_id = R.course_id
     GROUP BY A.course_id, A.launch_date, A.title, A.name, A.start_date, A.end_date,
     A.registration_deadline, A.fees 
-    HAVING A.seating_capacity - COUNT(R.course_id) > 0; 
+    HAVING A.seating_capacity - COUNT(R.course_id) > 0
+    ORDER BY A.registration_deadline, A.title;
 
 $$ LANGUAGE sql;
