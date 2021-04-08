@@ -231,7 +231,7 @@ CREATE TABLE Cancels (
 
 DROP TABLE IF EXISTS Pay_Slips;
 CREATE TABLE Pay_Slips (
-    payment_date integer,
+    payment_date date,
     amount integer NOT NULL CHECK (amount >= 0),
     num_work_hours integer CHECK (num_work_hours >= 0),
     num_work_days integer CHECK (num_work_days >= 0), /* last_work_day - first_work_day + 1 */

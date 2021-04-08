@@ -101,6 +101,7 @@ RETURNS TABLE(
         CREATE TEMP TABLE registered_offerings_course as (
             SELECT reg.course_id, c.title, c.name as area, reg.num_registrations
             FROM registered_offerings reg INNER JOIN courses c on reg.course_id = c.course_id
+            ORDER BY reg.course_id, reg.start_date
         );
         OPEN curs FOR (SELECT * FROM registered_offerings);
         prev_id := 0;
@@ -108,21 +109,27 @@ RETURNS TABLE(
         is_increasing := TRUE;
         LOOP
             FETCH curs INTO r;
-            EXIT WHEN NOT FOUND;
-            IF prev_id <> r.course_id THEN
-                IF prev_id <> 0 THEN
-                    IF is_increasing = FALSE THEN
-                        DELETE FROM registered_offerings_course WHERE course_id = prev_id;
-                    END IF;
-                    prev_id := 0;
-                    prev_count := 0;
-                    is_increasing := TRUE;
+            IF NOT FOUND THEN
+                IF is_increasing = FALSE THEN
+                    DELETE FROM registered_offerings_course reg WHERE reg.course_id = prev_id;
                 END IF;
+                EXIT;
+            END IF;
+            IF prev_id <> r.course_id THEN
+                IF is_increasing = FALSE THEN
+                    IF prev_id <> 0 THEN
+                        DELETE FROM registered_offerings_course reg WHERE reg.course_id = prev_id;
+                     END IF;
+                END IF;
+                prev_id := r.course_id;
+                prev_count := r.num_registrations;
+                is_increasing := TRUE;
             ELSE
-                IF prev_count >= r.count THEN
+                IF prev_count >= r.num_registrations THEN
                     is_increasing := FALSE;
                 END IF;
-                prev_count := r.count;
+                prev_id := r.course_id;
+                prev_count := r.num_registrations;
             END IF;
         END LOOP;
         CLOSE curs;
@@ -134,5 +141,35 @@ RETURNS TABLE(
         ORDER BY num_offerings DESC, course_id ASC;
         DROP TABLE registered_offerings;
         DROP TABLE registered_offerings_course;
+    END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION view_summary_report(N integer)
+RETURNS TABLE(
+    month_and_year varchar(50),
+    total_salary double precision,
+    total_packages_sold integer,
+    total_paid_fee double precision, -- total, without considering whether it will be cancelled or not
+    total_refund double precision,
+    total_redeemed_course integer -- excluding the canceled sessions
+    ) AS $$
+    DECLARE
+        iter_date date;
+    BEGIN
+        iter_date = CURRENT_DATE;
+        for counter in 1..N
+        LOOP
+            month_and_year:= to_char(iter_date, 'YYYY-MM');
+            total_salary:= coalesce((SELECT sum(amount) FROM Pay_slips WHERE date_trunc('month', payment_date) = date_trunc('month', iter_date) GROUP BY date_trunc('month', payment_date)), 0);
+            total_packages_sold:= coalesce((SELECT count(*) FROM Buys WHERE date_trunc('month', purchase_date) = date_trunc('month', iter_date) GROUP BY date_trunc('month', purchase_date)), 0);
+            total_paid_fee:= coalesce((SELECT sum(fees) FROM (registers R NATURAL JOIN sessions S) INNER JOIN Offerings O ON (S.course_id, S.launch_date) = (O.course_id, O.launch_date)
+                            WHERE date_trunc('month', registration_date) = date_trunc('month', iter_date) GROUP BY date_trunc('month', registration_date)
+                            ), 0);
+            total_refund:= coalesce((SELECT sum(refund_amt) FROM Cancels WHERE date_trunc('month', cancel_date) = date_trunc('month', iter_date) GROUP BY date_trunc('month', cancel_date)), 0);
+            total_redeemed_course:= coalesce((SELECT count(*) FROM Buys WHERE date_trunc('month', purchase_date) = date_trunc('month', iter_date) GROUP BY date_trunc('month', purchase_date)), 0)
+                                    - coalesce((SELECT count(*) FROM Cancels WHERE date_trunc('month', cancel_date) = date_trunc('month', iter_date) GROUP BY date_trunc('month', cancel_date)), 0);
+            RETURN NEXT;
+            iter_date:= iter_date - interval '1 month';
+        END LOOP;
     END;
 $$ LANGUAGE plpgsql;
