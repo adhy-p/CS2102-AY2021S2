@@ -170,9 +170,8 @@ CREATE TABLE Offerings ( /* weak entity set, courses is the identifying relation
 
 DROP TABLE IF EXISTS Sessions;
 CREATE TABLE Sessions ( /* weak entity set, offerings is the identifying relationship */
-    /* No two sessions for the same course offering can be conducted on the same day and at the same time. */
     sid integer,
-    session_date date, /* Monday to Friday */
+    session_date date, 
     start_time timestamp, /* earliest: 9am, must end by 6pm, no sessions between 12-2pm */
     end_time timestamp,
     course_id integer,
@@ -183,7 +182,8 @@ CREATE TABLE Sessions ( /* weak entity set, offerings is the identifying relatio
         ON DELETE CASCADE,
     FOREIGN KEY (rid) REFERENCES Rooms ON DELETE CASCADE,
     FOREIGN KEY (eid) REFERENCES Instructors ON DELETE CASCADE,
-    UNIQUE (rid, eid),
+    CHECK(EXTRACT(DOW FROM session_date) >= 1 and EXTRACT(DOW FROM session_date) <= 5), /* Monday to Friday */
+    UNIQUE (session_date, start_time, course_id, launch_date), /* No two sessions for the same course offering can be conducted on the same day and at the same time. */
     PRIMARY KEY (sid, course_id, launch_date)
 );
 
