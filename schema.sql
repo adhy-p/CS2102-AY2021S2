@@ -389,7 +389,8 @@ FOR EACH ROW EXECUTE FUNCTION cant_update_delete_cancels();
 
 CREATE OR REPLACE FUNCTION update_instructor() RETURNS TRIGGER AS $$
 BEGIN
-    IF (SELECT name FROM Specializes WHERE eid = NEW.eid) = (SELECT name FROM Courses WHERE course_id = NEW.course_id)
+    IF GETDATE() <= OLD.session_date
+    AND (SELECT name FROM Specializes WHERE eid = NEW.eid) = (SELECT name FROM Courses WHERE course_id = NEW.course_id)
     AND NOT EXISTS(SELECT 1 FROM Sessions WHERE eid = NEW.eid AND DATEDIFF(hour, NEW.start_time, start_time) <= 1)
     AND (EXISTS(SELECT 1 FROM Full_Time_Instructors WHERE eid = NEW.eid) OR (SELECT COUNT(*) FROM Sessions WHERE eid = NEW.eid) < 30)
     THEN
@@ -402,3 +403,22 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER update_instructor
 BEFORE UPDATE OF eid ON Sessions
 FOR EACH ROW EXECUTE FUNCTION update_instructor();
+
+CREATE OR REPLACE FUNCTION update_room() RETURNS TRIGGER AS $$
+BEGIN
+    IF GETDATE() <= OLD.session_date
+    AND (SELECT name FROM Specializes WHERE eid = NEW.eid) = (SELECT name FROM Courses WHERE course_id = NEW.course_id)
+    AND (SELECT seating_capacity FROM  Rooms WHERE NEW.rid = rid) >=
+    (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
+    THEN
+        RETURN NEW;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_room
+BEFORE UPDATE OF rid ON Sessions
+FOR EACH ROW EXECUTE FUNCTION update_room();
+

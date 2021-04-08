@@ -76,3 +76,14 @@ BEGIN
     WHERE course_id = course_id_in AND launch_date = launch_date_in AND sid_in = sid;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE PROCEDURE update_room(course_id_in integer, launch_date_in date, rid_in integer, eid_in integer)
+AS $$
+BEGIN
+    UPDATE Sessions
+    SET rid = rid_in
+    WHERE course_id = course_id_in AND launch_date = launch_date_in AND sid_in = sid;
+END;
+$$ LANGUAGE plpgsql;
+
+
