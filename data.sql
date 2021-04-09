@@ -408,7 +408,7 @@ insert into Offerings (launch_date, start_date, end_date, registration_deadline,
  * the sessions for a course offering are numbered consecutively starting from 1 
  * no two sessions for the same course offering can be conducted on the same day and at the same time
  */
-insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 09:00:00', '2021-04-05 11:00:00', 1 , '2020-11-01', 1 , 21);
+insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-07-05', '2021-07-05 09:00:00', '2021-07-05 11:00:00', 1 , '2021-11-01', 1 , 21);
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (2, '2021-04-06', '2021-04-06 09:00:00', '2021-04-06 11:00:00', 1 , '2020-11-01', 1 , 22);
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (3, '2021-04-07', '2021-04-07 09:00:00', '2021-04-07 11:00:00', 1 , '2020-11-01', 1 , 23);
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (4, '2021-04-08', '2021-04-08 09:00:00', '2021-04-08 11:00:00', 1 , '2020-11-01', 1 , 24);
