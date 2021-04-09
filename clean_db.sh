@@ -26,5 +26,5 @@ specializes
 )
 
 for i in ${tables[@]}; do
-    echo "drop table $i cascade;"
+    echo "drop table $i cascade;" | psql
 done

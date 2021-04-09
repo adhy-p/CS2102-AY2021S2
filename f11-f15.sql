@@ -8,7 +8,7 @@ BEGIN
     VALUES (
         (SELECT MAX(package_id) + 1 FROM Course_Packages),
         package_start_date, package_end_date, package_name, no_of_free_sessions, package_price
-    )
+    );
 END;
 $$ LANGUAGE plpgsql;
 
@@ -21,7 +21,7 @@ RETURNS TABLE (
 ) AS $$
 BEGIN
     SELECT name, num_free_registration, sale_end_date, price
-    FROM Course_Packages
+    FROM Course_Packages;
 END;
 $$ LANGUAGE plpgsql;
 
