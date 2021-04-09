@@ -257,11 +257,11 @@ BEGIN
     (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
     + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
     - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
-    AND NOT EXISTS(SELECT 1 FROM Redeems WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
-    AND NOT EXISTS(SELECT 1 FROM Registers WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
+    AND NOT EXISTS(SELECT 1 FROM Redeems R WHERE NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date AND (SELECT cust_id FROM Credit_Cards WHERE card_number = NEW.card_number) = (SELECT cust_id FROM Credit_Cards WHERE card_number = R.card_number))
+    AND NOT EXISTS(SELECT 1 FROM Registers R WHERE NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date AND (SELECT cust_id FROM Credit_Cards WHERE card_number = NEW.card_number) = (SELECT cust_id FROM Credit_Cards WHERE card_number = R.card_number))
     AND (SELECT(EXTRACT(EPOCH from AGE((SELECT session_date FROM Sessions 
         WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date), 
-        NEW.redeem_date) / 86400)))::integer <= 10
+        NEW.redeem_date) / 86400)))::integer >= 10
      THEN
         RETURN NEW;
     END IF;
@@ -281,11 +281,11 @@ BEGIN
     (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
     + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
     - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
-    AND NOT EXISTS(SELECT 1 FROM Redeems WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
-    AND NOT EXISTS(SELECT 1 FROM Registers WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
+    AND NOT EXISTS(SELECT 1 FROM Redeems R WHERE NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date AND (SELECT cust_id FROM Credit_Cards WHERE card_number = NEW.card_number) = (SELECT cust_id FROM Credit_Cards WHERE card_number = R.card_number))
+    AND NOT EXISTS(SELECT 1 FROM Registers R WHERE NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date AND (SELECT cust_id FROM Credit_Cards WHERE card_number = NEW.card_number) = (SELECT cust_id FROM Credit_Cards WHERE card_number = R.card_number))
     AND (SELECT(EXTRACT(EPOCH from AGE((SELECT session_date FROM Sessions 
         WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date), 
-        NEW.redeem_date) / 86400)))::integer <= 10
+        NEW.registration_date) / 86400)))::integer >= 10
      THEN
         RETURN NEW;
     END IF;
@@ -398,13 +398,14 @@ FOR EACH ROW EXECUTE FUNCTION cant_update_delete_cancels();
 CREATE OR REPLACE FUNCTION update_instructor() RETURNS TRIGGER AS $$
 BEGIN
     IF NOW() <= OLD.session_date
-    AND (SELECT name FROM Specializes WHERE eid = NEW.eid) = (SELECT name FROM Courses WHERE course_id = NEW.course_id)
+    AND EXISTS(SELECT 1 FROM Specializes WHERE eid = NEW.eid AND name =
+    (SELECT name FROM Courses WHERE course_id = NEW.course_id))
     AND NOT EXISTS(SELECT 1 FROM Sessions WHERE eid = NEW.eid AND 
     session_date = NEW.session_date AND
     (SELECT(EXTRACT(EPOCH from AGE(GREATEST(NEW.start_time, start_time), LEAST(NEW.end_time, end_time))) / 3600)::integer < 1 ))
     AND (EXISTS(SELECT 1 FROM Full_Time_Instructors WHERE eid = NEW.eid) 
-        OR (SELECT SUM(duration) FROM Sessions NATURAL JOIN Courses WHERE eid = NEW.eid AND date_part('month', session_date) = date_part('month', NOW())
-                    AND date_part('year', session_date) = date_part('year', NOW())) 
+        OR COALESCE((SELECT SUM(duration) FROM Sessions NATURAL JOIN Courses WHERE eid = NEW.eid AND date_part('month', session_date) = date_part('month', NOW())
+                    AND date_part('year', session_date) = date_part('year', NOW())), 0)
         + (SELECT duration FROM Courses WHERE course_id = NEW.course_id) <= 30)
     THEN
         RETURN NEW;
@@ -439,11 +440,11 @@ CREATE OR REPLACE FUNCTION delete_session() RETURNS TRIGGER AS $$
 BEGIN
     IF NOW() <= OLD.session_date
     AND 0 =
-    (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
-    + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
-    - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
+    (SELECT COUNT(*) FROM Redeems R WHERE OLD.sid = R.sid AND OLD.course_id = R.course_id AND OLD.launch_date = R.launch_date)::integer
+    + (SELECT COUNT(*) FROM Registers R WHERE OLD.sid = R.sid AND OLD.course_id = R.course_id AND OLD.launch_date = R.launch_date)::integer
+    - (SELECT COUNT(*) FROM Cancels C WHERE OLD.sid = C.sid AND OLD.course_id = C.course_id AND OLD.launch_date = C.launch_date)::integer
     THEN
-        RETURN NEW;
+        RETURN OLD;
     END IF;
     RETURN NULL;
 END;
@@ -462,8 +463,8 @@ BEGIN
     session_date = NEW.session_date AND
     (SELECT(EXTRACT(EPOCH from AGE(GREATEST(NEW.start_time, start_time), LEAST(NEW.end_time, end_time))) / 3600)::integer < 1 ))
     AND (EXISTS(SELECT 1 FROM Full_Time_Instructors WHERE eid = NEW.eid) 
-        OR (SELECT SUM(duration) FROM Sessions NATURAL JOIN Courses WHERE eid = NEW.eid AND date_part('month', session_date) = date_part('month', NOW())
-                    AND date_part('year', session_date) = date_part('year', NOW())) 
+        OR COALESCE((SELECT SUM(duration) FROM Sessions NATURAL JOIN Courses WHERE eid = NEW.eid AND date_part('month', session_date) = date_part('month', NOW())
+                    AND date_part('year', session_date) = date_part('year', NOW())), 0)
         + (SELECT duration FROM Courses WHERE course_id = NEW.course_id) <= 30)
     AND NEW.sid = COALESCE((SELECT MAX(sid) FROM Sessions WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date), 0) + 1
     THEN
