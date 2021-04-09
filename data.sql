@@ -303,6 +303,11 @@ insert into Buys (purchase_date, package_id, card_number, num_remaining_redempti
 insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-03-03',  3, '5050210221029903',  5);
 insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-03-04',  4, '5050210221029904',  5);
 insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-03-05',  5, '5050210221029905',  5);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-03-01',  1, '5050210221029906',  5);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-03-02',  2, '5050210221029907',  5);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-03-03',  3, '5050210221029908',  5);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-03-04',  4, '5050210221029909',  5);
+insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-03-05',  5, '5050210221029910',  5);
 insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-04-06',  6, '5050210221029906',  5);
 insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-04-07',  7, '5050210221029907',  5);
 insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-04-08',  8, '5050210221029908',  5);
@@ -313,6 +318,7 @@ insert into Buys (purchase_date, package_id, card_number, num_remaining_redempti
 insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-06-13', 13, '5050210221029913', 13);
 insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-10-14', 14, '5050210221029914', 14);
 insert into Buys (purchase_date, package_id, card_number, num_remaining_redemptions) values ('2021-10-15', 15, '5050210221029915', 15);
+
 
 /**
  * Course_Areas 
@@ -379,7 +385,7 @@ insert into Offerings (launch_date, start_date, end_date, registration_deadline,
 insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-03-01', '2021-04-05', '2021-04-05', '2021-03-20', 35 , 40 , 698.35, 4 , 4 );                         
 insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-02-01', '2021-04-05', '2021-04-05', '2021-03-20', 45 , 50 , 178.88, 5 , 5 ); -- launch date -1 month 
 insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-03-01', '2021-04-05', '2021-04-05', '2021-03-20', 55 , 60 , 551.47, 6 , 5 );                         
-insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-04-01', '2021-04-05', '2021-04-05', '2021-03-20', 65 , 70 , 276.74, 7 , 5 ); -- launch date +1 month 
+insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-04-01', '2021-05-05', '2021-05-05', '2021-04-20', 65 , 70 , 276.74, 7 , 5 ); -- launch date +1 month 
 insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-03-01', '2021-04-05', '2021-04-05', '2021-03-20', 75 , 80 , 969.12, 8 , 5 );                         
 insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-03-01', '2021-04-05', '2021-04-05', '2021-03-20', 85 , 90 , 256.6 , 9 , 7 );                         
 insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-03-01', '2021-04-05', '2021-04-05', '2021-03-20', 95 , 100, 492.53, 10, 7);                         
@@ -389,10 +395,10 @@ insert into Offerings (launch_date, start_date, end_date, registration_deadline,
 insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-03-01', '2021-04-05', '2021-04-05', '2021-03-20', 275, 280, 82.38 , 14, 9);                         
 insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-03-01', '2021-04-05', '2021-04-06', '2021-03-20', 145, 150, 456.62, 15, 9); -- diff end date        
 insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-03-01', '2021-04-05', '2021-04-05', '2021-03-20', 155, 160, 486.36, 19, 9);                         
-insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-04-01', '2021-04-05', '2021-04-05', '2021-03-20', 165, 170, 932.9 , 19, 10); -- launch date + 1 month  
+insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-04-01', '2021-05-05', '2021-05-05', '2021-04-20', 165, 170, 932.9 , 19, 10); -- launch date + 1 month  
 insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-03-01', '2021-04-05', '2021-04-05', '2021-03-20', 175, 180, 208.81, 20, 10);                          
-insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-04-01', '2021-04-05', '2021-04-05', '2021-03-20', 185, 190, 284.76, 20, 10); -- launch date + 1 month                          
-insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-05-01', '2021-04-05', '2021-04-05', '2021-03-20', 195, 200, 526.07, 20, 10); -- launch date + 2 month                         
+insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-04-01', '2021-05-05', '2021-05-05', '2021-04-20', 185, 190, 284.76, 20, 10); -- launch date + 1 month                          
+insert into Offerings (launch_date, start_date, end_date, registration_deadline, target_number_registrations, seating_capacity, fees, course_id, eid) values ('2021-05-01', '2021-06-05', '2021-06-05', '2021-05-20', 195, 200, 526.07, 20, 10); -- launch date + 2 month                         
 
 /** 
  * Sessions
@@ -411,7 +417,7 @@ insert into Sessions (sid, session_date, start_time, end_time, course_id, launch
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 14:00:00', '2021-04-05 18:00:00', 4 , '2021-03-01', 4 , 27); -- 2pm to 6pm
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 09:00:00', '2021-04-05 11:00:00', 5 , '2021-02-01', 5 , 28);
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 09:00:00', '2021-04-05 11:00:00', 6 , '2021-03-01', 6 , 30);
-insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 09:00:00', '2021-04-05 12:00:00', 7 , '2021-04-01', 7 , 31);
+insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-05-05', '2021-05-05 09:00:00', '2021-05-05 12:00:00', 7 , '2021-04-01', 7 , 31);
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 09:00:00', '2021-04-05 11:00:00', 8 , '2021-03-01', 8 , 34);
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 09:00:00', '2021-04-05 12:00:00', 9 , '2021-03-01', 9 , 35);
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 14:00:00', '2021-04-05 18:00:00', 10, '2021-03-01', 10, 36);
@@ -422,115 +428,127 @@ insert into Sessions (sid, session_date, start_time, end_time, course_id, launch
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (2, '2021-04-07', '2021-04-07 14:00:00', '2021-04-07 16:00:00', 14, '2021-03-01', 14 , 22);  
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 14:00:00', '2021-04-05 17:00:00', 15, '2021-03-01', 15 , 23);
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 14:00:00', '2021-04-05 18:00:00', 19, '2021-03-01', 16 , 40);
-insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 14:00:00', '2021-04-05 16:00:00', 19, '2021-04-01', 17 , 41);
+insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-05-05', '2021-05-05 14:00:00', '2021-05-05 16:00:00', 19, '2021-04-01', 17 , 41);
 insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 14:00:00', '2021-04-05 16:00:00', 20, '2021-03-01', 18 , 42);
-insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 14:00:00', '2021-04-05 16:00:00', 20, '2021-04-01', 19 , 43);
-insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-04-05', '2021-04-05 14:00:00', '2021-04-05 17:00:00', 20, '2021-05-01', 20, 40); -- same instructor
+insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-05-05', '2021-05-05 14:00:00', '2021-05-05 16:00:00', 20, '2021-04-01', 19 , 43);
+insert into Sessions (sid, session_date, start_time, end_time, course_id, launch_date, rid, eid) values (1, '2021-06-07', '2021-06-07 14:00:00', '2021-06-07 17:00:00', 20, '2021-05-01', 20, 40); -- same instructor
 
 /**
 * Redeems 
-* currently redeem_date is exactly the same with session_date
+* The customer must buy the package first (purchase_date, card_number, package_id), then can use it to redeem a session (sid, course_id, launch_date)
+* redeem_date must be <= registration deadline (offerings table)
+* Currently only package 1-5 has been redeemed
 */
--- insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-04-05', 11,'5048371508404496','2021-03-01 02:17:26',1, 11, '2021-03-07 01:50:35');
--- insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-04-06', 13,'5108759034811803','2021-04-05 12:17:28',2, 29, '2021-03-01 03:30:59');
--- insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-04-07', 6, '5048370038418307','2022-02-20 20:34:16',3, 42, '2021-03-03 07:37:07');
--- insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-06-08', 12,'5108759034811803','2021-05-19 23:27:31',4,  4, '2021-03-03 05:25:58');
--- insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-04-09', 12,'5108758777432884','2022-03-02 20:20:12',5,  1, '2021-03-04 00:50:19');
--- insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-07-05', 19,'5048372282236518','2021-06-01 21:42:25',1, 18, '2021-03-04 12:22:47');
--- insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-07-06', 7, '5048371304277260','2021-06-16 00:30:12',2,  2, '2021-03-03 16:07:15');
--- insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-12-07', 6, '5108754093451666','2021-11-19 10:07:55',3, 43, '2021-03-05 21:49:26');
--- insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2022-04-08', 17,'5048373029850934','2022-04-02 23:43:14',4, 28, '2021-03-02 22:28:41');
--- insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-05-09', 10,'5048371304277260','2021-04-25 14:17:01',5, 38, '2021-03-04 02:04:52');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-03-15', 1, '5050210221029901', '2021-03-01', 1, 1, '2020-11-01');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-03-15', 2, '5050210221029902', '2021-03-02', 2, 1, '2020-11-01');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-03-15', 3, '5050210221029903', '2021-03-03', 3, 1, '2020-11-01');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-03-15', 4, '5050210221029904', '2021-03-04', 4, 1, '2020-11-01'); -- in cancel table
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-03-15', 5, '5050210221029905', '2021-03-05', 1, 2, '2020-12-01');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-03-15', 1, '5050210221029906', '2021-03-01', 1, 3, '2021-03-01');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-03-15', 2, '5050210221029907', '2021-03-02', 1, 4, '2021-03-01');
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-03-15', 3, '5050210221029908', '2021-03-03', 1, 5, '2021-02-01'); -- in cancel table
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-03-15', 4, '5050210221029909', '2021-03-04', 1, 6, '2021-03-01'); -- in cancel table
+insert into Redeems (redeem_date, package_id, card_number, purchase_date, sid, course_id, launch_date) values ('2021-04-15', 11, '5050210221029911', '2021-06-11', 1, 7, '2021-04-01'); -- in cancel table
 
--- /**
--- * Registers 
--- * currently registration_date = registration_deadline - 1 day
--- */
--- insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-01-20 06:55:41','5048371508404496',1, 11, '2021-03-07 01:50:35');
--- insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-02-16 06:49:07','5108759034811803',2, 29, '2021-03-01 03:30:59');
--- insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2022-02-08 07:10:44','5048370038418307',3, 42, '2021-03-03 07:37:07');
--- insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-06-16 18:40:30','5108759034811803',4,  4, '2021-03-03 05:25:58');
--- insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-02-20 15:21:15','5108758777432884',5,  1, '2021-03-04 00:50:19');
--- insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-09-27 17:24:37','5048372282236518',1, 18, '2021-03-04 12:22:47');
--- insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-06-01 00:28:34','5048371304277260',2,  2, '2021-03-03 16:07:15');
--- insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-24 13:40:05','5108754093451666',3, 43, '2021-03-05 21:49:26');
--- insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-10-16 16:27:38','5048373029850934',4, 28, '2021-03-02 22:28:41');
--- insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-01-05 10:14:10','5048371304277260',5, 38, '2021-03-04 02:04:52');
+/**
+* Registers 
+* currently registration_date = registration_deadline - 1 day
+*/
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2020-03-19', '5050210221029901', 1, 1 , '2020-11-01');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2020-03-19', '5050210221029902', 1, 1 , '2020-11-01');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029903', 1, 1 , '2020-11-01');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029904', 2, 1 , '2020-11-01');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029905', 2, 1 , '2020-11-01');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029906', 2, 1 , '2020-11-01'); -- in cancel table
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029907', 2, 1 , '2020-11-01'); -- in cancel table
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029908', 1, 20, '2021-05-01'); -- in cancel table
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029909', 1, 20, '2021-05-01');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029910', 1, 20, '2021-05-01');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029911', 1, 20, '2021-05-01');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029912', 1, 20, '2021-04-01'); 
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029913', 1, 20, '2021-04-01');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029914', 1, 20, '2021-03-01');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029915', 1, 19, '2021-04-01');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029916', 1, 19, '2021-04-01');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029917', 1, 19, '2021-04-01'); -- in cancel table
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029918', 1, 19, '2021-03-01');
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029919', 1, 3 , '2021-03-01'); -- in cancel table
+insert into Registers (registration_date, card_number, sid, course_id, launch_date) values ('2021-03-19', '5050210221029920', 1, 3 , '2021-03-01'); -- in cancel table
 
--- /**
--- * Cancels 
--- * refund amt: 90% if the cancellation 
--- * currently the cancel date is exactly the same with registration_date from registers table
--- * <sic, course_id, launch_date> is exactly the same with Registers, Redeems, and Sessions
--- */
--- insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-01-20 06:55:41', 0, 1, 16, 1, 11, '2021-03-07 01:50:35');
--- insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-02-16 06:49:07', 0, 9, 11, 2, 29, '2021-03-01 03:30:59');
--- insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2022-02-08 07:10:44', 0, 2, 17, 3, 42, '2021-03-03 07:37:07');
--- insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-06-16 18:40:30', 0, 4,  4, 4,  4, '2021-03-03 05:25:58');
--- insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-02-20 15:21:15', 0, 1,  7, 5,  1, '2021-03-04 00:50:19');
--- insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-09-27 17:24:37', 0, 8,  4, 1, 18, '2021-03-04 12:22:47');
--- insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-06-01 00:28:34', 0, 2, 18, 2,  2, '2021-03-03 16:07:15');
--- insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-03-24 13:40:05', 0, 3, 12, 3, 43, '2021-03-05 21:49:26');
--- insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-10-16 16:27:38', 0, 8,  5, 4, 28, '2021-03-02 22:28:41');
--- insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-01-05 10:14:10', 0, 8,  1, 5, 38, '2021-03-04 02:04:52');
+/**
+* Cancels 
+* refund amt: 90% if the cancellation 
+* currently the cancel date is exactly the same with registration_date from registers table
+* <sic, course_id, launch_date> is exactly the same with Registers, Redeems, and Sessions
+*/
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-04-01', 0     , 5 , 4 , 4, 1 , '2020-11-01');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-04-01', 0     , 5 , 8 , 1, 5 , '2021-02-01');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-04-01', 0     , 5 , 9 , 1, 6 , '2021-03-01');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-06-11', 0     , 11, 11, 1, 7 , '2021-04-01');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-04-04', 0     , 0 , 6 , 2, 1 , '2020-11-01');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-04-04', 0     , 0 , 7 , 2, 1 , '2020-11-01');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-06-01', 0     , 0 , 8 , 1, 20, '2021-05-01');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-03-24', 256.28, 0 , 17, 1, 19, '2021-04-01');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-03-20', 450.75, 0 , 19, 1, 3 , '2021-03-01');
+insert into Cancels (cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) values ('2021-03-20', 450.75, 0 , 20, 1, 3 , '2021-03-01');
 
--- /**
--- * Pay_Slips, temporary values.
--- * amount = num_work_hours * hourly_rate
--- * OR
--- * amount = monthly salary * num_work_days / num_of_days_in_that_month
--- * num_work_hours for part time, num_work_days for full time
--- */
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-27', 0, null, 16, 1);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-02-25', 0, null, 15, 2);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-03-27', 0, null, 11, 3);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-02-21', 0, null, 10, 4);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-03-28', 0, null, 13, 5);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-23', 0, null, 16, 6);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-04-27', 0, null, 17, 7);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-05-29', 0, null, 11, 8);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-27', 0, null, 16, 9);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-06-23', 0, null, 14, 10);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-07-28', 0, null, 14, 11);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-21', 0, null, 15, 12);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-08-25', 0, null, 15, 13);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-10-27', 0, null, 12, 14);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-10-23', 0, null, 10, 15);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-11-24', 0, null, 17, 16);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-12-26', 0, null, 18, 17);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-12-26', 0, null, 10, 18);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-20', 0, null, 18, 19);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-20', 0, null, 18, 20);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-27', 0, null, 10, 21);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-21', 0, null, 15, 22);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-21', 0, null, 11, 23);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-08-25', 0, null, 17, 24);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-08-27', 0, null, 10, 25);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-27', 0, null, 16, 26);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-25', 0, null, 16, 27);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-29', 0, null, 18, 28);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-20', 0, null, 16, 29);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-23', 0, null, 17, 30);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-27', 0, null, 11, 31);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-26', 0, null, 18, 32);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-26', 0, null, 17, 33);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-09-29', 0, null, 17, 34);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-30', 0, null, 10, 35);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-30', 0, null, 15, 36);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-09-24', 0, null, 12, 37);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-29', 0, null, 18, 38);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-23', 0, null, 14, 39);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-30', 0, null, 17, 40);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-12-28', 0, 155, null, 41);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-23', 0, 130, null, 42);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-26', 0, 167, null, 43);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-12-22', 0, 239, null, 44);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-25', 0, 182, null, 45);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-21', 0, 202, null, 46);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-23', 0, 276, null, 47);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-12-26', 0, 239, null, 48);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-29', 0, 153, null, 49);
--- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-12-23', 0, 165, null, 50);
+/**
+* Pay_Slips (deprecated, use routine 24 instead)
+* amount = num_work_hours * hourly_rate
+* OR
+* amount = monthly salary * num_work_days / num_of_days_in_that_month
+* num_work_hours for part time, num_work_days for full time
+*/
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-27', 0, null, 16  , 1);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-02-25', 0, null, 15  , 2);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-03-27', 0, null, 11  , 3);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-02-21', 0, null, 10  , 4);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-03-28', 0, null, 13  , 5);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-23', 0, null, 16  , 6);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-04-27', 0, null, 17  , 7);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-05-29', 0, null, 11  , 8);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-27', 0, null, 16  , 9);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-06-23', 0, null, 14  , 10);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-07-28', 0, null, 14  , 11);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-21', 0, null, 15  , 12);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-08-25', 0, null, 15  , 13);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-10-27', 0, null, 12  , 14);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-10-23', 0, null, 10  , 15);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-11-24', 0, null, 17  , 16);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-12-26', 0, null, 18  , 17);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-12-26', 0, null, 10  , 18);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-20', 0, null, 18  , 19);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-20', 0, null, 18  , 20);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-27', 0, null, 10  , 21);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-21', 0, null, 15  , 22);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-21', 0, null, 11  , 23);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-08-25', 0, null, 17  , 24);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-08-27', 0, null, 10  , 25);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-27', 0, null, 16  , 26);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-25', 0, null, 16  , 27);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-29', 0, null, 18  , 28);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-20', 0, null, 16  , 29);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-23', 0, null, 17  , 30);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-27', 0, null, 11  , 31);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-26', 0, null, 18  , 32);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-26', 0, null, 17  , 33);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-09-29', 0, null, 17  , 34);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-30', 0, null, 10  , 35);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-30', 0, null, 15  , 36);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-09-24', 0, null, 12  , 37);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-29', 0, null, 18  , 38);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-23', 0, null, 14  , 39);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-30', 0, null, 17  , 40);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-12-28', 0, 155 , null, 41);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-23', 0, 130 , null, 42);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-26', 0, 167 , null, 43);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-12-22', 0, 239 , null, 44);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-25', 0, 182 , null, 45);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-21', 0, 202 , null, 46);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-23', 0, 276 , null, 47);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-12-26', 0, 239 , null, 48);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-01-29', 0, 153 , null, 49);
+-- insert into Pay_slips (payment_date, amount, num_work_hours, num_work_days, eid) values ('2021-12-23', 0, 165 , null, 50);
 
 /**
  * Specializes

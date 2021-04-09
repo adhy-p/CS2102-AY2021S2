@@ -1,3 +1,6 @@
+
+
+/* Routine no. 16 - 25, @author: Fidella Widjojo */
 CREATE OR REPLACE FUNCTION get_available_course_sessions(course_id_in integer, launch_date_in date) 
 RETURNS Table(session_date date, start_time timestamp, instructor_name varchar(50), remaining_seats integer) AS $$
     SELECT session_date, start_time, name, seating_capacity 
@@ -25,7 +28,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION get_my_registrations(cust_id_in integer) 
-RETURNS Table(course_name varchar(50), course_fees integer, session_date date, session_start timestamp, session_duration integer, instructor_name varchar(50)) AS $$
+RETURNS Table(course_name varchar(50), course_fees double precision, session_date date, session_start timestamp, session_duration integer, instructor_name varchar(50)) AS $$
 SELECT name, fees, session_date, start_time, duration, insName
 FROM (((((Redeems NATURAL JOIN Credit_Cards) NATURAL JOIN Sessions) NATURAL JOIN (SELECT fees, course_id, launch_date, end_date FROM Offerings) O) NATURAL JOIN Courses) NATURAL JOIN Instructors) NATURAL JOIN (SELECT eid, name AS insName FROM Employees) Ins
 WHERE cust_id = cust_id_in AND (SELECT CURRENT_DATE) <= end_date
@@ -144,6 +147,9 @@ BEGIN
     CLOSE curs;
 END;
 $$ LANGUAGE plpgsql;
+
+
+/* Routine no. 26 - 30, @author: Hubertus Adhy Pratama Setiawan */
 /* Routine no. 26 */
 CREATE OR REPLACE FUNCTION promote_courses()
 RETURNS TABLE(
@@ -404,4 +410,3 @@ RETURNS TABLE(
 
     END;
 $$ LANGUAGE plpgsql;
-

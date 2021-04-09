@@ -3,12 +3,14 @@ CREATE OR REPLACE PROCEDURE add_course_package(
     package_name text, no_of_free_sessions INTEGER, package_start_date DATE, 
     package_end_date DATE, package_price DOUBLE PRECISION
 ) AS $$
+BEGIN
     INSERT INTO Course_Packages
     VALUES (
         (SELECT MAX(package_id) + 1 FROM Course_Packages),
         package_start_date, package_end_date, package_name, no_of_free_sessions, package_price
-    )
-$$ LANGUAGE sql;
+    );
+END;
+$$ LANGUAGE plpgsql;
 
 
 DROP FUNCTION IF EXISTS get_available_course_packages();
@@ -17,9 +19,11 @@ RETURNS TABLE (
     package_name VARCHAR(50), no_of_free_sessions INTEGER,
     end_date DATE, price DOUBLE PRECISION
 ) AS $$
+BEGIN
     SELECT name, num_free_registration, sale_end_date, price
-    FROM Course_Packages
-$$ LANGUAGE sql;
+    FROM Course_Packages;
+END;
+$$ LANGUAGE plpgsql;
 
 
 DROP PROCEDURE IF EXISTS buy_course_package;
@@ -44,6 +48,7 @@ $$ LANGUAGE plpgsql;
 DROP FUNCTION IF EXISTS get_my_course_package(INTEGER);
 CREATE OR REPLACE FUNCTION get_my_course_package(customer_id INTEGER)
 RETURNS json AS $$
+BEGIN
     SELECT row_to_json(t)
     FROM (
         SELECT name, purchase_date, price, num_free_registration,
@@ -58,8 +63,9 @@ RETURNS json AS $$
         ) AS infomration
         FROM Course_Packages NATURAL JOIN Buys NATURAL JOIN Credit_Cards
         WHERE cust_id = customer_id
-    ) t
-$$ LANGUAGE sql;
+    ) 
+END;                        
+$$ LANGUAGE plpgsql;
 
 
 DROP FUNCTION IF EXISTS get_available_course_offerings();
@@ -69,7 +75,7 @@ RETURNS TABLE (
     end_date DATE, registration_deadline DATE, course_fees DOUBLE PRECISION, 
     remaining_seats BIGINT
 ) AS $$
-
+BEGIN
     SELECT A.title, A.name, A.start_date, A.end_date, A.registration_deadline, A.fees,
     A.seating_capacity - COUNT(R.course_id) AS remaining_seats
     FROM (Offerings NATURAL JOIN Courses) A LEFT JOIN Registers R
@@ -78,5 +84,5 @@ RETURNS TABLE (
     A.registration_deadline, A.fees 
     HAVING A.seating_capacity - COUNT(R.course_id) > 0
     ORDER BY A.registration_deadline, A.title;
-
-$$ LANGUAGE sql;
+END
+$$ LANGUAGE plpgsql;
