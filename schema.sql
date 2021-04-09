@@ -259,7 +259,7 @@ BEGIN
     - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
     AND NOT EXISTS(SELECT 1 FROM Redeems WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
     AND NOT EXISTS(SELECT 1 FROM Registers WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
-    AND EXTRACT(EPOCH from (NEW.launch_date - NEW.redeem_date) / 86400) <= 10
+    AND (SELECT(EXTRACT(EPOCH from AGE(NEW.launch_date, NEW.redeem_date) / 86400)))::integer <= 10
      THEN
         RETURN NEW;
     END IF;
@@ -281,7 +281,7 @@ BEGIN
     - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
     AND NOT EXISTS(SELECT 1 FROM Redeems WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
     AND NOT EXISTS(SELECT 1 FROM Registers WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date)
-    AND EXTRACT(EPOCH from (NEW.launch_date - NEW.registration_date) / 86400) <= 10
+    AND (SELECT(EXTRACT(EPOCH from AGE(NEW.launch_date, NEW.registration_date) / 86400))) <= 10
      THEN
         RETURN NEW;
     END IF;
@@ -355,9 +355,8 @@ CREATE OR REPLACE FUNCTION can_cancels() RETURNS TRIGGER AS $$
 BEGIN
     IF EXISTS(SELECT 1 FROM Redeems NATURAL JOIN Credit_Cards 
     WHERE NEW.cust_id = cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date)
-    AND EXTRACT(EPOCH from (SELECT redeem_date FROM Redeems NATURAL JOIN Credit_Cards 
-    WHERE NEW.cust_id = cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date
-    - NEW.cancel_date) / 86400) <= 7 THEN
+    AND (SELECT(EXTRACT(EPOCH from AGE((SELECT redeem_date FROM Redeems NATURAL JOIN Credit_Cards 
+    WHERE NEW.cust_id = cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date), NEW.cancel_date)) / 86400))::integer <= 7 THEN
         UPDATE Course_Packages
         SET num_free_registration = num_free_registration + 1
         FROM Course_Packages NATURAL JOIN Redeems NATURAL JOIN Credit_Cards 
@@ -368,9 +367,8 @@ BEGIN
     END IF;
     IF EXISTS(SELECT 1 FROM Registers NATURAL JOIN Credit_Cards 
     WHERE NEW.cust_id = cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date)
-    AND EXTRACT(EPOCH from (SELECT registration_date FROM Registers NATURAL JOIN Credit_Cards 
-    WHERE NEW.cust_id = cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date
-    - NEW.cancel_date) / 86400) <= 7 THEN
+    AND (SELECT(EXTRACT(EPOCH from AGE((SELECT registration_date FROM Registers NATURAL JOIN Credit_Cards 
+    WHERE NEW.cust_id = cust_id AND NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date), NEW.cancel_date)) / 86400))::integer <= 7 THEN
         new.package_credit = 0;
         new.refund_amt = 0.9 * (SELECT fees FROM Offerings WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date);
         RETURN NEW;
@@ -492,7 +490,7 @@ BEGIN
     IF EXISTS(SELECT 1 FROM Part_Time_Employees WHERE eid = NEW.eid)
     AND NEW.num_work_days = NULL
     AND NEW.num_work_hours = (SELECT SUM(duration)
-                    FROM (Sessions NATURAL JOIN Courses)S WHERE S.eid = r.eid 
+                    FROM (Sessions NATURAL JOIN Courses)S WHERE S.eid = NEW.eid 
                     AND date_part('month', session_date) = date_part('month', NOW())
                     AND date_part('year', session_date) = date_part('year', NOW()))
     AND ABS(NEW.amount - NEW.num_work_hours * (SELECT hourly_rate FROM Part_Time_Employees WHERE eid = NEW.eid)) < 0.001
