@@ -498,12 +498,12 @@ $$ LANGUAGE sql;
 CREATE OR REPLACE PROCEDURE update_course_session(cust_id_in integer, course_id_in integer, launch_date_in date, sid_in integer)
 AS $$
 BEGIN
-    IF EXISTS(SELECT 1 FROM Redeems WHERE course_id = course_id_in AND launch_date = launch_date_in) THEN
+    IF EXISTS(SELECT 1 FROM Redeems NATURAL JOIN Credit_Cards WHERE cust_id = cust_id_in AND course_id = course_id_in AND launch_date = launch_date_in) THEN
         UPDATE Redeems R
         SET sid = sid_in
         WHERE (SELECT cust_id FROM Credit_Cards WHERE R.card_number = card_number) = cust_id_in AND course_id = course_id_in AND launch_date = launch_date_in;
     END IF;
-    IF EXISTS(SELECT 1 FROM Registers WHERE course_id = course_id_in AND launch_date = launch_date_in) THEN
+    IF EXISTS(SELECT 1 FROM Registers NATURAL JOIN Credit_Cards WHERE cust_id = cust_id_in AND course_id = course_id_in AND launch_date = launch_date_in) THEN
         UPDATE Registers R
         SET sid = sid_in
         WHERE (SELECT cust_id FROM Credit_Cards WHERE R.card_number = card_number) = cust_id_in AND course_id = course_id_in AND launch_date = launch_date_in;
@@ -514,12 +514,12 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE PROCEDURE cancel_registration(cust_id_in integer, course_id_in integer, launch_date_in date)
 AS $$
 BEGIN
-    IF EXISTS(SELECT 1 FROM Redeems WHERE course_id = course_id_in AND launch_date = launch_date_in) THEN
+    IF EXISTS(SELECT 1 FROM Redeems NATURAL JOIN Credit_Cards WHERE cust_id = cust_id_in AND course_id = course_id_in AND launch_date = launch_date_in) THEN
         INSERT INTO Cancels(cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) 
         values ((SELECT CURRENT_DATE), 0, 0, cust_id_in, (SELECT sid FROM Redeems WHERE course_id = course_id_in AND launch_date = launch_date_in), course_id_in, launch_date_in);
     END IF;
 
-    IF EXISTS(SELECT 1 FROM Registers WHERE course_id = course_id_in AND launch_date = launch_date_in) THEN
+    IF EXISTS(SELECT 1 FROM Registers NATURAL JOIN Credit_Cards WHERE cust_id = cust_id_in AND course_id = course_id_in AND launch_date = launch_date_in) THEN
         INSERT INTO Cancels(cancel_date, refund_amt, package_credit, cust_id, sid, course_id, launch_date) 
         values ((SELECT CURRENT_DATE), 0, 0, cust_id_in, (SELECT sid FROM Registers WHERE course_id = course_id_in AND launch_date = launch_date_in), course_id_in, launch_date_in);
     END IF;

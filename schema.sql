@@ -18,7 +18,9 @@ CREATE TABLE Credit_Cards ( /* owns + credit_cards */
     expiry_date date NOT NULL,
     from_date date NOT NULL,
     cust_id integer NOT NULL, 
-    FOREIGN KEY (cust_id) REFERENCES Customers,
+    FOREIGN KEY (cust_id) REFERENCES Customers 
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     CHECK (from_date <= expiry_date),
     PRIMARY KEY (card_number) /* each credit card must have a distinct owner */
 );
@@ -121,7 +123,8 @@ CREATE TABLE Buys (
     card_number varchar(16) NOT NULL,
     num_remaining_redemptions integer
         CHECK (num_remaining_redemptions >= 0),
-    FOREIGN KEY (card_number) REFERENCES Credit_cards,
+    FOREIGN KEY (card_number) REFERENCES Credit_cards
+        ON UPDATE CASCADE,
     FOREIGN KEY (package_id) REFERENCES Course_packages,
     PRIMARY KEY (purchase_date, card_number, package_id)
 );
@@ -184,6 +187,9 @@ CREATE TABLE Sessions ( /* weak entity set, offerings is the identifying relatio
     FOREIGN KEY (rid) REFERENCES Rooms ON DELETE CASCADE,
     FOREIGN KEY (eid) REFERENCES Instructors ON DELETE CASCADE,
     CHECK(EXTRACT(DOW FROM session_date) >= 1 and EXTRACT(DOW FROM session_date) <= 5), /* Monday to Friday */
+    CHECK(start_time <= end_time),
+    CHECK ((start_time >= session_date::date + TIME '09:00' AND start_time < session_date::date + TIME '12:00') OR (start_time >= session_date::date + TIME '14:00' AND start_time < session_date::date + TIME '18:00')), 
+    CHECK ((end_time > session_date::date + TIME '09:00' AND end_time <= session_date::date + TIME '12:00') OR (end_time > session_date::date + TIME '14:00' AND end_time <= session_date::date + TIME '18:00')),
     UNIQUE (session_date, start_time, course_id, launch_date), /* No two sessions for the same course offering can be conducted on the same day and at the same time. */
     PRIMARY KEY (sid, course_id, launch_date)
 );
@@ -198,7 +204,7 @@ CREATE TABLE Redeems (
     course_id integer,
     launch_date date,
     FOREIGN KEY (sid, course_id, launch_date) REFERENCES Sessions,
-    FOREIGN KEY (purchase_date, card_number, package_id) REFERENCES Buys,
+    FOREIGN KEY (purchase_date, card_number, package_id) REFERENCES Buys ON UPDATE CASCADE,
     PRIMARY KEY (redeem_date, purchase_date, card_number, package_id, sid, course_id, launch_date)
 );
 
@@ -261,9 +267,8 @@ BEGIN
     - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
     AND NOT EXISTS(SELECT 1 FROM Redeems R WHERE NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date AND (SELECT cust_id FROM Credit_Cards WHERE card_number = NEW.card_number) = (SELECT cust_id FROM Credit_Cards WHERE card_number = R.card_number))
     AND NOT EXISTS(SELECT 1 FROM Registers R WHERE NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date AND (SELECT cust_id FROM Credit_Cards WHERE card_number = NEW.card_number) = (SELECT cust_id FROM Credit_Cards WHERE card_number = R.card_number))
-    AND (SELECT(EXTRACT(EPOCH from AGE((SELECT session_date FROM Sessions 
-        WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date), 
-        NEW.redeem_date) / 86400)))::integer >= 10
+    AND ((SELECT registration_deadline FROM Offerings
+        WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date) >= NEW.redeem_date)
      THEN
         RETURN NEW;
     END IF;
@@ -286,9 +291,8 @@ BEGIN
     - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
     AND NOT EXISTS(SELECT 1 FROM Redeems R WHERE NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date AND (SELECT cust_id FROM Credit_Cards WHERE card_number = NEW.card_number) = (SELECT cust_id FROM Credit_Cards WHERE card_number = R.card_number))
     AND NOT EXISTS(SELECT 1 FROM Registers R WHERE NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date AND (SELECT cust_id FROM Credit_Cards WHERE card_number = NEW.card_number) = (SELECT cust_id FROM Credit_Cards WHERE card_number = R.card_number))
-    AND (SELECT(EXTRACT(EPOCH from AGE((SELECT session_date FROM Sessions 
-        WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date), 
-        NEW.registration_date) / 86400)))::integer >= 10
+    AND ((SELECT registration_deadline FROM Offerings
+        WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date) >= NEW.registration_date)
      THEN
         RETURN NEW;
     END IF;
@@ -654,74 +658,37 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
-CREATE TRIGGER check_employees_insertion_trigger
-BEFORE INSERT ON Employees
-FOR EACH ROW EXECUTE FUNCTION check_employees_insertion();
-
-CREATE OR REPLACE FUNCTION check_employees_insertion()
-RETURNS TRIGGER AS $$
-BEGIN
-    RAISE EXCEPTION 'Please specify the roles.';
-    RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
-
-
-CREATE TRIGGER check_instructors_insertion_trigger
-BEFORE INSERT ON Instructors
-FOR EACH ROW EXECUTE FUNCTION check_instructors_insertion();
-
-CREATE OR REPLACE FUNCTION check_instructors_insertion()
-RETURNS TRIGGER AS $$
-BEGIN
-    RAISE EXCEPTION 'Please specify the roles.';
-    RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
-
-
-CREATE TRIGGER check_ft_employees_insertion_trigger
-BEFORE INSERT ON Full_Time_Employees
-FOR EACH ROW EXECUTE FUNCTION check_ft_employees_insertion();
-
-CREATE OR REPLACE FUNCTION check_ft_employees_insertion()
-RETURNS TRIGGER AS $$
-BEGIN
-    RAISE EXCEPTION 'Please specify the roles.';
-    RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
-
-
-CREATE TRIGGER check_pt_employees_insertion_trigger
-BEFORE INSERT ON Part_Time_Employees
-FOR EACH ROW EXECUTE FUNCTION check_pt_employees_insertion();
-
-CREATE OR REPLACE FUNCTION check_pt_employees_insertion()
-RETURNS TRIGGER AS $$
-BEGIN
-    RAISE EXCEPTION 'Please specify the roles.';
-    RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION update_delete_employees() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION delete_employees() RETURNS TRIGGER AS $$
 BEGIN
     IF EXISTS (SELECT 1 FROM Offerings WHERE eid = OLD.eid AND registration_deadline > NOW())  -- admin handling course offering, deadline still coming
     OR EXISTS (SELECT 1 FROM Sessions WHERE eid = OLD.eid AND start_time > NOW())              -- instructor teaching incoming session (start date > curr date)
     OR EXISTS (SELECT 1 FROM Course_Areas WHERE eid = OLD.eid)                                 -- manager managing some area
     THEN
-        RAISE EXCEPTION 'Invalid employee update/delete';
-        RETURN NULL;
+        RAISE EXCEPTION 'Invalid employee delete';
     END IF;
     RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER update_delete_employees
-BEFORE UPDATE OR DELETE ON Employees
-FOR EACH ROW EXECUTE FUNCTION update_delete_employees();
+CREATE TRIGGER delete_employees
+BEFORE DELETE ON Employees
+FOR EACH ROW EXECUTE FUNCTION delete_employees();
+
+CREATE OR REPLACE FUNCTION update_employees() RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM Offerings WHERE eid = OLD.eid AND registration_deadline > NOW())  -- admin handling course offering, deadline still coming
+    OR EXISTS (SELECT 1 FROM Sessions WHERE eid = OLD.eid AND start_time > NOW())              -- instructor teaching incoming session (start date > curr date)
+    OR EXISTS (SELECT 1 FROM Course_Areas WHERE eid = OLD.eid)                                 -- manager managing some area
+    THEN
+        RAISE EXCEPTION 'Invalid employee update';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_employees
+BEFORE UPDATE ON Employees
+FOR EACH ROW EXECUTE FUNCTION update_employees();
 
 CREATE OR REPLACE FUNCTION check_active_packages() RETURNS TRIGGER AS $$
 BEGIN
