@@ -79,8 +79,8 @@ $$ LANGUAGE plpgsql;
 DROP PROCEDURE IF EXISTS add_customer;
 CREATE OR REPLACE PROCEDURE add_customer(
     name VARCHAR(50), address VARCHAR(100), contact INTEGER, 
-    email VARCHAR(100), cc_num INTEGER, cc_expiry DATE, cc_cvv INTEGER)
-    AS $$
+    email VARCHAR(100), cc_num VARCHAR(16), cc_expiry DATE, cc_cvv INTEGER
+    ) AS $$
 BEGIN
     IF (cc_expiry < CURRENT_DATE) THEN
     	RAISE EXCEPTION 'Invalid input, credit card expired';
@@ -101,8 +101,8 @@ $$ LANGUAGE plpgsql;
 /*4*/
 DROP PROCEDURE IF EXISTS update_credit_card;
 CREATE OR REPLACE PROCEDURE update_credit_card(
-    c_id INTEGER, cc_num INTEGER, cc_expiry DATE, cc_cvv INTEGER) 
-    AS $$
+    c_id INTEGER, cc_num VARCHAR(16), cc_expiry DATE, cc_cvv INTEGER
+    ) AS $$
 BEGIN
     IF (cc_expiry < CURRENT_DATE) THEN
     	RAISE EXCEPTION 'Invalid input, credit card expired';
@@ -124,8 +124,8 @@ $$ LANGUAGE plpgsql;
 /*5*/
 DROP PROCEDURE IF EXISTS add_course;
 CREATE OR REPLACE PROCEDURE add_course(
-    title VARCHAR(50), description TEXT, area VARCHAR(50), duration INTEGER) 
-    AS $$
+    title VARCHAR(50), description TEXT, area VARCHAR(50), duration INTEGER
+    ) AS $$
 BEGIN
     INSERT INTO Courses (title, name, duration, description)
     VALUES (title, area, duration, description);
@@ -136,10 +136,10 @@ $$ LANGUAGE plpgsql;
 DROP FUNCTION IF EXISTS find_instructors;
 CREATE OR REPLACE FUNCTION find_instructors(
     course_id INTEGER, session_date DATE, session_start_hour TIMESTAMP
-) RETURNS TABLE(eid INTEGER, name VARCHAR(50)) AS $$
+    ) RETURNS TABLE(eid INTEGER, name VARCHAR(50)) AS $$
 BEGIN
     IF (course_id NOT IN (SELECT course_id FROM Courses)) THEN
-				RAISE EXCEPTION 'Invalid input, invalid course ID';
+		RAISE EXCEPTION 'Invalid input, invalid course ID';
     END IF;
 
     SELECT S.eid, E.name
@@ -153,8 +153,18 @@ $$ LANGUAGE plpgsql;
 /*7*/
 CREATE OR REPLACE FUNCTION get_available_instructors(
     course_id INTEGER, start_date DATE, end_date DATE
-    ) RETURNS TABLE(eid INTEGER, name VARCHAR(50), teaching_hours INTEGER, day DATE) AS $$
+    ) RETURNS TABLE(eid INTEGER, name VARCHAR(50), teaching_hours INTEGER, day DATE, avail_hours TIME[]) AS $$
 BEGIN
+    IF (course_id NOT IN (SELECT course_id FROM Courses)) THEN
+		RAISE EXCEPTION 'Invalid input, invalid course ID';
+    END IF;
+
+    SELECT SE.eid, SE.name, SUM(CO.duration),
+    FROM (Courses NATURAL JOIN Offerings) CO, (Employee NATURAL JOIN (ALTER TABLE Specializes RENAME name TO area) ) SE
+    WHERE CO.course_id = course_id
+    AND CO.start_date = start_date
+    AND CO.end_date = end_date
+    GROUP BY SE.eid
 
 END;
 $$ LANGUAGE plpgsql;
@@ -162,8 +172,8 @@ $$ LANGUAGE plpgsql;
 /*8 am not sure if this is enuf pls lmk*/ 
 DROP FUNCTION IF EXISTS find_rooms;
 CREATE OR REPLACE FUNCTION find_rooms(
-    session_date DATE, session_start_hour TIMESTAMP, session_duration INTEGER) 
-    RETURNS TABLE(rid INTEGER) AS $$
+    session_date DATE, session_start_hour TIMESTAMP, session_duration INTEGER
+    ) RETURNS TABLE(rid INTEGER) AS $$
 BEGIN
     SELECT rid
     FROM Sessions NATURAL JOIN Courses
@@ -176,6 +186,20 @@ $$ LANGUAGE plpgsql;
 /*9*/
 CREATE OR REPLACE FUNCTION get_available_rooms(
     start_date DATE, end_date DATE
-) RETURNS TABLE(rid INTEGER, capacity INTEGER, day DATE, avail_hours TIMESTAMP[]) AS $$
+    ) RETURNS TABLE(rid INTEGER, capacity INTEGER, day DATE, avail_hours TIMESTAMP[]) AS $$
 
 /*10*/
+DROP PROCEDURE IF EXISTS add_course_offering;
+CREATE OR REPLACE PROCEDURE add_course_offering(
+    co_id INTEGER, course_id INTEGER, fees DOUBLE PRECISION, launch_date DATE, regis_deadline DATE, 
+    admin_id INTEGER, session_date DATE[], session_start_hour TIME[], room_id INTEGER[]
+    ) AS $$
+BEGIN   
+    IF (admin_id NOT IN (SELECT eid FROM Administrators)) THEN
+    		RAISE EXCEPTION 'Invalid input, invalid administrator ID';
+    ELSEIF (course_id NOT IN (SELECT course_id FROM Courses)) THEN
+    		RAISE EXCEPTION 'Invalid input, invalid course ID';
+    ELSEIF (array_length(s_date, 1) IS NULL OR array_length(s_start_hour, 1) IS NULL OR array_length(room_id, 1) IS NULL) THEN
+    		RAISE EXCEPTION 'Invalid input, invalid session information';
+    END IF;
+
