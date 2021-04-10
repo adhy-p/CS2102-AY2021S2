@@ -528,7 +528,7 @@ CREATE TRIGGER cant_update_delete_payslip
 BEFORE UPDATE OR DELETE ON Pay_Slips
 FOR EACH ROW EXECUTE FUNCTION cant_update_delete_payslip();
 
-CREATE OR REPLACE FUNCTION update_offering() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION update_offering_new() RETURNS TRIGGER AS $$
 BEGIN
     UPDATE Offerings
     SET seating_capacity = (
@@ -547,9 +547,32 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER update_offering
+CREATE TRIGGER update_offering_new
 AFTER INSERT OR UPDATE ON Sessions
-FOR EACH ROW EXECUTE FUNCTION update_offering();
+FOR EACH ROW EXECUTE FUNCTION update_offering_new();
+
+CREATE OR REPLACE FUNCTION update_offering_old() RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE Offerings
+    SET seating_capacity = (
+        SELECT SUM(seating_capacity) 
+        FROM Sessions NATURAL JOIN Rooms 
+        WHERE rid = OLD.rid AND course_id = OLD.course_id AND launch_date = OLD.launch_date),
+    start_date = (
+        SELECT MIN(session_date)
+        FROM Sessions
+        WHERE course_id = OLD.course_id AND launch_date = OLD.launch_date),
+    end_date = (
+        SELECT MAX(session_date)
+        FROM Sessions
+        WHERE course_id = OLD.course_id AND launch_date = OLD.launch_date)
+    WHERE course_id = OLD.course_id AND launch_date = OLD.launch_date;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_offering_old
+AFTER DELETE OR UPDATE ON Sessions
+FOR EACH ROW EXECUTE FUNCTION update_offering_old();
 
 CREATE TRIGGER check_manager_role_trigger
 BEFORE INSERT ON Managers
