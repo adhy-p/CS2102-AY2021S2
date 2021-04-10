@@ -184,6 +184,9 @@ CREATE TABLE Sessions ( /* weak entity set, offerings is the identifying relatio
     FOREIGN KEY (rid) REFERENCES Rooms ON DELETE CASCADE,
     FOREIGN KEY (eid) REFERENCES Instructors ON DELETE CASCADE,
     CHECK(EXTRACT(DOW FROM session_date) >= 1 and EXTRACT(DOW FROM session_date) <= 5), /* Monday to Friday */
+    CHECK(start_time <= end_time),
+    CHECK ((start_time >= session_date::date + TIME '09:00' AND start_time < session_date::date + TIME '12:00') OR (start_time >= session_date::date + TIME '14:00' AND start_time < session_date::date + TIME '18:00')), 
+    CHECK ((end_time > session_date::date + TIME '09:00' AND end_time <= session_date::date + TIME '12:00') OR (end_time > session_date::date + TIME '14:00' AND end_time <= session_date::date + TIME '18:00')),
     UNIQUE (session_date, start_time, course_id, launch_date), /* No two sessions for the same course offering can be conducted on the same day and at the same time. */
     PRIMARY KEY (sid, course_id, launch_date)
 );
