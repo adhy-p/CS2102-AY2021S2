@@ -214,21 +214,23 @@ $$ LANGUAGE plpgsql;
 -- /*8*/
 DROP FUNCTION IF EXISTS find_rooms;
 CREATE OR REPLACE FUNCTION find_rooms(
-    session_date DATE, session_start_hour TIMESTAMP, session_duration INTEGER
+    session_date_in DATE, session_start_hour TIMESTAMP, session_duration INTEGER
     ) RETURNS TABLE(rid INTEGER) AS $$
 BEGIN
+    RETURN QUERY
     WITH Used_rooms AS(
-        SELECT rid
-        FROM Sessions NATURAL JOIN Courses
-        WHERE session_date = session_date
-        AND (start_time, end_time) OVERLAPS (TIME '00:00' + INTERVAL '1 HOUR' * (session_start_hour), 
-        TIME '00:00' + INTERVAL '1 HOUR' * (session_start_hour + session_duration)))
+        SELECT S.rid
+        FROM Sessions S
+        WHERE S.session_date = session_date_in
+        AND  (SELECT(EXTRACT(EPOCH from (GREATEST(S.start_time::time, session_start_hour::time) - LEAST(S.end_time::time,
+         session_start_hour::time + INTERVAL '1 HOUR' * session_duration))) / 3600)::integer < 0)
+    )
 
-    SELECT rid
-    FROM Rooms 
+    SELECT R.rid
+    FROM Rooms R 
     EXCEPT 
-    SELECT rid
-    FROM Used_rooms;
+    SELECT R.rid
+    FROM Used_rooms R;
 END;
 $$ LANGUAGE plpgsql;
 
