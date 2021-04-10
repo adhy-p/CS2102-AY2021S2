@@ -171,7 +171,7 @@ CREATE TABLE Offerings ( /* weak entity set, courses is the identifying relation
 
 DROP TABLE IF EXISTS Sessions;
 CREATE TABLE Sessions ( /* weak entity set, offerings is the identifying relationship */
-    sid integer GENERATED ALWAYS AS IDENTITY,
+    sid integer,
     session_date date, 
     start_time timestamp, /* earliest: 9am, must end by 6pm, no sessions between 12-2pm */
     end_time timestamp,
@@ -706,4 +706,19 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION update_delete_employees() RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM Offerings WHERE eid = OLD.eid AND registration_deadline > NOW())  -- admin handling course offering, deadline still coming
+    OR EXISTS (SELECT 1 FROM Sessions WHERE eid = OLD.eid AND start_time > NOW())              -- instructor teaching incoming session (start date > curr date)
+    OR EXISTS (SELECT 1 FROM Course_Areas WHERE eid = OLD.eid)                                 -- manager managing some area
+    THEN
+        RAISE EXCEPTION 'Invalid employee update/delete';
+        RETURN NULL;
+    END IF;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
 
+CREATE TRIGGER update_delete_employees
+BEFORE UPDATE OR DELETE ON Employees
+FOR EACH ROW EXECUTE FUNCTION update_delete_employees();
