@@ -165,6 +165,7 @@ CREATE TABLE Offerings ( /* weak entity set, courses is the identifying relation
     FOREIGN KEY (eid) REFERENCES Administrators 
         ON DELETE CASCADE,
     CHECK (start_date <= end_date),
+    CHECK (start_date - registration_deadline >= 10),
     PRIMARY KEY (course_id, launch_date)
 );
 
@@ -276,7 +277,7 @@ FOR EACH ROW EXECUTE FUNCTION can_redeems();
 
 CREATE OR REPLACE FUNCTION can_registers() RETURNS TRIGGER AS $$
 BEGIN
-    IF NOW() <= (SELECT registration_deadline FROM Offerings WHERE course_id = NEW.course_id AND launch_date = NEW.launch_date
+    IF NOW() <= (SELECT registration_deadline FROM Offerings WHERE course_id = NEW.course_id AND launch_date = NEW.launch_date)
     AND (SELECT seating_capacity 
     FROM Sessions NATURAL JOIN Rooms 
     WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) >
@@ -526,4 +527,27 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER cant_update_delete_payslip
 BEFORE UPDATE OR DELETE ON Pay_Slips
 FOR EACH ROW EXECUTE FUNCTION cant_update_delete_payslip();
+
+CREATE OR REPLACE FUNCTION update_offering() RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE Offerings
+    SET seating_capacity = (
+        SELECT SUM(seating_capacity) 
+        FROM Sessions NATURAL JOIN Rooms 
+        WHERE rid = NEW.rid AND course_id = NEW.course_id AND launch_date = NEW.launch_date),
+    start_date = (
+        SELECT MIN(session_date)
+        FROM Sessions
+        WHERE course_id = NEW.course_id AND launch_date = NEW.launch_date),
+    end_date = (
+        SELECT MAX(session_date)
+        FROM Sessions
+        WHERE course_id = NEW.course_id AND launch_date = NEW.launch_date)
+    WHERE course_id = NEW.course_id AND launch_date = NEW.launch_date;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_offering
+AFTER INSERT OR UPDATE ON Sessions
+FOR EACH ROW EXECUTE FUNCTION update_offering();
 
