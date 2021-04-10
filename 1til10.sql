@@ -191,15 +191,69 @@ CREATE OR REPLACE FUNCTION get_available_rooms(
 /*10*/
 DROP PROCEDURE IF EXISTS add_course_offering;
 CREATE OR REPLACE PROCEDURE add_course_offering(
-    co_id INTEGER, course_id INTEGER, fees DOUBLE PRECISION, launch_date DATE, regis_deadline DATE, 
+    fees DOUBLE PRECISION, launch_date DATE, regis_deadline DATE, target_regis INTEGER, 
     admin_id INTEGER, session_date DATE[], session_start_hour TIME[], room_id INTEGER[]
     ) AS $$
+DECLARE
+    rid INTEGER;
+    valid BOOLEAN := FALSE;
+    curr_seats INTEGER;
+    total_seats INTEGER := 0;
+    duration INTEGER;
+    instructor_id INTEGER;
 BEGIN   
     IF (admin_id NOT IN (SELECT eid FROM Administrators)) THEN
-    		RAISE EXCEPTION 'Invalid input, invalid administrator ID';
-    ELSEIF (course_id NOT IN (SELECT course_id FROM Courses)) THEN
-    		RAISE EXCEPTION 'Invalid input, invalid course ID';
-    ELSEIF (array_length(s_date, 1) IS NULL OR array_length(s_start_hour, 1) IS NULL OR array_length(room_id, 1) IS NULL) THEN
-    		RAISE EXCEPTION 'Invalid input, invalid session information';
+    	RAISE EXCEPTION 'Invalid input, invalid administrator ID';
+    ELSIF (course_id NOT IN (SELECT course_id FROM Courses)) THEN
+		RAISE EXCEPTION 'Invalid input, invalid course ID';
+    ELSIF (array_length(session_date, 1) IS NULL OR array_length(session_start_hour, 1) IS NULL OR array_length(room_id, 1) IS NULL) THEN
+        RAISE EXCEPTION 'Invalid input, invalid session information';
+    ELSE
+        FOREACH rid IN ARRAY room_id 
+        LOOP
+            IF ((SELECT seating_capacity FROM Rooms R WHERE R.rid=rid) < target_regis) THEN
+                RAISE EXCEPTION 'Invalid input, room has insufficient seating capacity';
+            END IF;
+        END LOOP;
     END IF;
 
+    FOR i in 1..array_length(session_date,1) 
+        LOOP
+        IF (find_instructors(course_id, session_date[i], session_start_hour[i]) IS NULL) THEN
+            RAISE EXCEPTION 'There is no instructor available to teach a session';
+        ELSIF (room_id[i] NOT IN (SELECT rid FROM find_rooms(sessions_date[i], session_start_hour, (SELECT duration FROM Courses C WHERE C.course_id=course_id)))) THEN   
+            RAISE EXCEPTION 'There is no room available for a session';
+        ELSIF (i=array_length(session_date,1)-1) THEN
+            valid := TRUE;
+        END IF;
+    END LOOP;
+
+    IF (valid=TRUE) THEN
+        FOREACH rid IN ARRAY room_id
+        LOOP
+            SELECT seating_capacity INTO curr_seats
+            FROM Rooms R
+            WHERE R.rid=rid;
+            total_seats= total_seats+curr_seats;
+        END LOOP;
+
+        INSERT INTO CourseOfferings
+        VALUES (launch_date, MIN(session_date), MAX(session_date), regis_deadline, target_regis,
+        total_seats, fees, course_id, admin_id);
+
+        SELECT C.duration INTO duration
+        FROM Courses C
+        WHERE C.course_id = course_id;
+
+        FOR i in 1..array_length(session_date,1) 
+        LOOP 
+            SELECT I.eid INTO instructor_id
+    	    FROM find_instructors(course_id, session_date[i], session_start_hour[i]) I
+            LIMIT 1;
+
+            INSERT INTO Sessions VALUES (i, session_date[i], session_start_hour[i], 
+            (session_start_hour[i] + TIME '00:00' + INTERVAL '1 HOUR' * (duration)), course_id, launch_date, room_id, instructor_id);
+        END LOOP;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
