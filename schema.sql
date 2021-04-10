@@ -3,7 +3,7 @@ CREATE DATABASE IT_course_trainer;
 
 DROP TABLE IF EXISTS Customers;
 CREATE TABLE Customers (
-    cust_id integer,
+    cust_id integer GENERATED ALWAYS AS IDENTITY,
     name varchar(50) NOT NULL,
     email varchar(50),
     address varchar(100),
@@ -25,7 +25,7 @@ CREATE TABLE Credit_Cards ( /* owns + credit_cards */
 
 DROP TABLE IF EXISTS Employees; 
 CREATE TABLE Employees (
-    eid integer,
+    eid integer GENERATED ALWAYS AS IDENTITY,
     name varchar(50) NOT NULL,
     address varchar(100),
     email varchar(50),
@@ -94,7 +94,7 @@ CREATE TABLE Part_Time_Instructors ( /* must not teach more than 30 hours for ea
     
 DROP TABLE IF EXISTS Rooms;
 CREATE TABLE Rooms (
-    rid integer,
+    rid integer GENERATED ALWAYS AS IDENTITY,
     location varchar(50),
     seating_capacity integer,
     PRIMARY KEY (rid)
@@ -102,7 +102,7 @@ CREATE TABLE Rooms (
 
 DROP TABLE IF EXISTS Course_Packages;
 CREATE TABLE Course_Packages (
-    package_id integer, 
+    package_id integer GENERATED ALWAYS AS IDENTITY, 
     sale_start_date date NOT NULL,
     sale_end_date date NOT NULL,
     name varchar(50) NOT NULL,
@@ -136,7 +136,7 @@ CREATE TABLE Course_Areas ( /* combined with manages */
 
 DROP TABLE IF EXISTS Courses;
 CREATE TABLE Courses (
-    course_id integer,
+    course_id integer GENERATED ALWAYS AS IDENTITY,
     title varchar(50) UNIQUE NOT NULL,
     name varchar(50) NOT NULL,
     duration integer NOT NULL /* in hours */
@@ -171,7 +171,7 @@ CREATE TABLE Offerings ( /* weak entity set, courses is the identifying relation
 
 DROP TABLE IF EXISTS Sessions;
 CREATE TABLE Sessions ( /* weak entity set, offerings is the identifying relationship */
-    sid integer,
+    sid integer GENERATED ALWAYS AS IDENTITY,
     session_date date, 
     start_time timestamp, /* earliest: 9am, must end by 6pm, no sessions between 12-2pm */
     end_time timestamp,
@@ -550,4 +550,134 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER update_offering
 AFTER INSERT OR UPDATE ON Sessions
 FOR EACH ROW EXECUTE FUNCTION update_offering();
+
+CREATE TRIGGER check_manager_role_trigger
+BEFORE INSERT ON Managers
+FOR EACH ROW EXECUTE FUNCTION check_manager_role();
+
+CREATE OR REPLACE FUNCTION check_manager_role()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF (
+        EXISTS(SELECT * FROM Instructors WHERE eid = NEW.eid) OR
+        EXISTS(SELECT * FROM Administrators WHERE eid = NEW.eid)
+    ) THEN
+        RAISE EXCEPTION 'No duplicate roles are allowed.';
+        RETURN NULL;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER check_administrator_role_trigger
+BEFORE INSERT ON Administrators
+FOR EACH ROW EXECUTE FUNCTION check_administrator_role();
+
+CREATE OR REPLACE FUNCTION check_administrator_role()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF (
+        EXISTS(SELECT * FROM Instructors WHERE eid = NEW.eid) OR
+        EXISTS(SELECT * FROM Managers WHERE eid = NEW.eid)
+    ) THEN
+        RAISE EXCEPTION 'No duplicate roles are allowed.';
+        RETURN NULL;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER check_ft_instructor_role_trigger
+BEFORE INSERT ON Full_Time_Instructors
+FOR EACH ROW EXECUTE FUNCTION check_ft_instructor_role();
+
+CREATE OR REPLACE FUNCTION check_ft_instructor_role()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF (
+        EXISTS(SELECT * FROM Administrators WHERE eid = NEW.eid) OR
+        EXISTS(SELECT * FROM Managers WHERE eid = NEW.eid) OR
+        EXISTS(SELECT * FROM Part_Time_Instructors WHERE eid = NEW.eid)
+    ) THEN
+        RAISE EXCEPTION 'No duplicate roles are allowed.';
+        RETURN NULL;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER check_pt_instructor_role_trigger
+BEFORE INSERT ON Part_Time_Instructors
+FOR EACH ROW EXECUTE FUNCTION check_pt_instructor_role();
+
+CREATE OR REPLACE FUNCTION check_pt_instructor_role()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF (
+        EXISTS(SELECT * FROM Administrators WHERE eid = NEW.eid) OR
+        EXISTS(SELECT * FROM Managers WHERE eid = NEW.eid) OR
+        EXISTS(SELECT * FROM Full_Time_Instructors WHERE eid = NEW.eid)
+    ) THEN
+        RAISE EXCEPTION 'No duplicate roles are allowed.';
+        RETURN NULL;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER check_employees_insertion_trigger
+BEFORE INSERT ON Employees
+FOR EACH ROW EXECUTE FUNCTION check_employees_insertion();
+
+CREATE OR REPLACE FUNCTION check_employees_insertion()
+RETURNS TRIGGER AS $$
+BEGIN
+    RAISE EXCEPTION 'Please specify the roles.';
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER check_instructors_insertion_trigger
+BEFORE INSERT ON Instructors
+FOR EACH ROW EXECUTE FUNCTION check_instructors_insertion();
+
+CREATE OR REPLACE FUNCTION check_instructors_insertion()
+RETURNS TRIGGER AS $$
+BEGIN
+    RAISE EXCEPTION 'Please specify the roles.';
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER check_ft_employees_insertion_trigger
+BEFORE INSERT ON Full_Time_Employees
+FOR EACH ROW EXECUTE FUNCTION check_ft_employees_insertion();
+
+CREATE OR REPLACE FUNCTION check_ft_employees_insertion()
+RETURNS TRIGGER AS $$
+BEGIN
+    RAISE EXCEPTION 'Please specify the roles.';
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER check_pt_employees_insertion_trigger
+BEFORE INSERT ON Part_Time_Employees
+FOR EACH ROW EXECUTE FUNCTION check_pt_employees_insertion();
+
+CREATE OR REPLACE FUNCTION check_pt_employees_insertion()
+RETURNS TRIGGER AS $$
+BEGIN
+    RAISE EXCEPTION 'Please specify the roles.';
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
 
