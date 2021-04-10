@@ -14,7 +14,7 @@ BEGIN
 
     SELECT eid 
     FROM Employees
-    ORDER BY cust_id DESC 
+    ORDER BY eid DESC 
     LIMIT 1
     INTO employee_id;
 
@@ -57,7 +57,7 @@ $$ LANGUAGE plpgsql;
 /*2*/
 DROP PROCEDURE IF EXISTS remove_employee;
 CREATE OR REPLACE PROCEDURE remove_employee(
-    eid VARCHAR(50), departure_date DATE
+    eid INTEGER, departure_date DATE
     ) AS $$
 BEGIN
     IF (SELECT EXISTS(SELECT 1 FROM CourseOfferings CO WHERE CO.eid = eid AND registration_deadline >= departure_date)) THEN
@@ -101,7 +101,7 @@ $$ LANGUAGE plpgsql;
 /*4*/
 DROP PROCEDURE IF EXISTS update_credit_card;
 CREATE OR REPLACE PROCEDURE update_credit_card(
-    c_id INTEGER, cc_num VARCHAR(16), cc_expiry DATE, cc_cvv INTEGER
+    cid INTEGER, cc_num VARCHAR(16), cc_expiry DATE, cc_cvv INTEGER
     ) AS $$
 BEGIN
     IF (cc_expiry < CURRENT_DATE) THEN
@@ -114,7 +114,7 @@ BEGIN
             cvv = cc_cvv,
             expiry_date = cc_expiry,
             from_date = CURRENT_DATE
-        WHERE cust_id = c_id;
+        WHERE cust_id = cid;
     ELSE
         RAISE EXCEPTION 'Invalid input, invalid customer ID';
     END IF;

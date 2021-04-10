@@ -7,7 +7,7 @@ CREATE OR REPLACE PROCEDURE add_course_package(
 ) AS $$
 BEGIN
     INSERT INTO Course_Packages (
-        sale_start_date, sale_end_date, name, num_free_registration, package_price
+        sale_start_date, sale_end_date, name, num_free_registration, price
     )
     VALUES (
         package_start_date, package_end_date, package_name, no_of_free_sessions, package_price
@@ -19,13 +19,11 @@ DROP FUNCTION IF EXISTS get_available_course_packages();
 CREATE OR REPLACE FUNCTION get_available_course_packages()
 RETURNS TABLE (
     package_name VARCHAR(50), no_of_free_sessions INTEGER,
-    end_date DATE, price DOUBLE PRECISION
+    end_date DATE, package_price DOUBLE PRECISION
 ) AS $$
-BEGIN
     SELECT name, num_free_registration, sale_end_date, price
-    FROM Course_Packages;
-END;
-$$ LANGUAGE plpgsql;
+    FROM Course_Packages
+$$ LANGUAGE sql;
 
 DROP PROCEDURE IF EXISTS buy_course_package;
 CREATE OR REPLACE PROCEDURE buy_course_package(IN customer_id INTEGER,
