@@ -153,8 +153,8 @@ BEGIN
         FROM Sessions S, Employees E
         WHERE S.course_id = course_id
         AND S.session_date = session_date
-        AND (S.start_time, S.end_time) OVERLAPS (TIME '00:00' + INTERVAL '1 HOUR' * (session_start_hour), 
-        TIME '00:00' + INTERVAL '1 HOUR' * (session_start_hour - INTERVAL '30 minutes'+ session_duration + INTERVAL '30 minutes'))),
+        AND (S.start_time, S.end_time) OVERLAPS (TIME '00:00' + INTERVAL '1 HOUR' * (session_start_hour) - INTERVAL '1 HOUR', 
+        TIME '00:00' + INTERVAL '1 HOUR' * (session_start_hour + session_duration) + INTERVAL '1 HOUR'),
 
     Other_unavail_instructors AS(
         SELECT S.eid, E.name
