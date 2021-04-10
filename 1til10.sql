@@ -135,12 +135,12 @@ $$ LANGUAGE plpgsql;
 /*6*/
 DROP FUNCTION IF EXISTS find_instructors;
 CREATE OR REPLACE FUNCTION find_instructors(
-    course_id INTEGER, session_date DATE, session_start_hour TIMESTAMP
+    course_id INTEGER, session_date DATE, session_start_hour TIME
     ) RETURNS TABLE(eid INTEGER, name VARCHAR(50)) AS $$
 DECLARE
     course_duration TIME;
 BEGIN
-    IF (course_id NOT IN (SELECT course_id FROM Courses)) THEN
+    IF (course_id NOT IN (SELECT C.course_id FROM Courses C)) THEN
 		RAISE EXCEPTION 'Invalid input, invalid course ID';
     END IF;
 
@@ -149,24 +149,25 @@ BEGIN
     WHERE C.course_id = course_id;
 
     WITH Busy_instructors AS(
-        SELECT S.eid, E.name
-        FROM Sessions S, Employees E
-        WHERE S.course_id = course_id
-        AND S.session_date = session_date
-        AND (S.start_time, S.end_time) OVERLAPS (TIME '00:00' + INTERVAL '1 HOUR' * (session_start_hour) - INTERVAL '1 HOUR', 
-        TIME '00:00' + INTERVAL '1 HOUR' * (session_start_hour + session_duration) + INTERVAL '1 HOUR'),
+        SELECT SE.eid, SE.name
+        FROM Sessions NATURAL JOIN Employees SE
+        WHERE SE.course_id = course_id
+        AND SE.session_date = session_date
+        AND (SE.start_time, SE.end_time) OVERLAPS (TIME '00:00' + INTERVAL '1 HOUR' * (session_start_hour) - INTERVAL '1 HOUR', 
+        TIME '00:00' + INTERVAL '1 HOUR' * (session_start_hour + session_duration) + INTERVAL '1 HOUR')),
 
     Other_unavail_instructors AS(
-        SELECT S.eid, E.name
-        FROM Specializes S, Employees E
+        SELECT SE.eid, SE.name
+        FROM (Specializes S INNER JOIN Employees E ON S.eid=E.eid) SE
         HAVING INTERVAL '30 hours' - course_duration >= (
             SELECT SUM(duration)
             FROM ((Part_Time_Instructors NATURAL JOIN Sessions) INNER JOIN Courses ON course_id) PSC
             WHERE PSC.eid = eid
             AND PSC.course_id = course_id))
     
-    SELECT S.eid, E.name
-    FROM Specializes S, Employees E
+    SELECT eid, name
+    FROM Specializes INNER JOIN Employees 
+    ON S.eid=E.eid
     EXCEPT
     SELECT eid, name FROM Busy_instructors
     EXCEPT
