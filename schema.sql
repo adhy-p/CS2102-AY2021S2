@@ -264,9 +264,8 @@ BEGIN
     - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
     AND NOT EXISTS(SELECT 1 FROM Redeems R WHERE NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date AND (SELECT cust_id FROM Credit_Cards WHERE card_number = NEW.card_number) = (SELECT cust_id FROM Credit_Cards WHERE card_number = R.card_number))
     AND NOT EXISTS(SELECT 1 FROM Registers R WHERE NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date AND (SELECT cust_id FROM Credit_Cards WHERE card_number = NEW.card_number) = (SELECT cust_id FROM Credit_Cards WHERE card_number = R.card_number))
-    AND (SELECT(EXTRACT(EPOCH from AGE((SELECT session_date FROM Sessions 
-        WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date), 
-        NEW.redeem_date) / 86400)))::integer >= 10
+    AND ((SELECT registration_deadline FROM Offerings
+        WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date) >= NEW.redeem_date)
      THEN
         RETURN NEW;
     END IF;
@@ -289,9 +288,8 @@ BEGIN
     - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
     AND NOT EXISTS(SELECT 1 FROM Redeems R WHERE NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date AND (SELECT cust_id FROM Credit_Cards WHERE card_number = NEW.card_number) = (SELECT cust_id FROM Credit_Cards WHERE card_number = R.card_number))
     AND NOT EXISTS(SELECT 1 FROM Registers R WHERE NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date AND (SELECT cust_id FROM Credit_Cards WHERE card_number = NEW.card_number) = (SELECT cust_id FROM Credit_Cards WHERE card_number = R.card_number))
-    AND (SELECT(EXTRACT(EPOCH from AGE((SELECT session_date FROM Sessions 
-        WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date), 
-        NEW.registration_date) / 86400)))::integer >= 10
+    AND ((SELECT registration_deadline FROM Offerings
+        WHERE NEW.course_id = course_id AND NEW.launch_date = launch_date) >= NEW.registration_date)
      THEN
         RETURN NEW;
     END IF;

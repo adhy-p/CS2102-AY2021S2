@@ -21,19 +21,19 @@ BEGIN
     IF (monthly_salary IS NOT NULL AND hourly_rate IS NULL) THEN
         INSERT INTO Full_time_employees VALUES(employee_id, monthly_salary);
     
-        IF  (category='Administrator') THEN
-            INSERT INTO Administrators VALUES (employee_id);
+--         IF  (category='Administrator') THEN
+--             INSERT INTO Administrators VALUES (employee_id);
     
-        ELSIF (category='Manager') THEN
-            INSERT INTO Managers VALUES (employee_id);
+--         ELSIF (category='Manager') THEN
+--             INSERT INTO Managers VALUES (employee_id);
 
-        ELSIF (category='Instructor') THEN
-            INSERT INTO Instructors VALUES (employee_id);
-            INSERT INTO Full_time_instructors VALUES (employee_id);
+--         ELSIF (category='Instructor') THEN
+--             INSERT INTO Instructors VALUES (employee_id);
+--             INSERT INTO Full_time_instructors VALUES (employee_id);
 
-        ELSE
-    	    RAISE EXCEPTION 'Invalid input';
-        END IF;
+--         ELSE
+--     	    RAISE EXCEPTION 'Invalid input';
+--         END IF;
         
     ELSIF (monthly_salary IS NULL AND hourly_rate IS NOT NULL and category='Instructor') THEN 
         INSERT INTO Part_time_employees VALUES(employee_id, hourly_rate);
@@ -282,8 +282,6 @@ CREATE OR REPLACE PROCEDURE add_course_offering(
 DECLARE
     rid INTEGER;
     valid BOOLEAN := FALSE;
-    curr_seats INTEGER;
-    total_seats INTEGER := 0;
     duration INTEGER;
     instructor_id INTEGER;
 BEGIN   
@@ -294,51 +292,35 @@ BEGIN
     ELSIF (array_length(session_date, 1) IS NULL OR array_length(session_start_hour, 1) IS NULL OR array_length(room_id, 1) IS NULL) THEN
         RAISE EXCEPTION 'Invalid input, invalid session information';
     ELSE
-        FOREACH rid IN ARRAY room_id 
-        LOOP
-            IF ((SELECT seating_capacity FROM Rooms R WHERE R.rid=rid) < target_regis) THEN
-                RAISE EXCEPTION 'Invalid input, room has insufficient seating capacity';
-            END IF;
-        END LOOP;
-    END IF;
-
-    FOR i in 1..array_length(session_date,1) 
-        LOOP
-        IF (find_instructors(course_id, session_date[i], session_start_hour[i]) IS NULL) THEN
-            RAISE EXCEPTION 'There is no instructor available to teach a session';
-        ELSIF (room_id[i] NOT IN (SELECT rid FROM find_rooms(sessions_date[i], session_start_hour, (SELECT duration FROM Courses C WHERE C.course_id=course_id)))) THEN   
-            RAISE EXCEPTION 'There is no room available for a session';
-        ELSIF (i=array_length(session_date,1)-1) THEN
-            valid := TRUE;
+        IF ((SELECT SUM(seating_capacity) FROM Rooms R, UNNEST(room_id) AS roid WHERE R.rid=roid) < target_regis) THEN
+                RAISE EXCEPTION 'Invalid input, rooms have insufficient seating capacity';
         END IF;
-    END LOOP;
-
-    IF (valid=TRUE) THEN
-        FOREACH rid IN ARRAY room_id
-        LOOP
-            SELECT seating_capacity INTO curr_seats
-            FROM Rooms R
-            WHERE R.rid=rid;
-            total_seats= total_seats+curr_seats;
-        END LOOP;
-
-        INSERT INTO CourseOfferings
-        VALUES (launch_date, MIN(session_date), MAX(session_date), regis_deadline, target_regis,
-        total_seats, fees, course_id, admin_id);
-
-        SELECT C.duration INTO duration
-        FROM Courses C
-        WHERE C.course_id = course_id;
-
-        FOR i in 1..array_length(session_date,1) 
-        LOOP 
-            SELECT I.eid INTO instructor_id
-    	    FROM find_instructors(course_id, session_date[i], session_start_hour[i]) I
-            LIMIT 1;
-
-            INSERT INTO Sessions VALUES (i, session_date[i], session_start_hour[i], 
-            (session_start_hour[i] + TIME '00:00' + INTERVAL '1 HOUR' * (duration)), course_id, launch_date, room_id, instructor_id);
-        END LOOP;
+        IF ((SELECT SUM(seating_capacity) FROM Rooms R, UNNEST(room_id) AS roid WHERE R.rid=roid) < target_regis) THEN
+                RAISE EXCEPTION 'Invalid input, rooms have insufficient seating capacity';
+        END IF;
     END IF;
+
+
+    INSERT INTO CourseOfferings
+    VALUES (launch_date, MIN(session_date), MAX(session_date), regis_deadline, target_regis,
+    (SELECT SUM(seating_capacity) FROM Rooms R, UNNEST(room_id) AS roid WHERE R.rid=roid), fees, course_id, admin_id);
+
+    SELECT C.duration INTO duration
+    FROM Courses C
+    WHERE C.course_id = course_id;
+
+    FOR i in 1..array_length(session_date, 1) 
+    LOOP 
+        SELECT I.eid INTO instructor_id
+        FROM find_instructors(course_id, session_date[i], session_start_hour[i]) I
+        LIMIT 1;
+
+        IF instructor_id == NULL OR room_id[i] NOT IN (SELECT rid FROM find_rooms(session_date[i], session_start_hour[i], duration)) THEN
+            RAISE EXCEPTION 'No instructors or rooms available.';
+        END IF;
+
+        INSERT INTO Sessions VALUES (i, session_date[i], session_start_hour[i], 
+        (session_start_hour[i] + TIME '00:00' + INTERVAL '1 HOUR' * (duration)), course_id, launch_date, room_id[i], instructor_id);
+    END LOOP;
 END;
 $$ LANGUAGE plpgsql;
