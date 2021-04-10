@@ -137,16 +137,39 @@ DROP FUNCTION IF EXISTS find_instructors;
 CREATE OR REPLACE FUNCTION find_instructors(
     course_id INTEGER, session_date DATE, session_start_hour TIMESTAMP
     ) RETURNS TABLE(eid INTEGER, name VARCHAR(50)) AS $$
+DECLARE
+    course_duration TIME;
 BEGIN
     IF (course_id NOT IN (SELECT course_id FROM Courses)) THEN
 		RAISE EXCEPTION 'Invalid input, invalid course ID';
     END IF;
 
+    SELECT C.duration INTO course_duration
+    FROM Courses C
+    WHERE C.course_id = course_id;
+
+    WITH Busy_instructors AS(
+        SELECT S.eid, E.name
+        FROM Sessions S, Employees E
+        WHERE S.course_id = course_id
+        AND S.session_date = session_date
+        AND S.start_time >= session_start_hour - INTERVAL '30 minutes'),
+
+    Other_unavail_instructors AS(
+        SELECT S.eid, E.name
+        FROM Specializes S, Employees E
+        HAVING INTERVAL '30 hours' - course_duration >= (
+            SELECT SUM(duration)
+            FROM (Part_Time_Instructors NATURAL JOIN Courses) PC
+            WHERE PC.eid = eid
+            AND PC.course_id = course_id))
+    
     SELECT S.eid, E.name
-    FROM Sessions S, Employees E
-    WHERE S.course_id = course_id
-    AND S.session_date = session_date
-    AND S.start_time = session_start_hour;
+    FROM Specializes S, Employees E
+    EXCEPT
+    SELECT eid, name FROM Busy_instructors
+    EXCEPT
+    SELECT eid, name FROM Other_unavail_instructors;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -169,19 +192,19 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-/*8*/
+/*8 am not sure if this is enuf pls lmk*/ 
 DROP FUNCTION IF EXISTS find_rooms;
 CREATE OR REPLACE FUNCTION find_rooms(
     session_date DATE, session_start_hour TIMESTAMP, session_duration INTEGER
     ) RETURNS TABLE(rid INTEGER) AS $$
 BEGIN
     WITH Used_rooms AS(
-    SELECT rid
-    FROM Sessions NATURAL JOIN Courses
-    WHERE session_date = session_date
-    AND start_time = session_start_hour
-    AND duration = session_duration)
-    
+        SELECT rid
+        FROM Sessions NATURAL JOIN Courses
+        WHERE session_date = session_date
+        AND start_time = session_start_hour
+        AND duration = session_duration)
+
     SELECT rid
     FROM Rooms 
     EXCEPT 
