@@ -176,24 +176,50 @@ $$ LANGUAGE plpgsql;
 
 /*7*/
 CREATE OR REPLACE FUNCTION get_available_instructors(
-    course_id INTEGER, start_date DATE, end_date DATE
+    course_id_in INTEGER, start_date DATE, end_date DATE
     ) RETURNS TABLE(eid INTEGER, name VARCHAR(50), teaching_hours INTEGER, day DATE, avail_hours TIME[]) AS $$
+DECLARE
+all_hours TIME[] = array[time '09:00', time '10:00', time '11:00', time '14:00', time '15:00', time '16:00', time '17:00', time '18:00'];
+cur_date DATE;
+curs CURSOR FOR (SELECT * FROM Instructors I 
+    WHERE EXISTS(SELECT 1 FROM Specializes S WHERE I.eid = S.eid 
+    AND S.name = (SELECT C.name FROM Courses C WHERE C.course_id = course_id_in))) ORDER BY I.eid;
+r RECORD;
 BEGIN
-    IF (course_id NOT IN (SELECT course_id FROM Courses)) THEN
+
+    IF (course_id_in NOT IN (SELECT C.course_id FROM Courses C)) THEN
 		RAISE EXCEPTION 'Invalid input, invalid course ID';
     END IF;
-
-    SELECT SE.eid, SE.name, SUM(CO.duration),
-    FROM (Courses NATURAL JOIN Offerings) CO, (Employee NATURAL JOIN (ALTER TABLE Specializes RENAME name TO area) ) SE
-    WHERE CO.course_id = course_id
-    AND CO.start_date = start_date
-    AND CO.end_date = end_date
-    GROUP BY SE.eid
+    OPEN curs;
+    LOOP
+        FETCH curs INTO r;
+        EXIT WHEN NOT FOUND;
+        cur_date = start_date;
+        LOOP
+            EXIT WHEN cur_date > end_date;
+            eid := r.eid;
+            name := (SELECT E.name FROM Employees E WHERE E.eid = r.eid);
+            teaching_hours := COALESCE((SELECT SUM(duration)
+                            FROM (Sessions NATURAL JOIN Courses)S WHERE S.eid = r.eid 
+                            AND date_part('month', session_date) = date_part('month', cur_date)
+                            AND date_part('year', session_date) = date_part('year', cur_date)), 0);
+            day := cur_date;
+            avail_hours := array(SELECT * FROM UNNEST(all_hours) AS hour
+                WHERE NOT EXISTS(SELECT 1 FROM Sessions S WHERE S.eid = r.eid AND S.session_date = cur_date AND
+                (SELECT(EXTRACT(EPOCH from (GREATEST(S.start_time::time, hour) - LEAST(S.end_time::time, hour + INTERVAL '1 HOUR'))) / 3600)::integer < 1 )));
+            cur_date = cur_date + INTERVAL '1 DAY';
+            IF EXISTS(SELECT 1 FROM Full_Time_Employees F WHERE F.eid = r.eid) OR + (SELECT duration FROM Courses WHERE course_id = course_id_in) <= 30 THEN
+                RETURN NEXT;
+            END IF;
+        
+        END LOOP;
+    END LOOP;
+    CLOSE curs;
 
 END;
 $$ LANGUAGE plpgsql;
 
-/*8*/
+-- /*8*/
 DROP FUNCTION IF EXISTS find_rooms;
 CREATE OR REPLACE FUNCTION find_rooms(
     session_date DATE, session_start_hour TIMESTAMP, session_duration INTEGER
@@ -214,10 +240,37 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-/*9*/
+-- /*9*/
 CREATE OR REPLACE FUNCTION get_available_rooms(
     start_date DATE, end_date DATE
-    ) RETURNS TABLE(rid INTEGER, capacity INTEGER, day DATE, avail_hours TIMESTAMP[]) AS $$
+    ) RETURNS TABLE(rid INTEGER, capacity INTEGER, day DATE, avail_hours TIME[]) AS $$
+DECLARE
+all_hours TIME[] = array[time '09:00', time '10:00', time '11:00', time '14:00', time '15:00', time '16:00', time '17:00', time '18:00'];
+cur_date DATE;
+curs CURSOR FOR (SELECT * FROM Rooms) order by rid;
+r RECORD;
+BEGIN
+
+    OPEN curs;
+    LOOP
+        FETCH curs INTO r;
+        EXIT WHEN NOT FOUND;
+        cur_date = start_date;
+        LOOP
+            EXIT WHEN cur_date > end_date;
+            rid := r.rid;
+            capacity := r.seating_capacity;
+            day := cur_date;
+            avail_hours := array(SELECT * FROM UNNEST(all_hours) AS hour
+                WHERE NOT EXISTS(SELECT 1 FROM Sessions S WHERE S.rid = r.rid AND S.session_date = cur_date AND
+                (SELECT(EXTRACT(EPOCH from (GREATEST(S.start_time::time, hour) - LEAST(S.end_time::time, hour + INTERVAL '1 HOUR'))) / 3600)::integer < 0)));
+            cur_date = cur_date + INTERVAL '1 DAY';
+            RETURN NEXT;        
+        END LOOP;
+    END LOOP;
+    CLOSE curs;
+END;
+$$ LANGUAGE plpgsql;
 
 /*10*/
 DROP PROCEDURE IF EXISTS add_course_offering;
