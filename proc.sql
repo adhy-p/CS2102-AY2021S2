@@ -6,14 +6,14 @@ CREATE OR REPLACE PROCEDURE add_course_package(
     package_end_date DATE, package_price DOUBLE PRECISION
 ) AS $$
 BEGIN
-    INSERT INTO Course_Packages
+    INSERT INTO Course_Packages (
+        sale_start_date, sale_end_date, name, num_free_registration, package_price
+    )
     VALUES (
-        (SELECT MAX(package_id) + 1 FROM Course_Packages),
         package_start_date, package_end_date, package_name, no_of_free_sessions, package_price
     );
 END;
 $$ LANGUAGE plpgsql;
-
 
 DROP FUNCTION IF EXISTS get_available_course_packages();
 CREATE OR REPLACE FUNCTION get_available_course_packages()
@@ -26,7 +26,6 @@ BEGIN
     FROM Course_Packages;
 END;
 $$ LANGUAGE plpgsql;
-
 
 DROP PROCEDURE IF EXISTS buy_course_package;
 CREATE OR REPLACE PROCEDURE buy_course_package(IN customer_id INTEGER,
@@ -45,7 +44,6 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE plpgsql;
-
 
 DROP FUNCTION IF EXISTS get_my_course_package(INTEGER);
 CREATE OR REPLACE FUNCTION get_my_course_package(customer_id INTEGER)
@@ -67,7 +65,6 @@ RETURNS json AS $$
     ) u
 $$ LANGUAGE sql;
 
-
 DROP FUNCTION IF EXISTS get_available_course_offerings();
 CREATE OR REPLACE FUNCTION get_available_course_offerings()
 RETURNS TABLE (
@@ -75,20 +72,39 @@ RETURNS TABLE (
     end_date DATE, registration_deadline DATE, course_fees DOUBLE PRECISION, 
     remaining_seats BIGINT
 ) AS $$
-BEGIN
-    SELECT A.title, A.name, A.start_date, A.end_date, A.registration_deadline, A.fees,
+
+    ((SELECT A.title, A.name, A.start_date, A.end_date, A.registration_deadline, A.fees,
     A.seating_capacity - COUNT(R.course_id) AS remaining_seats
     FROM (Offerings NATURAL JOIN Courses) A LEFT JOIN Registers R
     ON A.launch_date = R.launch_date and A.course_id = R.course_id
     GROUP BY A.course_id, A.launch_date, A.title, A.name, A.start_date, A.end_date,
     A.registration_deadline, A.fees 
     HAVING A.seating_capacity - COUNT(R.course_id) > 0
-    ORDER BY A.registration_deadline, A.title;
-END
-$$ LANGUAGE plpgsql;
+    ORDER BY A.registration_deadline, A.title)
 
+    UNION
 
+    (SELECT A.title, A.name, A.start_date, A.end_date, A.registration_deadline, A.fees,
+    A.seating_capacity - COUNT(R.course_id) AS remaining_seats
+    FROM (Offerings NATURAL JOIN Courses) A LEFT JOIN Redeems R
+    ON A.launch_date = R.launch_date and A.course_id = R.course_id
+    GROUP BY A.course_id, A.launch_date, A.title, A.name, A.start_date, A.end_date,
+    A.registration_deadline, A.fees 
+    HAVING A.seating_capacity - COUNT(R.course_id) > 0
+    ORDER BY A.registration_deadline, A.title))
 
+    EXCEPT
+
+    (SELECT A.title, A.name, A.start_date, A.end_date, A.registration_deadline, A.fees,
+    A.seating_capacity - COUNT(C.course_id) AS remaining_seats
+    FROM (Offerings NATURAL JOIN Courses) A LEFT JOIN Cancels C
+    ON A.launch_date = C.launch_date and A.course_id = C.course_id
+    GROUP BY A.course_id, A.launch_date, A.title, A.name, A.start_date, A.end_date,
+    A.registration_deadline, A.fees 
+    HAVING A.seating_capacity - COUNT(C.course_id) > 0
+    ORDER BY A.registration_deadline, A.title)
+
+$$ LANGUAGE sql;
 
 /* Routine no. 16 - 25, @author: Fidella Widjojo */
 CREATE OR REPLACE FUNCTION get_available_course_sessions(course_id_in integer, launch_date_in date) 
@@ -240,7 +256,6 @@ BEGIN
     CLOSE curs;
 END;
 $$ LANGUAGE plpgsql;
-
 
 /* Routine no. 26 - 30, @author: Hubertus Adhy Pratama Setiawan */
 /* Routine no. 26 */
