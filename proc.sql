@@ -15,7 +15,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
 DROP FUNCTION IF EXISTS get_available_course_packages();
 CREATE OR REPLACE FUNCTION get_available_course_packages()
 RETURNS TABLE (
@@ -27,7 +26,6 @@ BEGIN
     FROM Course_Packages;
 END;
 $$ LANGUAGE plpgsql;
-
 
 DROP PROCEDURE IF EXISTS buy_course_package;
 CREATE OR REPLACE PROCEDURE buy_course_package(IN customer_id INTEGER,
@@ -46,7 +44,6 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE plpgsql;
-
 
 DROP FUNCTION IF EXISTS get_my_course_package(INTEGER);
 CREATE OR REPLACE FUNCTION get_my_course_package(customer_id INTEGER)
@@ -67,7 +64,6 @@ RETURNS json AS $$
         WHERE cust_id = customer_id
     ) u
 $$ LANGUAGE sql;
-
 
 DROP FUNCTION IF EXISTS get_available_course_offerings();
 CREATE OR REPLACE FUNCTION get_available_course_offerings()
@@ -109,8 +105,6 @@ RETURNS TABLE (
     ORDER BY A.registration_deadline, A.title)
 
 $$ LANGUAGE sql;
-
-
 
 /* Routine no. 16 - 25, @author: Fidella Widjojo */
 CREATE OR REPLACE FUNCTION get_available_course_sessions(course_id_in integer, launch_date_in date) 
@@ -262,7 +256,6 @@ BEGIN
     CLOSE curs;
 END;
 $$ LANGUAGE plpgsql;
-
 
 /* Routine no. 26 - 30, @author: Hubertus Adhy Pratama Setiawan */
 /* Routine no. 26 */

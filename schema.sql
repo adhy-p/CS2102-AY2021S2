@@ -722,3 +722,23 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER update_delete_employees
 BEFORE UPDATE OR DELETE ON Employees
 FOR EACH ROW EXECUTE FUNCTION update_delete_employees();
+
+CREATE OR REPLACE FUNCTION check_active_packages() RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS (SELECT * FROM Buys WHERE card_number = NEW.card_number AND num_remaining_redemptions > 0)
+    OR EXISTS (
+        SELECT * 
+        FROM Buys NATURAL JOIN Redeems NATURAL JOIN Sessions 
+        WHERE card_number = NEW.card_number AND num_remaining_redemptions = 0 AND AGE(start_time, CURRENT_DATE) >= '7 days'
+    )
+    THEN 
+        RAISE EXCEPTION 'Cannot buy a new package as the current package is still active or partially active.';
+        return NULL;
+    END IF;
+    return NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_active_packages
+BEFORE INSERT ON Buys
+FOR EACH ROW EXECUTE FUNCTION check_active_packages();
