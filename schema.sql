@@ -657,58 +657,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
--- CREATE TRIGGER check_employees_insertion_trigger
--- BEFORE INSERT ON Employees
--- FOR EACH ROW EXECUTE FUNCTION check_employees_insertion();
-
--- CREATE OR REPLACE FUNCTION check_employees_insertion()
--- RETURNS TRIGGER AS $$
--- BEGIN
---     RAISE EXCEPTION 'Please specify the roles.';
---     RETURN NULL;
--- END;
--- $$ LANGUAGE plpgsql;
-
-
--- CREATE TRIGGER check_instructors_insertion_trigger
--- BEFORE INSERT ON Instructors
--- FOR EACH ROW EXECUTE FUNCTION check_instructors_insertion();
-
--- CREATE OR REPLACE FUNCTION check_instructors_insertion()
--- RETURNS TRIGGER AS $$
--- BEGIN
---     RAISE EXCEPTION 'Please specify the roles.';
---     RETURN NULL;
--- END;
--- $$ LANGUAGE plpgsql;
-
-
--- CREATE TRIGGER check_ft_employees_insertion_trigger
--- BEFORE INSERT ON Full_Time_Employees
--- FOR EACH ROW EXECUTE FUNCTION check_ft_employees_insertion();
-
--- CREATE OR REPLACE FUNCTION check_ft_employees_insertion()
--- RETURNS TRIGGER AS $$
--- BEGIN
---     RAISE EXCEPTION 'Please specify the roles.';
---     RETURN NULL;
--- END;
--- $$ LANGUAGE plpgsql;
-
-
--- CREATE TRIGGER check_pt_employees_insertion_trigger
--- BEFORE INSERT ON Part_Time_Employees
--- FOR EACH ROW EXECUTE FUNCTION check_pt_employees_insertion();
-
--- CREATE OR REPLACE FUNCTION check_pt_employees_insertion()
--- RETURNS TRIGGER AS $$
--- BEGIN
---     RAISE EXCEPTION 'Please specify the roles.';
---     RETURN NULL;
--- END;
--- $$ LANGUAGE plpgsql;
-
 CREATE OR REPLACE FUNCTION delete_employees() RETURNS TRIGGER AS $$
 BEGIN
     IF EXISTS (SELECT 1 FROM Offerings WHERE eid = OLD.eid AND registration_deadline > NOW())  -- admin handling course offering, deadline still coming
