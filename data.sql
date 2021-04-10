@@ -1,24 +1,24 @@
 /* Customers */
-insert into Customers (cust_id, name, email, address, phone) values ( 1, 'Aggy'     , 'aggy01@customer.org', ' 1 Kent Ridge Road', 98765432);
-insert into Customers (cust_id, name, email, address, phone) values ( 2, 'Frederico', 'fred02@customer.org', ' 2 Kent Ridge Road', 98765433);
-insert into Customers (cust_id, name, email, address, phone) values ( 3, 'Carmen'   , 'carm03@customer.org', ' 3 Kent Ridge Road', 98765434);
-insert into Customers (cust_id, name, email, address, phone) values ( 4, 'Daryl'    , 'dary04@customer.org', ' 4 Kent Ridge Road', 98765435);
-insert into Customers (cust_id, name, email, address, phone) values ( 5, 'Ara'      , 'araa05@customer.org', ' 5 Kent Ridge Road', 99998880);
-insert into Customers (cust_id, name, email, address, phone) values ( 6, 'Kermit'   , 'kerm06@customer.org', ' 6 Kent Ridge Road', 99998881);
-insert into Customers (cust_id, name, email, address, phone) values ( 7, 'Dayna'    , 'dayn07@customer.org', ' 7 Kent Ridge Road', 99998882);
-insert into Customers (cust_id, name, email, address, phone) values ( 8, 'Nevin'    , 'nevi08@customer.org', ' 8 Kent Ridge Road', 99998883);
-insert into Customers (cust_id, name, email, address, phone) values ( 9, 'Myrtle'   , 'myrt09@customer.org', ' 9 Kent Ridge Road', 99998884);
-insert into Customers (cust_id, name, email, address, phone) values (10, 'Baudoin'  , 'baud10@customer.org', '10 Kent Ridge Road', 98765436);
-insert into Customers (cust_id, name, email, address, phone) values (11, 'Collette' , 'coll11@customer.org', '11 Kent Ridge Road', 98765437);
-insert into Customers (cust_id, name, email, address, phone) values (12, 'Hort'     , 'hort12@customer.org', '12 Kent Ridge Road', 99998885);
-insert into Customers (cust_id, name, email, address, phone) values (13, 'Julie'    , 'juli13@customer.org', '13 Kent Ridge Road', 98765438);
-insert into Customers (cust_id, name, email, address, phone) values (14, 'Debby'    , 'debb14@customer.org', '14 Kent Ridge Road', 99998887);
-insert into Customers (cust_id, name, email, address, phone) values (15, 'Elroy'    , 'elro15@customer.org', '15 Kent Ridge Road', 99998888);
-insert into Customers (cust_id, name, email, address, phone) values (16, 'Gray'     , 'gray16@customer.org', '16 Kent Ridge Road', 99998889);
-insert into Customers (cust_id, name, email, address, phone) values (17, 'Sandor'   , 'sand17@customer.org', '17 Kent Ridge Road', 98765439);
-insert into Customers (cust_id, name, email, address, phone) values (18, 'Dionis'   , 'dion18@customer.org', '18 Kent Ridge Road', 99998800);
-insert into Customers (cust_id, name, email, address, phone) values (19, 'Odessa'   , 'odes19@customer.org', '19 Kent Ridge Road', 99998801);
-insert into Customers (cust_id, name, email, address, phone) values (20, 'Annie'    , 'anni20@customer.org', '20 Kent Ridge Road', 98765430);
+insert into Customers (name, email, address, phone) values ('Aggy'     , 'aggy01@customer.org', ' 1 Kent Ridge Road', 98765432);
+insert into Customers (name, email, address, phone) values ('Frederico', 'fred02@customer.org', ' 2 Kent Ridge Road', 98765433);
+insert into Customers (name, email, address, phone) values ('Carmen'   , 'carm03@customer.org', ' 3 Kent Ridge Road', 98765434);
+insert into Customers (name, email, address, phone) values ('Daryl'    , 'dary04@customer.org', ' 4 Kent Ridge Road', 98765435);
+insert into Customers (name, email, address, phone) values ('Ara'      , 'araa05@customer.org', ' 5 Kent Ridge Road', 99998880);
+insert into Customers (name, email, address, phone) values ('Kermit'   , 'kerm06@customer.org', ' 6 Kent Ridge Road', 99998881);
+insert into Customers (name, email, address, phone) values ('Dayna'    , 'dayn07@customer.org', ' 7 Kent Ridge Road', 99998882);
+insert into Customers (name, email, address, phone) values ('Nevin'    , 'nevi08@customer.org', ' 8 Kent Ridge Road', 99998883);
+insert into Customers (name, email, address, phone) values ('Myrtle'   , 'myrt09@customer.org', ' 9 Kent Ridge Road', 99998884);
+insert into Customers (name, email, address, phone) values ('Baudoin'  , 'baud10@customer.org', '10 Kent Ridge Road', 98765436);
+insert into Customers (name, email, address, phone) values ('Collette' , 'coll11@customer.org', '11 Kent Ridge Road', 98765437);
+insert into Customers (name, email, address, phone) values ('Hort'     , 'hort12@customer.org', '12 Kent Ridge Road', 99998885);
+insert into Customers (name, email, address, phone) values ('Julie'    , 'juli13@customer.org', '13 Kent Ridge Road', 98765438);
+insert into Customers (name, email, address, phone) values ('Debby'    , 'debb14@customer.org', '14 Kent Ridge Road', 99998887);
+insert into Customers (name, email, address, phone) values ('Elroy'    , 'elro15@customer.org', '15 Kent Ridge Road', 99998888);
+insert into Customers (name, email, address, phone) values ('Gray'     , 'gray16@customer.org', '16 Kent Ridge Road', 99998889);
+insert into Customers (name, email, address, phone) values ('Sandor'   , 'sand17@customer.org', '17 Kent Ridge Road', 98765439);
+insert into Customers (name, email, address, phone) values ('Dionis'   , 'dion18@customer.org', '18 Kent Ridge Road', 99998800);
+insert into Customers (name, email, address, phone) values ('Odessa'   , 'odes19@customer.org', '19 Kent Ridge Road', 99998801);
+insert into Customers (name, email, address, phone) values ('Annie'    , 'anni20@customer.org', '20 Kent Ridge Road', 98765430);
 
 /** 
  * Credit_Cards 
@@ -47,56 +47,56 @@ insert into Credit_Cards (card_number, cvv, expiry_date, from_date, cust_id) val
 
 
 /* Employees */ 
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values ( 1, 'Perren Gamble'      ,' 1 Science Park' , 'employee01@company.org', 98267108, null, '2021-02-05');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values ( 2, 'Esther Rogister'    ,' 2 Science Park' , 'employee02@company.org', 98413421, null, '2021-03-15');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values ( 3, 'Scot Moniker'       ,' 3 Science Park' , 'employee03@company.org', 98484577, null, '2021-01-16');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values ( 4, 'Jo-anne Parysowna'  ,' 4 Science Park' , 'employee04@company.org', 98197577, null, '2021-01-14');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values ( 5, 'Rutledge Stait'     ,' 5 Science Park' , 'employee05@company.org', 98631032, null, '2021-01-27');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values ( 6, 'Woodie Fraczkiewicz',' 6 Science Park' , 'employee06@company.org', 98619419, null, '2021-02-26');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values ( 7, 'Trenna Dain'        ,' 7 Science Park' , 'employee07@company.org', 98964433, null, '2021-04-10');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values ( 8, 'Palm Nodin'         ,' 8 Science Park' , 'employee08@company.org', 98482613, null, '2021-02-16');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values ( 9, 'Laird McVane'       ,' 9 Science Park' , 'employee09@company.org', 98073228, null, '2021-02-07');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (10, 'Israel Tynemouth'   ,'10 Science Park' , 'employee10@company.org', 98795258, null, '2021-03-23');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (11, 'Feodor Challiss'    ,'11 Science Park' , 'employee11@company.org', 98564115, null, '2021-03-03');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (12, 'Joela Berrey'       ,'12 Science Park' , 'employee12@company.org', 98427250, null, '2021-03-04');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (13, 'Genni McFadyen'     ,'13 Science Park' , 'employee13@company.org', 98745131, null, '2021-01-30');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (14, 'Shadow Hadlee'      ,'14 Science Park' , 'employee14@company.org', 98071431, null, '2021-01-28');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (15, 'Shanna Ostick'      ,'15 Science Park' , 'employee15@company.org', 98917654, null, '2021-02-08');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (16, 'Bat Loache'         ,'16 Science Park' , 'employee16@company.org', 98304894, null, '2021-03-28');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (17, 'Leora Gentle'       ,'17 Science Park' , 'employee17@company.org', 98125270, null, '2021-04-11');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (18, 'Edie Greguoli'      ,'18 Science Park' , 'employee18@company.org', 98675239, null, '2021-02-25');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (19, 'Rupert Costi'       ,'19 Science Park' , 'employee19@company.org', 98193703, null, '2021-03-15');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (20, 'Itch Duthie'        ,'20 Science Park' , 'employee20@company.org', 98593740, null, '2020-05-24');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (21, 'Natalina Pohlke'    ,'21 Science Park' , 'employee21@company.org', 98480764, null, '2021-03-24');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (22, 'Pammie Lewinton'    ,'22 Science Park' , 'employee22@company.org', 98630563, null, '2020-11-19');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (23, 'Giulia Kalinsky'    ,'23 Science Park' , 'employee23@company.org', 98684775, null, '2020-09-17');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (24, 'Marjy Stare'        ,'24 Science Park' , 'employee24@company.org', 98124018, null, '2020-06-02');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (25, 'Melisandra Linnett' ,'25 Science Park' , 'employee25@company.org', 98402421, null, '2020-12-07');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (26, 'Darryl Grunder'     ,'26 Science Park' , 'employee26@company.org', 98321664, null, '2020-12-20');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (27, 'Vernice Creaney'    ,'27 Science Park' , 'employee27@company.org', 98769955, null, '2020-12-08');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (28, 'Alessandra Killeen' ,'28 Science Park' , 'employee28@company.org', 98164869, null, '2021-03-09');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (29, 'Hermine Benion'     ,'29 Science Park' , 'employee29@company.org', 98028597, null, '2020-08-06');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (30, 'Mortie Finlator'    ,'30 Science Park' , 'employee30@company.org', 98289099, null, '2020-11-08');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (31, 'Foster Treverton'   ,'31 Science Park' , 'employee31@company.org', 98672589, null, '2021-02-15');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (32, 'Heriberto Minucci'  ,'32 Science Park' , 'employee32@company.org', 98416219, null, '2021-02-21');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (33, 'Thorvald Scatchar'  ,'33 Science Park' , 'employee33@company.org', 98884164, null, '2021-03-15');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (34, 'Wilhelm Stubbs'     ,'34 Science Park' , 'employee34@company.org', 98997630, null, '2021-01-04');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (35, 'Muriel Wann'        ,'35 Science Park' , 'employee35@company.org', 98870430, null, '2021-01-20');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (36, 'Jeannine Boote'     ,'36 Science Park' , 'employee36@company.org', 98778470, null, '2021-03-30');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (37, 'Tait McGaughey'     ,'37 Science Park' , 'employee37@company.org', 98574157, null, '2020-12-27');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (38, 'Carlen Burrill'     ,'38 Science Park' , 'employee38@company.org', 98953638, null, '2021-02-02');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (39, 'Delmar Hazel'       ,'39 Science Park' , 'employee39@company.org', 98609724, null, '2021-05-07');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (40, 'Marylee Newtown'    ,'40 Science Park' , 'employee40@company.org', 98228950, null, '2020-11-26');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (41, 'Leighton Gyorgy'    ,'41 Science Park' , 'employee41@company.org', 98692084, null, '2020-11-21');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (42, 'Jaquenetta Bunt'    ,'42 Science Park' , 'employee42@company.org', 98914020, null, '2021-03-15');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (43, 'Iggy Brayley'       ,'43 Science Park' , 'employee43@company.org', 98415176, null, '2021-02-20');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (44, 'Dana Abella'        ,'44 Science Park' , 'employee44@company.org', 98419301, null, '2020-11-21');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (45, 'Carline Claque'     ,'45 Science Park' , 'employee45@company.org', 98605405, null, '2021-10-01');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (46, 'Jimmie Spurr'       ,'46 Science Park' , 'employee46@company.org', 98661532, null, '2021-01-19');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (47, 'Filia Cowey'        ,'47 Science Park' , 'employee47@company.org', 98317739, null, '2020-08-02');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (48, 'Celestine Ransom'   ,'48 Science Park' , 'employee48@company.org', 98628642, null, '2020-09-22');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (49, 'Erik Dell'          ,'49 Science Park' , 'employee49@company.org', 98761365, null, '2020-08-25');
-insert into Employees (eid, name, address, email, phone, depart_date, join_date) values (50, 'Alene Ruffles'      ,'50 Science Park' , 'employee50@company.org', 98471613, null, '2020-10-11');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Perren Gamble'      ,' 1 Science Park' , 'employee01@company.org', 98267108, null, '2021-02-05');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Esther Rogister'    ,' 2 Science Park' , 'employee02@company.org', 98413421, null, '2021-03-15');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Scot Moniker'       ,' 3 Science Park' , 'employee03@company.org', 98484577, null, '2021-01-16');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Jo-anne Parysowna'  ,' 4 Science Park' , 'employee04@company.org', 98197577, null, '2021-01-14');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Rutledge Stait'     ,' 5 Science Park' , 'employee05@company.org', 98631032, null, '2021-01-27');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Woodie Fraczkiewicz',' 6 Science Park' , 'employee06@company.org', 98619419, null, '2021-02-26');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Trenna Dain'        ,' 7 Science Park' , 'employee07@company.org', 98964433, null, '2021-04-10');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Palm Nodin'         ,' 8 Science Park' , 'employee08@company.org', 98482613, null, '2021-02-16');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Laird McVane'       ,' 9 Science Park' , 'employee09@company.org', 98073228, null, '2021-02-07');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Israel Tynemouth'   ,'10 Science Park' , 'employee10@company.org', 98795258, null, '2021-03-23');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Feodor Challiss'    ,'11 Science Park' , 'employee11@company.org', 98564115, null, '2021-03-03');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Joela Berrey'       ,'12 Science Park' , 'employee12@company.org', 98427250, null, '2021-03-04');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Genni McFadyen'     ,'13 Science Park' , 'employee13@company.org', 98745131, null, '2021-01-30');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Shadow Hadlee'      ,'14 Science Park' , 'employee14@company.org', 98071431, null, '2021-01-28');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Shanna Ostick'      ,'15 Science Park' , 'employee15@company.org', 98917654, null, '2021-02-08');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Bat Loache'         ,'16 Science Park' , 'employee16@company.org', 98304894, null, '2021-03-28');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Leora Gentle'       ,'17 Science Park' , 'employee17@company.org', 98125270, null, '2021-04-11');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Edie Greguoli'      ,'18 Science Park' , 'employee18@company.org', 98675239, null, '2021-02-25');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Rupert Costi'       ,'19 Science Park' , 'employee19@company.org', 98193703, null, '2021-03-15');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Itch Duthie'        ,'20 Science Park' , 'employee20@company.org', 98593740, null, '2020-05-24');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Natalina Pohlke'    ,'21 Science Park' , 'employee21@company.org', 98480764, null, '2021-03-24');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Pammie Lewinton'    ,'22 Science Park' , 'employee22@company.org', 98630563, null, '2020-11-19');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Giulia Kalinsky'    ,'23 Science Park' , 'employee23@company.org', 98684775, null, '2020-09-17');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Marjy Stare'        ,'24 Science Park' , 'employee24@company.org', 98124018, null, '2020-06-02');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Melisandra Linnett' ,'25 Science Park' , 'employee25@company.org', 98402421, null, '2020-12-07');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Darryl Grunder'     ,'26 Science Park' , 'employee26@company.org', 98321664, null, '2020-12-20');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Vernice Creaney'    ,'27 Science Park' , 'employee27@company.org', 98769955, null, '2020-12-08');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Alessandra Killeen' ,'28 Science Park' , 'employee28@company.org', 98164869, null, '2021-03-09');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Hermine Benion'     ,'29 Science Park' , 'employee29@company.org', 98028597, null, '2020-08-06');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Mortie Finlator'    ,'30 Science Park' , 'employee30@company.org', 98289099, null, '2020-11-08');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Foster Treverton'   ,'31 Science Park' , 'employee31@company.org', 98672589, null, '2021-02-15');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Heriberto Minucci'  ,'32 Science Park' , 'employee32@company.org', 98416219, null, '2021-02-21');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Thorvald Scatchar'  ,'33 Science Park' , 'employee33@company.org', 98884164, null, '2021-03-15');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Wilhelm Stubbs'     ,'34 Science Park' , 'employee34@company.org', 98997630, null, '2021-01-04');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Muriel Wann'        ,'35 Science Park' , 'employee35@company.org', 98870430, null, '2021-01-20');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Jeannine Boote'     ,'36 Science Park' , 'employee36@company.org', 98778470, null, '2021-03-30');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Tait McGaughey'     ,'37 Science Park' , 'employee37@company.org', 98574157, null, '2020-12-27');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Carlen Burrill'     ,'38 Science Park' , 'employee38@company.org', 98953638, null, '2021-02-02');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Delmar Hazel'       ,'39 Science Park' , 'employee39@company.org', 98609724, null, '2021-05-07');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Marylee Newtown'    ,'40 Science Park' , 'employee40@company.org', 98228950, null, '2020-11-26');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Leighton Gyorgy'    ,'41 Science Park' , 'employee41@company.org', 98692084, null, '2020-11-21');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Jaquenetta Bunt'    ,'42 Science Park' , 'employee42@company.org', 98914020, null, '2021-03-15');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Iggy Brayley'       ,'43 Science Park' , 'employee43@company.org', 98415176, null, '2021-02-20');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Dana Abella'        ,'44 Science Park' , 'employee44@company.org', 98419301, null, '2020-11-21');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Carline Claque'     ,'45 Science Park' , 'employee45@company.org', 98605405, null, '2021-10-01');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Jimmie Spurr'       ,'46 Science Park' , 'employee46@company.org', 98661532, null, '2021-01-19');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Filia Cowey'        ,'47 Science Park' , 'employee47@company.org', 98317739, null, '2020-08-02');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Celestine Ransom'   ,'48 Science Park' , 'employee48@company.org', 98628642, null, '2020-09-22');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Erik Dell'          ,'49 Science Park' , 'employee49@company.org', 98761365, null, '2020-08-25');
+insert into Employees (name, address, email, phone, depart_date, join_date) values ('Alene Ruffles'      ,'50 Science Park' , 'employee50@company.org', 98471613, null, '2020-10-11');
 
 /* Full_Time_Employees, eid: 1-40 */
 insert into Full_Time_Employees (eid, monthly_salary) values ( 1, 4796);
@@ -243,26 +243,26 @@ insert into Part_Time_Instructors (eid) values (49);
 insert into Part_Time_Instructors (eid) values (50);
 
 /* Rooms */
-insert into Rooms (rid, location, seating_capacity) values (1 , '1  Higher Education Rd', 10);
-insert into Rooms (rid, location, seating_capacity) values (2 , '2  Higher Education Rd', 20);
-insert into Rooms (rid, location, seating_capacity) values (3 , '3  Higher Education Rd', 30);
-insert into Rooms (rid, location, seating_capacity) values (4 , '4  Higher Education Rd', 40);
-insert into Rooms (rid, location, seating_capacity) values (5 , '5  Higher Education Rd', 50);
-insert into Rooms (rid, location, seating_capacity) values (6 , '6  Higher Education Rd', 60);
-insert into Rooms (rid, location, seating_capacity) values (7 , '7  Higher Education Rd', 70);
-insert into Rooms (rid, location, seating_capacity) values (8 , '8  Higher Education Rd', 80);
-insert into Rooms (rid, location, seating_capacity) values (9 , '9  Higher Education Rd', 90);
-insert into Rooms (rid, location, seating_capacity) values (10, '10 Higher Education Rd', 100);
-insert into Rooms (rid, location, seating_capacity) values (11, '11 Higher Education Rd', 110);
-insert into Rooms (rid, location, seating_capacity) values (12, '12 Higher Education Rd', 120);
-insert into Rooms (rid, location, seating_capacity) values (13, '13 Higher Education Rd', 130);
-insert into Rooms (rid, location, seating_capacity) values (14, '14 Higher Education Rd', 140);
-insert into Rooms (rid, location, seating_capacity) values (15, '15 Higher Education Rd', 150);
-insert into Rooms (rid, location, seating_capacity) values (16, '16 Higher Education Rd', 160);
-insert into Rooms (rid, location, seating_capacity) values (17, '17 Higher Education Rd', 170);
-insert into Rooms (rid, location, seating_capacity) values (18, '18 Higher Education Rd', 180);
-insert into Rooms (rid, location, seating_capacity) values (19, '19 Higher Education Rd', 190);
-insert into Rooms (rid, location, seating_capacity) values (20, '20 Higher Education Rd', 200);
+insert into Rooms (location, seating_capacity) values ('1  Higher Education Rd', 10);
+insert into Rooms (location, seating_capacity) values ('2  Higher Education Rd', 20);
+insert into Rooms (location, seating_capacity) values ('3  Higher Education Rd', 30);
+insert into Rooms (location, seating_capacity) values ('4  Higher Education Rd', 40);
+insert into Rooms (location, seating_capacity) values ('5  Higher Education Rd', 50);
+insert into Rooms (location, seating_capacity) values ('6  Higher Education Rd', 60);
+insert into Rooms (location, seating_capacity) values ('7  Higher Education Rd', 70);
+insert into Rooms (location, seating_capacity) values ('8  Higher Education Rd', 80);
+insert into Rooms (location, seating_capacity) values ('9  Higher Education Rd', 90);
+insert into Rooms (location, seating_capacity) values ('10 Higher Education Rd', 100);
+insert into Rooms (location, seating_capacity) values ('11 Higher Education Rd', 110);
+insert into Rooms (location, seating_capacity) values ('12 Higher Education Rd', 120);
+insert into Rooms (location, seating_capacity) values ('13 Higher Education Rd', 130);
+insert into Rooms (location, seating_capacity) values ('14 Higher Education Rd', 140);
+insert into Rooms (location, seating_capacity) values ('15 Higher Education Rd', 150);
+insert into Rooms (location, seating_capacity) values ('16 Higher Education Rd', 160);
+insert into Rooms (location, seating_capacity) values ('17 Higher Education Rd', 170);
+insert into Rooms (location, seating_capacity) values ('18 Higher Education Rd', 180);
+insert into Rooms (location, seating_capacity) values ('19 Higher Education Rd', 190);
+insert into Rooms (location, seating_capacity) values ('20 Higher Education Rd', 200);
 
 /** 
  * Course_Packages 
@@ -270,26 +270,26 @@ insert into Rooms (rid, location, seating_capacity) values (20, '20 Higher Educa
  * sale end date: 30
  * month is random, sales duration +- 6 months
  */ 
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 1, '2021-03-01', '2021-09-30', 'Course Bundle  1',  5, 907.86);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 2, '2021-03-01', '2021-09-30', 'Course Bundle  2',  5, 451.54);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 3, '2021-03-01', '2021-09-30', 'Course Bundle  3',  5, 624.19);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 4, '2021-03-01', '2021-09-30', 'Course Bundle  4',  5, 861.92);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 5, '2021-03-01', '2021-09-30', 'Course Bundle  5',  5, 606.94);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 6, '2021-04-01', '2021-10-30', 'Course Bundle  6',  5, 482.03);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 7, '2021-04-01', '2021-10-30', 'Course Bundle  7',  5, 929.7);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 8, '2021-04-01', '2021-10-30', 'Course Bundle  8',  5, 426.35);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values ( 9, '2021-04-01', '2021-10-30', 'Course Bundle  9',  5, 242.66);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (10, '2021-04-01', '2021-10-30', 'Course Bundle 10', 10, 691.13);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (11, '2021-06-01', '2021-12-30', 'Course Bundle 11', 11, 42.17);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (12, '2021-06-01', '2021-12-30', 'Course Bundle 12', 12, 751.0);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (13, '2021-06-01', '2021-12-30', 'Course Bundle 13', 13, 937.71);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (14, '2021-10-01', '2022-04-30', 'Course Bundle 14', 14, 594.56);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (15, '2021-10-01', '2022-04-30', 'Course Bundle 15', 15, 359.16);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (16, '2021-12-01', '2022-06-30', 'Course Bundle 16', 16, 155.3);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (17, '2021-12-01', '2022-06-30', 'Course Bundle 17', 17, 958.67);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (18, '2021-12-01', '2022-06-30', 'Course Bundle 18', 18, 49.5);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (19, '2021-12-01', '2022-06-30', 'Course Bundle 19', 19, 647.05);
-insert into Course_Packages (package_id, sale_start_date, sale_end_date, name, num_free_registration, price) values (20, '2021-12-01', '2022-06-30', 'Course Bundle 20', 20, 920.03);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-03-01', '2021-09-30', 'Course Bundle  1',  5, 907.86);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-03-01', '2021-09-30', 'Course Bundle  2',  5, 451.54);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-03-01', '2021-09-30', 'Course Bundle  3',  5, 624.19);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-03-01', '2021-09-30', 'Course Bundle  4',  5, 861.92);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-03-01', '2021-09-30', 'Course Bundle  5',  5, 606.94);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-04-01', '2021-10-30', 'Course Bundle  6',  5, 482.03);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-04-01', '2021-10-30', 'Course Bundle  7',  5, 929.7);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-04-01', '2021-10-30', 'Course Bundle  8',  5, 426.35);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-04-01', '2021-10-30', 'Course Bundle  9',  5, 242.66);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-04-01', '2021-10-30', 'Course Bundle 10', 10, 691.13);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-06-01', '2021-12-30', 'Course Bundle 11', 11, 42.17);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-06-01', '2021-12-30', 'Course Bundle 12', 12, 751.0);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-06-01', '2021-12-30', 'Course Bundle 13', 13, 937.71);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-10-01', '2022-04-30', 'Course Bundle 14', 14, 594.56);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-10-01', '2022-04-30', 'Course Bundle 15', 15, 359.16);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-12-01', '2022-06-30', 'Course Bundle 16', 16, 155.3);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-12-01', '2022-06-30', 'Course Bundle 17', 17, 958.67);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-12-01', '2022-06-30', 'Course Bundle 18', 18, 49.5);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-12-01', '2022-06-30', 'Course Bundle 19', 19, 647.05);
+insert into Course_Packages (sale_start_date, sale_end_date, name, num_free_registration, price) values ('2021-12-01', '2022-06-30', 'Course Bundle 20', 20, 920.03);
 
 /**
  * Buys
@@ -342,26 +342,26 @@ insert into Course_Areas (name, eid) values ('Parallel Computing'      , 20);
  * There does not exist a course from the parallel computing area
  * Default duration: 2, add one for each non-unique area. Max = 4 
 */
-insert into Courses (course_id, title, name, duration, description) values ( 1, 'Introduction to PFGE'                          , 'Database system'         , 2, 'Desc. Aenean auctor gravida sem. ');
-insert into Courses (course_id, title, name, duration, description) values ( 2, 'Introduction to BCNF'                          , 'Database system'         , 2, 'Desc. totorn auctor gravide semsd');
-insert into Courses (course_id, title, name, duration, description) values ( 3, 'Introduction to NCSim'                         , 'Database system'         , 3, 'Desc. Sed accumsan felis. Ut at d');
-insert into Courses (course_id, title, name, duration, description) values ( 4, 'Introduction to Graduate Recruitment'          , 'Database system'         , 4, 'Desc. Proin leo odio             ');
-insert into Courses (course_id, title, name, duration, description) values ( 5, 'Introduction to Tax Advisory'                  , 'Computational Biology'   , 2, 'Desc. Donec dapibus. Duis at veli');
-insert into Courses (course_id, title, name, duration, description) values ( 6, 'Introduction to IDL'                           , 'Quantum Computing'       , 2, 'Desc. Donec dapibus. Duis at veli');
-insert into Courses (course_id, title, name, duration, description) values ( 7, 'Introduction to Quantum Entanglement'          , 'Quantum Computing'       , 3, 'Desc. Donec pusing . Dui banget i');
-insert into Courses (course_id, title, name, duration, description) values ( 8, 'Introduction to iPhone Application Development', 'IoT'                     , 2, 'Desc. In hac habitasse platea dic');
-insert into Courses (course_id, title, name, duration, description) values ( 9, 'Introduction to VMI Programs'                  , 'IoT'                     , 3, 'Desc. Proin interdum mauris non l');
-insert into Courses (course_id, title, name, duration, description) values (10, 'Introduction to Medical Illustration'          , 'IoT'                     , 4, 'Desc. Vestibulum ante ipsum primi');
-insert into Courses (course_id, title, name, duration, description) values (11, 'Introduction to PPMS'                          , 'IoT'                     , 4, 'Desc. Proin risus. Praesent lectu');
-insert into Courses (course_id, title, name, duration, description) values (12, 'Introduction to Rational DOORS'                , 'IoT'                     , 4, 'Desc. Nulla facilisi. Cras non ve');
-insert into Courses (course_id, title, name, duration, description) values (13, 'Introduction to VT'                            , 'Processors and Compilers', 2, 'Desc. Ut at dolor quis odio conse');
-insert into Courses (course_id, title, name, duration, description) values (14, 'Introduction to TBB'                           , 'Artificial Intelligence' , 2, 'Desc. Cras pellentesque volutpat ');
-insert into Courses (course_id, title, name, duration, description) values (15, 'Introduction to Small Business Lending'        , 'Artificial Intelligence' , 3, 'Desc. Nulla justo. Aliquam quis t');
-insert into Courses (course_id, title, name, duration, description) values (16, 'Introduction to Financial Planning'            , 'Artificial Intelligence' , 4, 'Desc. Vestibulum ac est lacinia n');
-insert into Courses (course_id, title, name, duration, description) values (17, 'Introduction to Sheet Metal'                   , 'Programming Languages'   , 2, 'Desc. Morbi porttitor lorem id li');
-insert into Courses (course_id, title, name, duration, description) values (18, 'Introduction to Full SDLC'                     , 'Computer Security'       , 2, 'Desc. Nunc rhoncus dui vel sem. S');
-insert into Courses (course_id, title, name, duration, description) values (19, 'Introduction to Lean Manufacturing'            , 'Computer Networks'       , 2, 'Desc. Mauris ullamcorper purus si');
-insert into Courses (course_id, title, name, duration, description) values (20, 'Introduction to FrameMaker'                    , 'Computer Networks'       , 3, 'Desc. Suspendisse potenti. Nullam');
+insert into Courses (title, name, duration, description) values ('Introduction to PFGE'                          , 'Database system'         , 2, 'Desc. Aenean auctor gravida sem. ');
+insert into Courses (title, name, duration, description) values ('Introduction to BCNF'                          , 'Database system'         , 2, 'Desc. totorn auctor gravide semsd');
+insert into Courses (title, name, duration, description) values ('Introduction to NCSim'                         , 'Database system'         , 3, 'Desc. Sed accumsan felis. Ut at d');
+insert into Courses (title, name, duration, description) values ('Introduction to Graduate Recruitment'          , 'Database system'         , 4, 'Desc. Proin leo odio             ');
+insert into Courses (title, name, duration, description) values ('Introduction to Tax Advisory'                  , 'Computational Biology'   , 2, 'Desc. Donec dapibus. Duis at veli');
+insert into Courses (title, name, duration, description) values ('Introduction to IDL'                           , 'Quantum Computing'       , 2, 'Desc. Donec dapibus. Duis at veli');
+insert into Courses (title, name, duration, description) values ('Introduction to Quantum Entanglement'          , 'Quantum Computing'       , 3, 'Desc. Donec pusing . Dui banget i');
+insert into Courses (title, name, duration, description) values ('Introduction to iPhone Application Development', 'IoT'                     , 2, 'Desc. In hac habitasse platea dic');
+insert into Courses (title, name, duration, description) values ('Introduction to VMI Programs'                  , 'IoT'                     , 3, 'Desc. Proin interdum mauris non l');
+insert into Courses (title, name, duration, description) values ('Introduction to Medical Illustration'          , 'IoT'                     , 4, 'Desc. Vestibulum ante ipsum primi');
+insert into Courses (title, name, duration, description) values ('Introduction to PPMS'                          , 'IoT'                     , 4, 'Desc. Proin risus. Praesent lectu');
+insert into Courses (title, name, duration, description) values ('Introduction to Rational DOORS'                , 'IoT'                     , 4, 'Desc. Nulla facilisi. Cras non ve');
+insert into Courses (title, name, duration, description) values ('Introduction to VT'                            , 'Processors and Compilers', 2, 'Desc. Ut at dolor quis odio conse');
+insert into Courses (title, name, duration, description) values ('Introduction to TBB'                           , 'Artificial Intelligence' , 2, 'Desc. Cras pellentesque volutpat ');
+insert into Courses (title, name, duration, description) values ('Introduction to Small Business Lending'        , 'Artificial Intelligence' , 3, 'Desc. Nulla justo. Aliquam quis t');
+insert into Courses (title, name, duration, description) values ('Introduction to Financial Planning'            , 'Artificial Intelligence' , 4, 'Desc. Vestibulum ac est lacinia n');
+insert into Courses (title, name, duration, description) values ('Introduction to Sheet Metal'                   , 'Programming Languages'   , 2, 'Desc. Morbi porttitor lorem id li');
+insert into Courses (title, name, duration, description) values ('Introduction to Full SDLC'                     , 'Computer Security'       , 2, 'Desc. Nunc rhoncus dui vel sem. S');
+insert into Courses (title, name, duration, description) values ('Introduction to Lean Manufacturing'            , 'Computer Networks'       , 2, 'Desc. Mauris ullamcorper purus si');
+insert into Courses (title, name, duration, description) values ('Introduction to FrameMaker'                    , 'Computer Networks'       , 3, 'Desc. Suspendisse potenti. Nullam');
 
 /** 
  * Offerings
