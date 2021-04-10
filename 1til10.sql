@@ -153,16 +153,17 @@ BEGIN
         FROM Sessions S, Employees E
         WHERE S.course_id = course_id
         AND S.session_date = session_date
-        AND S.start_time >= session_start_hour - INTERVAL '30 minutes'),
+        AND (S.start_time = session_start_hour
+        OR S.end_time < session_start_hour - INTERVAL '30 minutes')),
 
     Other_unavail_instructors AS(
         SELECT S.eid, E.name
         FROM Specializes S, Employees E
         HAVING INTERVAL '30 hours' - course_duration >= (
             SELECT SUM(duration)
-            FROM (Part_Time_Instructors NATURAL JOIN Courses) PC
-            WHERE PC.eid = eid
-            AND PC.course_id = course_id))
+            FROM ((Part_Time_Instructors NATURAL JOIN Sessions) INNER JOIN Courses ON course_id) PSC
+            WHERE PSC.eid = eid
+            AND PSC.course_id = course_id))
     
     SELECT S.eid, E.name
     FROM Specializes S, Employees E
