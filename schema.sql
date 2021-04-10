@@ -428,6 +428,9 @@ BEGIN
     (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
     + (SELECT COUNT(*) FROM Registers R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
     - (SELECT COUNT(*) FROM Cancels C WHERE NEW.sid = C.sid AND NEW.course_id = C.course_id AND NEW.launch_date = C.launch_date)::integer
+    AND NOT EXISTS(SELECT 1 FROM Sessions WHERE eid = NEW.eid AND 
+    session_date = NEW.session_date AND
+    (SELECT(EXTRACT(EPOCH from AGE(GREATEST(NEW.start_time, start_time), LEAST(NEW.end_time, end_time))) / 3600)::integer < 0 ))
     THEN
         RETURN NEW;
     END IF;
