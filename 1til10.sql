@@ -193,7 +193,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-/*8 am not sure if this is enuf pls lmk*/ 
+/*8*/
 DROP FUNCTION IF EXISTS find_rooms;
 CREATE OR REPLACE FUNCTION find_rooms(
     session_date DATE, session_start_hour TIMESTAMP, session_duration INTEGER
@@ -203,8 +203,8 @@ BEGIN
         SELECT rid
         FROM Sessions NATURAL JOIN Courses
         WHERE session_date = session_date
-        AND start_time = session_start_hour
-        AND duration = session_duration)
+        AND (start_time, end_time) OVERLAPS (TIME '00:00' + INTERVAL '1 HOUR' * (session_start_hour), 
+        TIME '00:00' + INTERVAL '1 HOUR' * (session_start_hour + session_duration)))
 
     SELECT rid
     FROM Rooms 
