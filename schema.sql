@@ -251,7 +251,8 @@ CREATE TABLE Specializes (
 
 CREATE OR REPLACE FUNCTION can_redeems() RETURNS TRIGGER AS $$
 BEGIN
-    IF (SELECT seating_capacity 
+    IF NOW() <= (SELECT registration_deadline FROM Offerings WHERE course_id = NEW.course_id AND launch_date = NEW.launch_date)
+    AND (SELECT seating_capacity 
     FROM Sessions NATURAL JOIN Rooms 
     WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) >
     (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
@@ -275,7 +276,8 @@ FOR EACH ROW EXECUTE FUNCTION can_redeems();
 
 CREATE OR REPLACE FUNCTION can_registers() RETURNS TRIGGER AS $$
 BEGIN
-    IF (SELECT seating_capacity 
+    IF NOW() <= (SELECT registration_deadline FROM Offerings WHERE course_id = NEW.course_id AND launch_date = NEW.launch_date
+    AND (SELECT seating_capacity 
     FROM Sessions NATURAL JOIN Rooms 
     WHERE NEW.sid = sid AND NEW.course_id = course_id AND NEW.launch_date = launch_date) >
     (SELECT COUNT(*) FROM Redeems R WHERE NEW.sid = R.sid AND NEW.course_id = R.course_id AND NEW.launch_date = R.launch_date)::integer
@@ -456,7 +458,7 @@ FOR EACH ROW EXECUTE FUNCTION delete_session();
 
 CREATE OR REPLACE FUNCTION insert_session() RETURNS TRIGGER AS $$
 BEGIN
-    IF NOW() <= NEW.session_date
+    IF NOW() <= (SELECT registration_deadline FROM Offerings WHERE course_id = NEW.course_id AND launch_date = NEW.launch_date)
     AND EXISTS(SELECT 1 FROM Specializes WHERE eid = NEW.eid AND name =
     (SELECT name FROM Courses WHERE course_id = NEW.course_id))
     AND NOT EXISTS(SELECT 1 FROM Sessions WHERE eid = NEW.eid AND 
@@ -486,22 +488,23 @@ BEGIN
     end_of_month := (SELECT (date_trunc('month', NOW()) + interval '1 month' - interval '1 day'))::date;
     start_of_month := (SELECT (date_trunc('month', NOW())));
     IF EXISTS(SELECT 1 FROM Full_Time_Employees WHERE eid = NEW.eid)
-    AND NEW.num_work_hours = NULL
+    AND NEW.num_work_hours IS NULL
     AND NEW.num_work_days = ( 
         LEAST((SELECT depart_date FROM Employees WHERE eid = NEW.eid), end_of_month) -
         GREATEST((SELECT join_date FROM Employees WHERE eid = NEW.eid), start_of_month) + 1)
-    AND ABS(NEW.amount - NEW.num_work_days::double precision *  (SELECT monthly_salary FROM Full_Time_Employees WHERE eid = NEW.eid)::double precision / 31.0) < 0.001
+    AND NEW.num_work_days > 0
+    AND ABS(NEW.amount - NEW.num_work_days::double precision *  (SELECT monthly_salary FROM Full_Time_Employees WHERE eid = NEW.eid)::double precision / 31.0) < 1
     THEN
         RETURN NEW;
     END IF;
 
     IF EXISTS(SELECT 1 FROM Part_Time_Employees WHERE eid = NEW.eid)
-    AND NEW.num_work_days = NULL
+    AND NEW.num_work_days IS NULL
     AND NEW.num_work_hours = (SELECT SUM(duration)
                     FROM (Sessions NATURAL JOIN Courses)S WHERE S.eid = NEW.eid 
                     AND date_part('month', session_date) = date_part('month', NOW())
                     AND date_part('year', session_date) = date_part('year', NOW()))
-    AND ABS(NEW.amount - NEW.num_work_hours * (SELECT hourly_rate FROM Part_Time_Employees WHERE eid = NEW.eid)) < 0.001
+    AND ABS(NEW.amount - NEW.num_work_hours * (SELECT hourly_rate FROM Part_Time_Employees WHERE eid = NEW.eid)) < 1
     THEN
         RETURN NEW;
     END IF;
