@@ -53,24 +53,15 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
 /*2*/
 DROP PROCEDURE IF EXISTS remove_employee;
 CREATE OR REPLACE PROCEDURE remove_employee(
-    eid INTEGER, departure_date DATE
+    employee_id integer, departure_date DATE
     ) AS $$
 BEGIN
-    IF (SELECT EXISTS(SELECT 1 FROM CourseOfferings CO WHERE CO.eid = eid AND registration_deadline >= departure_date)) THEN
-        RAISE EXCEPTION 'Cannot remove administrator';
-    ELSIF (SELECT EXISTS(SELECT 1 FROM Conducts C, Sessions S WHERE C.eid = eid AND S.session_date >= departure_date)) THEN
-        RAISE EXCEPTION 'Cannot remove instructor';
-    ELSIF (SELECT EXISTS(SELECT 1 FROM Areas A WHERE A.eid = eid)) THEN
-        RAISE EXCEPTION 'Cannot remove manager';
-    ELSE
-    UPDATE Employees E
-    SET E.depart_date = departure_date 
-    WHERE E.eid = eid;
-    END IF;
+    UPDATE Employees
+    SET depart_date = departure_date 
+    WHERE eid = employee_id;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -287,6 +278,7 @@ DECLARE
     duration INTEGER;
     instructor_id INTEGER;
 BEGIN   
+
     IF (admin_id NOT IN (SELECT eid FROM Administrators)) THEN
     	RAISE EXCEPTION 'Invalid input, invalid administrator ID';
     ELSIF (course_id NOT IN (SELECT course_id FROM Courses)) THEN
@@ -301,7 +293,6 @@ BEGIN
             END IF;
         END LOOP;
     END IF;
-
     FOR i in 1..array_length(session_date,1) 
         LOOP
         IF (find_instructors(course_id, session_date[i], session_start_hour[i]) IS NULL) THEN
@@ -313,6 +304,7 @@ BEGIN
         END IF;
     END LOOP;
 
+BEGIN;
     IF (valid=TRUE) THEN
         FOREACH rid IN ARRAY room_id
         LOOP
@@ -340,5 +332,6 @@ BEGIN
             (session_start_hour[i] + TIME '00:00' + INTERVAL '1 HOUR' * (duration)), course_id, launch_date, room_id, instructor_id);
         END LOOP;
     END IF;
+COMMIT;
 END;
 $$ LANGUAGE plpgsql;
