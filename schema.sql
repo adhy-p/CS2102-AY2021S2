@@ -171,7 +171,7 @@ CREATE TABLE Offerings ( /* weak entity set, courses is the identifying relation
 
 DROP TABLE IF EXISTS Sessions;
 CREATE TABLE Sessions ( /* weak entity set, offerings is the identifying relationship */
-    sid integer GENERATED ALWAYS AS IDENTITY,
+    sid integer,
     session_date date, 
     start_time timestamp, /* earliest: 9am, must end by 6pm, no sessions between 12-2pm */
     end_time timestamp,
