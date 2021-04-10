@@ -147,32 +147,40 @@ BEGIN
     SELECT C.duration INTO course_duration
     FROM Courses C
     WHERE C.course_id = id_course;
-
+    
     WITH Busy_instructors AS (
         SELECT SE.eid, SE.name
         FROM (Sessions NATURAL JOIN Employees) SE
         WHERE NOT EXISTS(
             SELECT 1 FROM Sessions S WHERE S.eid = SE.eid AND S.session_date = SE.session_date AND (
                 SELECT(
-                    EXTRACT(EPOCH from (GREATEST(S.start_time::time, SE.start_time::time) -
-                     LEAST(S.end_time::time, SE.end_time::time))) / 3600)::integer < 1 ))),
+                    EXTRACT(
+                        EPOCH from (GREATEST(S.start_time::time, SE.start_time::time) -
+                        LEAST(S.end_time::time, SE.end_time::time))
+                    ) / 3600
+                )::integer < 1
+            )
+        )
+    ),   
 
-    Other_unavail_instructors AS(
-        SELECT SE.eid, SE.name
-        FROM (Specializes S INNER JOIN Employees E ON S.eid=E.eid) SE
-        HAVING INTERVAL '30 hours' - course_duration >= (
+    Other_unavail_instructors AS (
+        SELECT SI.eid, SI.name
+        FROM (Specializes NATURAL JOIN Employees) SI
+        WHERE 30 - course_duration >= (
             SELECT SUM(duration)
-            FROM ((Part_Time_Instructors NATURAL JOIN Sessions) INNER JOIN Courses ON course_id) PSC
-            WHERE PSC.eid = eid
-            AND PSC.course_id = id_course))
+            FROM ((Part_Time_Instructors NATURAL JOIN Sessions) NATURAL JOIN Courses) PSC
+            WHERE PSC.eid = SI.eid
+            AND PSC.course_id = id_course
+        )
+    )
     
-    SELECT SEE.eid, name
+    SELECT SEE.eid, SEE.name
     FROM (Specializes NATURAL JOIN Instructors NATURAL JOIN Employees) SEE
-    WHERE SEE.course_id = id_course
+    WHERE SEE.name = (SELECT C02.name FROM Courses C02 WHERE C02.course_id = id_course)
     EXCEPT
-    SELECT BI.eid, name FROM Busy_instructors BI
+    SELECT Busy_instructors.eid, Busy_instructors.name FROM Busy_instructors
     EXCEPT
-    SELECT BI.eid, name FROM Other_unavail_instructors BI;
+    SELECT Other_unavail_instructors.eid, Other_unavail_instructors.name FROM Other_unavail_instructors;
 END;
 $$ LANGUAGE plpgsql;
 
